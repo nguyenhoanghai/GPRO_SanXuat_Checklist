@@ -1,0 +1,175 @@
+﻿
+@{
+    ViewBag.Title = "Phân hàng cho chuyền";
+}
+  
+<div id="lenh-info-box" class="container-fluid">
+    <fieldset>
+        <legend>Thông tin lệnh sản xuất</legend>
+        <div class="  form-group col-md-3">
+            <label class="control-label">Số lệnh <span class="required-class">*</span></label>
+            <input class="form-control" id="lenh-code" type="text" style="border-color:red" list="lenh-codes" />
+        </div>
+        <div class="  form-group col-md-2">
+            <label class="control-label">Ngày lập lệnh  </label>
+            <label class="form-control" id="lenh-date"></label>
+        </div>
+        <div class="  form-group col-md-2">
+            <label class="control-label">Ngày bắt đầu sản xuất  </label>
+            <label class="form-control" id="lenh-startdate"></label>
+        </div>
+
+        <div class="form-group col-md-5">
+            <label class="control-label">Người phụ trách  </label>
+            <label class="form-control" id="lenh-employee"></label>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group col-md-12">
+            <label class="control-label">Nội dung</label>
+            <label id="lenh-note" class="form-control"></label>
+        </div>
+
+    </fieldset>
+   
+</div>
+<div class="container-fluid">
+    <fieldset>
+        <legend>Thông tin sản phẩm sản xuất</legend>
+        <div id="jtable-lenh-product"></div>
+    </fieldset>
+</div>
+
+<div class="clearfix"></div>
+<div id="jtable-asign" class="table-center"></div>
+
+<div class="modal   fade  " id="popup-asign" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-80 ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin phân hàng</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Kế hoạch tháng</label><br />
+                        <select class="form-control" id="a-month" style="width:65px">
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                <option @(i == DateTime.Now.Month ? "selected" : "") value="@i">@i</option>
+                            }
+                        </select>
+                        <i class="fa fa-arrow-right red" style="padding-left: 7px;padding-right: 7px;"></i>
+                        <select class="form-control" id="a-year" style="width:85px">
+                            @for (int i = (DateTime.Now.Year - 2); i <= (DateTime.Now.Year + 5); i++)
+                            {
+                                <option @(i == DateTime.Now.Year ? "selected" : "") value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input class="form-control" id="a-id" type="hidden" />
+                        <label class="control-label">Thứ tự SX <span class="required-class">*</span></label>
+                        <input class="form-control" id="a-stt" type="text" onkeypress="return isNumberKey(event)" />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Ngày vào chuyền</label><br />
+                        <input class="form-control datepicker" id="a-input-date" type="text" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Ngày nhập kho</label><br />
+                        <input class="form-control datepicker" id="a-output-date" type="text" />
+                    </div>
+
+
+
+                    <div class="form-group col-md-6">
+                        <label class="control-label">SL kế hoạch</label>
+                        <div style="display:flex">
+                            <input class="form-control text-center" id="a-plans" onkeypress="return isNumberKey(event)" type="text" style="max-width:150px !important" />
+                            <span class="bold red" style="margin-left:5px; line-height:34px" id="span-pro-unit"></span>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    <div class="col-md-6 form-group "  >
+                        <label class="control-label">Phân xưởng<span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="a-workshop"></select>
+                            <i re_line class="fa fa-refresh clickable red"></i>
+                            <a href="/phan-xuong" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group "  >
+                        <label class="control-label">Lầu <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="a-floor"></select>
+                            <i re_line class="fa fa-refresh clickable red"></i>
+                            <a href="/floor" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group "  >
+                        <label class="control-label">Chuyền sản xuất <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="a-line"></select>
+                            <i re_line class="fa fa-refresh clickable red"></i>
+                            <a href="/chuyen" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                </div> <div class="clearfix"></div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" a-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" a-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+                <button type="button" a-done class="btn btn-danger"><i class="fa fa-floppy-o"></i> Kết thúc hoàn tất</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade " id="popup-a-nx" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-100">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" checklistpopup-checklist-po-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin năng xuất</h4>
+            </div>
+            <div class="modal-body form-inline" style="margin-bottom:10px">
+                <div class="container-fluid"> 
+                    <div id="jtable-a-nx"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #tb-nx-gio thead {
+        background: green;
+        color: black;
+        font-weight:600
+    }
+    #tb-nx-gio tbody td:first-child { background:green; color:black}
+</style>
+
+<div class="modal fade " id="popup-a-nx-gio" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-100">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" checklistpopup-checklist-po-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin năng xuất theo giờ</h4>
+            </div>
+            <div class="modal-body form-inline" style="margin-bottom:10px">
+                <div class="container-fluid">
+                    <table class="table table-bordered table-hover text-center" id="tb-nx-gio"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<datalist id="lenh-codes"></datalist>
+<script src="~/Scripts/IED/Assignment/assign-index.js"></script>

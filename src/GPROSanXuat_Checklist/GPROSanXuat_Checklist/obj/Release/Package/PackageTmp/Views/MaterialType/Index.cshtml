@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Vật tư";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="material-type-jtable"></div>
+
+<!-- Modal MType-->
+<div id="material-type-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" material-type-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Loại Vật Tư</h4>
+            </div>
+            <div class="modal-body" >
+                <div class=" form-horizontal">
+                    <input type="hidden" id="material-type-id">
+                    <div class="form-group">
+                        <label class=" control-label  ">Mã Loại Vật Tư</label>
+                        <div>
+                            <input type="text" class="form-control"  id="material-type-index" disabled>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class=" control-label ">Tên Loại Vật Tư</label><span style="color:red"> *</span>
+                        <div>
+                            <input type="text" class="form-control" id="material-type-name"  placeholder="Tên loại vật tư">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class=" control-label ">Mô Tả</label>
+                        <div>
+                            <textarea class="form-control" id="material-type-note"  ></textarea>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: white">
+                <button type="button" material-type-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" material-type-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Search MType-->
+<div id="material-type-popup-search" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" material-type-close class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tìm kiếm</h4>
+            </div>
+            <div class="modal-body"  >
+                <div class=" form-horizontal"> 
+                    <div class="form-group">
+                        <label class=" control-label  ">Từ khóa</label>
+                        <div>
+                            <input type="text" class="form-control" id="material-type-keyword" placeholder="Nhập Mã hoặc tên loại vật tư">
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: white">
+                <button type="button" material-type-close class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" material-type-search class="btn btn-primary" data-dismiss="modal"><i class="fa fa-search"></i> Tìm kiếm </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal MType-->
+<div id="material-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  ">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body"  >
+                <div class=" form-horizontal">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Thông tin vật tư</a></li>
+                        <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Định mức vật tư</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <input type="hidden" id="material-id">
+                            <div class="form-group col-md-12">
+                                <div class="form-group col-md-4" style="padding-top:4px">
+                                    <img src="~/Content/Img/no-image.png" class="img-avatar" />
+                                    <form id="material-form-upload" name="material-form-upload" enctype="multipart/form-data" method="post">
+                                        <input type="file" id="material-file-upload" name="material-file-upload" filelist newurl="" style="display:none" accept="image/*" />
+                                    </form>
+                                    <button class="btn btn-primary" id="material-btn-file-upload" style=" margin:0">Chọn ảnh ...</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class=" control-label">Loại vật tư</label><span style="color:red"> *</span>
+                                    <div class="select-box">
+                                        <select id="material-type"></select>
+                                        <i re-material-type class="fa fa-refresh clickable red"></i>
+                                        @*  <a href="/MaterialType/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class=" control-label">Mã Vật Tư</label>
+                                    <input type="text" class="form-control" id="material-index" disabled />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class=" control-label">Tên thương mại</label><span style="color:red"> *</span>
+                                    <input type="text" class="form-control" id="material-name-tm" placeholder="Tên thương mại" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class=" control-label ">Tên khoa học</label>
+                                    <input type="text" class="form-control" id="material-name-kh" placeholder="Tên khoa học" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class=" control-label ">Đơn vị tính</label><span style="color:red"> *</span>
+                                    <div class="select-box">
+                                        <select id="material-unit" class="form-control"></select>
+                                        <i re-material-unit class="fa fa-refresh clickable red"></i>
+                                        @*  <a href="@AppGlobal.HostUrl/Unit/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div> 
+                            <div class="form-group">                                
+                                <div class="col-md-12">
+                                    <label class=" control-label ">Ghi Chú</label>
+                                    <textarea class="form-control" id="material-note"></textarea>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile" style="overflow:auto; max-height:400px">
+                            <div id="material-norms-jtable"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: white">
+                <button type="button" material-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" material-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+<datalist id="materialSrc"></datalist>
+<script src="~/Scripts/IED/MaterialType/material-type-index.js"></script>

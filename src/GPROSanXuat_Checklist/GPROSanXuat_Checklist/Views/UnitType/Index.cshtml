@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Đơn vị tính";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtable-unit-type" class="table-center"></div>
+
+<div class="modal fade " id="popup-unit-type" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" unit-type-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin loại đơn vị</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label class="control-label">Mã loại đơn vị <span class="required-class">*</span></label>
+                        <input class="form-control" id="unit-type-code" type="text" placeholder="Nhập mã loại đơn vị..." />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" id="unit-type-id" type="hidden" />
+                        <label class="control-label">Tên loại đơn vị <span class="required-class">*</span></label>
+                        <input class="form-control" id="unit-type-name" type="text" placeholder="Nhập tên loại đơn vị..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="unit-type-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" unit-type-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" unit-type-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="modal   fade  " id="popup-unit" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin Đơn vị</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input class="form-control" id="unit-id" type="hidden" />
+                    <div class=" form-group">
+                        <label class="control-label">Loại đơn vị <span class="required-class">*</span></label>                        
+                        <div class="select-box">
+                            <select class="form-control" id="unit-type-select"></select>
+                            <i re-unit-type class="fa fa-refresh clickable red"></i>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="control-label">Tên Đơn vị <span class="required-class">*</span></label>
+                        <input class="form-control" id="unit-name" type="text" placeholder="Nhập Tên Đơn vị..." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="unit-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" unit-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" unit-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Unit/unit-index.js"></script>
+

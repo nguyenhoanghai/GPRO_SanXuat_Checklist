@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewBag.Title = "Phiếu xuất kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #delivery-detail-jtable .jtable-toolbar {
+        top: 6px
+    }
+</style>
+
+<div id="delivery-jtable"></div>
+ 
+<div id="delivery-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" delivery-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông Tin Phiếu Xuất Kho</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input type="hidden" id="delivery-id" />
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Mã Phiếu Xuất</label>
+                        <input type="text" class="form-control" id="delivery-index" disabled />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Tên Phiếu Xuất</label><span style="color:red"> *</span>
+                        <input type="text" id="delivery-name" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Hình Thức Giao Dịch </label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="delivery-transactiontype" style="width:234.6px">
+                                <option value="1">GD Trực Tiếp</option>
+                                <option value="2">GD Tại Sở Giao Dịch</option>
+                                <option value="3">Mua Bán Đối Lưu</option>
+                                <option value="4">Mua Bán Tái Xuất</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-4">
+                        <label class=" control-label  ">Kho xuất hàng</label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="delivery-warehouse" class="form-control"></select>
+                            <i re-delivery-warehouse class="fa fa-refresh clickable red"></i>
+                            <a href="/Customer/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label class=" control-label  ">Nhân viên xuất kho</label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="delivery-deliverier" class="form-control"></select>
+                            <i re-delivery-deliverier class="fa fa-refresh clickable red"></i>
+                            <a href="/Customer/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Ngày xuất kho</label><span style="color:red"> *</span><br />
+                        <input id="delivery-date" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label  ">Khách Hàng </label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="delivery-customer" class="form-control"></select>
+                            <i re-delivery-customer class="fa fa-refresh clickable red"></i>
+                            <a href="/Customer/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Người Nhận <span style="color:red"> *</span></label>
+                        <input type="text" id="delivery-reciever" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-4" style="margin-bottom:5px">
+                        <label class=" control-label">Loại Tiền Tệ - Tỷ Giá </label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="delivery-unit" style="width:90px"></select>
+                            <i re-delivery-unit class="fa fa-refresh clickable red"></i>
+                            @*  <span><a href="@AppGlobal.HostUrl/MoneyType/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a></span>*@
+                            <i class="fa fa-arrow-right red"> </i>
+                            <input type="text" onkeypress="return isNumberKey(event)" value="0" style="display: inline-block; width: 90px; margin-top: -4px" id="delivery-exchangerate" class="form-control">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Ngày Hạch Toán </label><span style="color:red"> *</span>
+                        <input class="form-control" type="text" id="delivery-dateofaccounting" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Tổng Tiền</label>
+                        <input class="form-control" type="text" disabled value="0" id="delivery-total" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Ghi Chú</label>
+                        <textarea class="form-control" id="delivery-note"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: white">
+                <button type="button" delivery-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" delivery-save_d class="btn btn-danger"><i class="fa fa-save"></i> Lưu và Duyệt </button>
+                <button type="button" delivery-save class="btn btn-primary"><i class="fa fa-save"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*popup child*@
+<div id="delivery-detail-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" delivery-detail-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông tin chi tiết</h4>
+            </div>
+            <div class="modal-body form-inline" style="padding-bottom:15px">
+                <div class="container-fluid">
+                    <input type="hidden" id="delivery-detail-id">
+                    @*<div class="form-group col-md-4" searchbox>
+                            <label class=" control-label  ">Từ khóa</label>
+                            <input class="form-control" type="text" id="delivery-detail-search-key" placeholder="Nhập tên hoặc Mã lô ..." />
+                        </div>*@
+                    <div detailbox>
+                        <div class="form-group col-md-12">
+                            <label class=" control-label">Thông tin lô</label>
+                            <div class="form-control " id="LotInfo" style="padding: 5px 10px 0 10px; min-height:50px; height:auto !important"> </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class=" control-label  ">Số lượng xuất</label>
+                            <input class="form-control " onkeypress="return isNumberKey(event)" id="delivery-detail-quantity" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class=" control-label  ">Đơn giá xuất</label>
+                            <input class="form-control " onkeypress="return isNumberKey(event)" id="delivery-detail-price" />
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class=" control-label  "> </label>
+                            <button type="button" style="margin-top:27px" delivery-detail-save class="btn btn-danger"><i class="fa fa-plus"></i> Thêm </button>
+                            <button type="button" style="margin-top:27px" btnchonlo class="btn btn-primary"><i class="fa fa-refresh"></i> Chọn lô </button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="form-group" jtablebox>
+                        <div id="delivery-detail-jtable"></div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Delivery/delivery-index.js"></script>

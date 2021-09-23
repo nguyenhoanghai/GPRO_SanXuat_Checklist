@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{26162E4C-A0B4-41A2-B2AA-072D731E1E89}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GPROSanXuat_Checklist.Business</RootNamespace>
+    <AssemblyName>GPROSanXuat_Checklist.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="GPRO.Core">
+      <HintPath>..\Libs\GPRO.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="GPRO.Ultilities">
+      <HintPath>..\Libs\GPRO.Ultilities.dll</HintPath>
+    </Reference>
+    <Reference Include="GPROCommon">
+      <HintPath>..\Libs\GPROCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="Hugate.Framework">
+      <HintPath>..\Libs\Hugate.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList">
+      <HintPath>..\Libs\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLLAppConfig.cs" />
+    <Compile Include="BLLChecklist.cs" />
+    <Compile Include="BLLChecklistJob.cs" />
+    <Compile Include="BLLChecklistJobAlert.cs" />
+    <Compile Include="BLLChecklistJobAttachment.cs" />
+    <Compile Include="BLLChecklistJobComment.cs" />
+    <Compile Include="BLLChecklistJobError.cs" />
+    <Compile Include="BLLChecklistJobStep.cs" />
+    <Compile Include="BLLDelivery.cs" />
+    <Compile Include="BLLDeliveryDetail.cs" />
+    <Compile Include="BLLHelper.cs" />
+    <Compile Include="BLLLotSupplies.cs" />
+    <Compile Include="BLLOrder.cs" />
+    <Compile Include="BLLPO.cs" />
+    <Compile Include="BLLLenhSX.cs" />
+    <Compile Include="BLLReceiption.cs" />
+    <Compile Include="BLLReceiptionDetail.cs" />
+    <Compile Include="BLLTemplateChecklist.cs" />
+    <Compile Include="BLLTemplateChecklistJob.cs" />
+    <Compile Include="BLLTemplateChecklistJobStep.cs" />
+    <Compile Include="BLLTemplateFile.cs" />
+    <Compile Include="Enum\eObjectType.cs" />
+    <Compile Include="Enum\eTemplateFileType.cs" />
+    <Compile Include="Model\AppConfigModel.cs" />
+    <Compile Include="Model\AttachmentModel.cs" />
+    <Compile Include="Model\BigAlertModel.cs" />
+    <Compile Include="Model\BigChecklistModel.cs" />
+    <Compile Include="Model\ChecklistJobAlertModel.cs" />
+    <Compile Include="Model\ChecklistModel.cs" />
+    <Compile Include="Model\CommentModel.cs" />
+    <Compile Include="Model\ControlModel.cs" />
+    <Compile Include="Model\DeliveryDetailModel.cs" />
+    <Compile Include="Model\DeliveryModel.cs" />
+    <Compile Include="Model\LenhMaterialModel.cs" />
+    <Compile Include="Model\LenhModel.cs" />
+    <Compile Include="Model\LenhProductModel.cs" />
+    <Compile Include="Model\LotSuppliesModel.cs" />
+    <Compile Include="Model\OrderModel.cs" />
+    <Compile Include="Model\POModel.cs" />
+    <Compile Include="Model\ReceiptionDetailModel.cs" />
+    <Compile Include="Model\ReceiptionModel.cs" />
+    <Compile Include="Model\ReportInventoryModel.cs" />
+    <Compile Include="Model\RequestModel.cs" />
+    <Compile Include="Model\SuppliesModel.cs" />
+    <Compile Include="Model\TemplateChecklistJobModel.cs" />
+    <Compile Include="Model\TemplateChecklistJobStepModel.cs" />
+    <Compile Include="Model\TemplateChecklistModel.cs" />
+    <Compile Include="Model\TemplateFileModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GPROSanXuat_Checklist.Data\GPROSanXuat_Checklist.Data.csproj">
+      <Project>{a3eaffd8-c513-4118-8190-591b7b38666c}</Project>
+      <Name>GPROSanXuat_Checklist.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

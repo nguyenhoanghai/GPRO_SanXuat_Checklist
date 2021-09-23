@@ -1,0 +1,10 @@
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Debug\GPROSanXuat_Checklist.Data.dll.config
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Debug\GPROSanXuat_Checklist.Data.dll
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Debug\GPROSanXuat_Checklist.Data.pdb
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Debug\EntityFramework.dll
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Debug\EntityFramework.xml
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.csprojAssemblyReference.cache
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.csproj.CoreCompileInputs.cache
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.csproj.CopyComplete
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.dll
+E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.pdb

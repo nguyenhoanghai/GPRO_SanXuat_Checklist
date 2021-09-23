@@ -1,0 +1,208 @@
+﻿@using GPROCommon.Models;
+@using GPROSanXuat_Checklist.Data;
+@{
+    ViewBag.Title = "CreateRole";
+    List<ModelModule> modules = null;
+    List<ModelFeature> features = null;
+    List<ModelPermission> permissions = null;
+    ModelRole roleDetail = null;
+    List<ModelRolePermission> rolePermissions = null;
+    if (ViewData["Modules"] != null && (ViewData["Modules"] as List<ModelModule>) != null)
+    {
+        modules = ViewData["Modules"] as List<ModelModule>;
+    }
+    if (ViewData["Features"] != null && (ViewData["Features"] as List<ModelFeature>) != null)
+    {
+        features = ViewData["Features"] as List<ModelFeature>;
+    }
+    if (ViewData["Permissions"] != null && (ViewData["Permissions"] as List<ModelPermission>) != null)
+    {
+        permissions = ViewData["Permissions"] as List<ModelPermission>;
+    }
+    if (ViewData["RoleDetail"] != null && (ViewData["RoleDetail"] as ModelRole) != null)
+    {
+        roleDetail = ViewData["RoleDetail"] as ModelRole;
+        <script>
+            $(document).ready(function () {
+                $('#id').val('@roleDetail.Id');
+                $('#roleName').val('@roleDetail.RoleName');
+                $('#description').val('@roleDetail.Description');
+            });
+        </script>
+    }
+    if (ViewData["RolePermission"] != null && (ViewData["RolePermission"] as List<ModelRolePermission>) != null)
+    {
+        rolePermissions = ViewData["RolePermission"] as List<ModelRolePermission>;
+    }
+}
+<script src="~/Scripts/masonry.pkgd.min.js"></script>
+<script src="~/Scripts/IED/Role/R_Create.js"></script>
+<link href="~/Scripts/IED/Role/R_Create.css" rel="stylesheet" />
+
+<div class="contains row_page_2">
+    <div class="contain-main">
+        <div class="modal-header custom-header">
+            <span class="title ">Thông Tin Phân Quyền</span>
+        </div>
+
+        <div style="padding: 15px 10px">
+            <div class="container-fluid">
+                <div class="col-md-4 form-group">
+                    <input type="hidden" id="id" value="0" />
+                    <label class="control-label">Tên Quyền <span class="required-class">*</span></label>
+                    <input class="form-control" type="text" id="roleName" placeholder="Nhập Tên Phân Quyền ..." />
+                </div>
+                <div class="col-md-8 form-group">
+                    <label class="control-label">Mô Tả</label>
+                    <textarea class="form-control" id="description" placeholder="Nhập Mô Tả cho Phân Quyền "></textarea>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div role="tabpanel">
+                @if (modules != null && modules.Count > 0)
+                {
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        @for (int i = 0; i < modules.Count; i++)
+                        {
+                            <li @modules[i].SystemName role="presentation" class="@(i == 0 ? "active" : "")"><a href="#@modules[i].SystemName" aria-controls="@modules[i].SystemName" role="tab" data-toggle="tab">@modules[i].ModuleName</a></li>
+                        }
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div id="tab-content" class="tab-content tab-content-cus" cmd="checkPermissions">
+                        @for (int i = 0; i < modules.Count; i++)
+                        {
+                            <div role="tabpanel" class="tab-pane @(i == 0 ? "active" : "")" id="@modules[i].SystemName" @modules[i].SystemName>
+                                @if (features != null && features.Count > 0)
+                                {
+                                    var id = "con" + i;
+
+                                    <div id="@id" style="width: 100%">
+                                        @foreach (var feature in features.Where(x => x.ModuleId == modules[i].Id))
+                                        {
+                                            if (feature.IsDefault)
+                                            {
+                                                // if feature is Default => check all and disable
+                                                <div class="per-item">
+                                                    <div class="per-title">
+                                                        <div class="tt-name">@feature.SystemName</div>
+                                                        <input cmd="checkAll" type="checkbox" id="@feature.Id" checked="checked" disabled /><span>Chọn tất cả</span>
+                                                    </div>
+                                                    <ul>
+                                                        @if (permissions != null && permissions.Count > 0)
+                                                        {
+                                                            if (roleDetail != null)
+                                                            {
+                                                                foreach (var permission in permissions.Where(x => x.FeatureId == feature.Id))
+                                                                {
+                                                                    ModelRolePermission roleExists = rolePermissions.Where(x => x.ModuleId == modules[i].Id && x.FeatureId == feature.Id && x.PermissionId == permission.Id).FirstOrDefault();
+                                                                    <li>
+                                                                        <input cmd="permission" type="checkbox" value="@modules[i].Id|@feature.Id|@permission.Id" name="@feature.Id" checked disabled />@permission.PermissionName
+                                                                    </li>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                foreach (var permission in permissions.Where(x => x.FeatureId == feature.Id))
+                                                                {
+                                                                    <li>
+                                                                        <input cmd="permission" type="checkbox" value="@modules[i].Id|@feature.Id|@permission.Id" name="@feature.Id" checked disabled />@permission.PermissionName
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="per-item">
+                                                    <div class="per-title">
+                                                        <div class="tt-name">@feature.SystemName</div>
+                                                        <input cmd="checkAll" type="checkbox" id="@feature.Id" /><span>Chọn tất cả</span>
+                                                    </div>
+                                                    <ul>
+                                                        @if (permissions != null && permissions.Count > 0)
+                                                        {
+                                                            if (roleDetail != null)
+                                                            {
+                                                                foreach (var permission in permissions.Where(x => x.FeatureId == feature.Id))
+                                                                {
+                                                                    ModelRolePermission roleExists = rolePermissions.Where(x => x.ModuleId == modules[i].Id && x.FeatureId == feature.Id && x.PermissionId == permission.Id).FirstOrDefault();
+                                                                    <li>
+                                                                        @if (permission.IsDefault)
+                                                                        {
+                                                                            <input cmd="permission" type="checkbox" value="@modules[i].Id|@feature.Id|@permission.Id" name="@feature.Id" checked disabled />@permission.PermissionName
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input cmd="permission" type="checkbox" value="@modules[i].Id|@feature.Id|@permission.Id" name="@feature.Id" @(roleExists != null ? "checked" : "") />@permission.PermissionName
+                                                                        }
+                                                                    </li>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                foreach (var permission in permissions.Where(x => x.FeatureId == feature.Id))
+                                                                {
+                                                                    <li>
+                                                                        @if (permission.IsDefault)
+                                                                        {
+                                                                            <input cmd="permission" type="checkbox" value="@modules[i].Id|@feature.Id|@permission.Id" name="@feature.Id" checked disabled />@permission.PermissionName
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input cmd="permission" type="checkbox" value="@modules[i].Id|@feature.Id|@permission.Id" name="@feature.Id" />@permission.PermissionName
+                                                                        }
+                                                                    </li>
+                                                                }
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+
+                                    <script type="text/javascript">
+                                        $(document).ready(function () {
+                                            var elem = document.querySelector('#@id');
+                                            var msnry = new Masonry(elem, {
+                                                itemSelector: '.per-item',
+                                                columnWidth: 5
+                                            });
+
+                                            // refresh masonry
+                                            $('[@modules[i].SystemName.ToLower()]').click(function () {
+                                                $content = $('#@id');
+                                                setTimeout(function () {
+                                                    var elem = document.querySelector('#@id');
+                                                    var msnry = new Masonry(elem, {
+                                                        itemSelector: '.per-item',
+                                                        columnWidth: 5
+                                                    });
+                                                }, 100);
+
+                                            });
+                                        });
+                                    </script>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div style="clear: both"></div>
+        <div class="modal-footer custom-footer">
+            <button btn="save" save class="btn btn-primary">
+                <div class="button-image image-save"></div>
+                Lưu Lại
+            </button>
+        </div>
+    </div>
+
+</div>
+

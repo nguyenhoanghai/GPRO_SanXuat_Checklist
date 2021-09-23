@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Trạng thái";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="status-type-jtable" class="table-center"></div>
+
+<div class="modal   fade  " id="status-type-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" status-type-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin loại trạng thái</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <input class="form-control" id="status-type-id" type="hidden" />
+                        <label class="control-label">Mã loại trạng thái <span class="required-class">*</span></label>
+                        <input class="form-control" id="status-type-code" type="text" />
+                    </div>
+                    <div class="form-group"> 
+                        <label class="control-label">Tên loại trạng thái <span class="required-class">*</span></label>
+                        <input class="form-control" id="status-type-name" type="text" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="status-type-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" status-type-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" status-type-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="modal   fade  " id="popup-status" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin trạng thái</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class=" form-group">
+                        <label class="control-label">Loại trạng thái <span class="required-class">*</span></label> 
+                        <div class="select-box">
+                            <select class="form-control" id="status-type-select"></select>
+                            <i re-status-type class="fa fa-refresh clickable red"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" id="status-id" type="hidden" />
+                        <label class="control-label">Tên trạng thái <span class="required-class">*</span></label>
+                        <input class="form-control" id="status-name" type="text" placeholder="Nhập Tên Đơn vị..." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="status-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" status-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" status-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Status/status-type-index.js"></script>

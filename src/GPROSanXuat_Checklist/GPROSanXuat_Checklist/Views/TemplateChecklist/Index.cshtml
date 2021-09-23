@@ -1,0 +1,355 @@
+﻿
+@{
+    ViewBag.Title = "Mẫu checklist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/IED/TemplateChecklist/template-checklist.js"></script>
+<div id="jtable-template-checklist" class="table-center"></div>
+
+<div class="modal   fade  " id="popup-template-checklist" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin mẫu</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <input class="form-control" id="template-checklist-id" type="hidden" />
+                        <label class="control-label">Tên mẫu <span class="required-class">*</span></label>
+                        <input class="form-control" id="template-checklist-name" type="text" placeholder="Nhập Tên Đơn vị..." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="template-checklist-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" template-checklist-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" template-checklist-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<style>
+    .main-box {
+        margin: 5px 0;
+        border: 1px solid #ccc;
+    }
+
+    .box-title {
+        padding: 5px;
+        color: black;
+        font-weight: 600;
+        font-size: 14px;
+        border-bottom: 1px solid #ccc;
+        line-height: 30px
+    }
+
+    .box-item {
+        border: 1px solid #ccc;
+        border-left: none;
+        border-top: none;
+        border-bottom: none;
+        min-width: 200px
+    }
+
+        .box-item:first-child {
+        }
+
+        .box-item div {
+            min-height: 30px;
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+        }
+
+            .box-item div:last-child {
+                border-bottom: none;
+            }
+
+            .box-item div:nth-child(1) {
+                font-weight: 600;
+                color: black
+            }
+
+            .box-item div:nth-child(2),
+            .box-item div:nth-child(4) {
+                background: aquamarine;
+                color: blue;
+            }
+
+            .box-item div:nth-child(3) {
+                background: paleturquoise;
+                color: red;
+            }
+
+            .box-item div button {
+                margin: 0
+            }
+
+    .action .fa {
+        padding: 5px;
+        color: black;
+        cursor: pointer
+    }
+
+    .action .fa-edit {
+        color: blue
+    }
+
+    .action .fa-trash {
+        color: red
+    }
+
+    .div-item {
+        padding: 5px;
+        border-bottom: 1px dotted #ccc;
+    }
+
+        .div-item .div-item-action {
+            float: right;
+            display: none
+        }
+
+        .div-item:hover {
+            background: #efefef
+        }
+
+            .div-item:hover .div-item-action {
+                display: block
+            }
+
+        .div-item .fa {
+            cursor: pointer;
+            padding: 2px
+        }
+
+        .div-item .fa-space {
+            padding-right: 10px
+        }
+
+        .div-item .fa-plus {
+            color: black
+        }
+
+        .div-item .fa-edit {
+            color: blue
+        }
+
+        .div-item .fa-trash {
+            color: red
+        }
+
+        .div-item .fa-minus {
+            font-size: 8px
+        }
+
+        .div-item .fa-caret-right {
+            color: darkorange
+        }
+
+    .modal-full {
+        width: 100%;
+    }
+</style>
+
+<div class="modal fade" id="popup-template-checklist-edit" data-backdrop="static" data-keyboard="false" templateId="0">
+    <div class="modal-dialog modal-full">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin mẫu checklist: <span template-name style="color:red; font-weight:600"></span></h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div>
+                        <div class="main-box">
+                            <div class="box-title">
+                                Danh sách bước công việc
+                                <div style="float:right"><button style="margin:0" btn-add-job-step class="btn btn-primary" data-toggle="modal" data-target="#popup-template-checklist-job-step">Thêm bước công việc</button></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div step-job-box style="display:flex; overflow:auto">
+                                <div class="box-item">
+                                    <div>1</div>
+                                    <div>Vải</div>
+                                    <div>Febric</div>
+                                    <div><button class="btn btn-default">DS công việc</button></div>
+                                </div>
+                                <div class="box-item">
+                                    <div>2</div>
+                                    <div>Vải lót</div>
+                                    <div> </div>
+                                    <div><button class="btn btn-default">DS công việc</button></div>
+                                </div>
+                                <div class="box-item">
+                                    <div>3</div>
+                                    <div>Chỉ may</div>
+                                    <div> </div>
+                                    <div><button class="btn btn-default">DS công việc</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" template-checklist-table-job-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="popup-template-checklist-job-step" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin bước công việc</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <input class="form-control" id="template-checklist-job-step-id" type="hidden" />
+                        <label class="control-label">Thứ tự bước công việc <span class="required-class">*</span></label>
+                        <input class="form-control" id="template-checklist-job-step-index" type="number" min="1" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên bước công việc <span class="required-class">*</span></label>
+                        <input class="form-control" id="template-checklist-job-step-name" type="text" placeholder="Nhập tên bước công việc..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nội dung <span class="required-class">*</span></label><br />
+                        <textarea id="template-checklist-job-step-content" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" template-checklist-job-step-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" template-checklist-job-step-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="popup-template-checklist-table-job" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-full">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Danh sách công việc: <span group-name style="color:red; font-weight:600"></span></h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div table-jobs style="margin-bottom:15px">
+                        <div>
+                            <div>
+                                <div class="div-item">+ 1 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                <div>
+                                    <div class="div-item">++ 11 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                    <div>
+                                        <div class="div-item">-++ 111 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                        <div>
+                                            <div class="div-item">-+++ 1111 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                            <div class="div-item">-+++ 1112 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                            <div class="div-item">-+++ 1113 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                            <div class="div-item">-+++ 1114 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="div-item">-++ 112 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                    <div class="div-item">-++ 113 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                    <div class="div-item">-++ 114 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                </div>
+                                <div class="div-item">-+ 12 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                <div class="div-item">-+ 13 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                                <div class="div-item">-+ 14 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                            </div>
+                            <div class="div-item">- 2 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                            <div class="div-item">- 3 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                            <div class="div-item">- 4 <div class="div-item-action"><i class="fa fa-plus"></i> <i class="fa fa-edit"></i> <i class="fa fa-trash"></i></div></div>
+                        </div>
+                    </div>
+
+
+                    @*<div id="jtable-template-checklist-job" class="table-center"></div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" template-checklist-table-job-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="popup-template-checklist-job" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin công việc</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <input class="form-control" id="template-checklist-job-id" type="hidden" />
+                        <label class="control-label">Thứ tự công việc <span class="required-class">*</span></label>
+                        <input class="form-control" id="template-checklist-job-index" type="number" min="1" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên công việc <span class="required-class">*</span></label>
+                        <input class="form-control" id="template-checklist-job-name" type="text" placeholder="Nhập tên bước công việc..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Nội dung <span class="required-class">*</span></label><br />
+                        <textarea id="template-checklist-job-content" class="form-control"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" template-checklist-job-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" template-checklist-job-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/TemplateChecklist/template-checklist-edit.js"></script>
+<script>
+
+    var obj = new GPRO.TemplateChecklistEdit();
+    
+    obj.Init();
+   
+
+    function BindJobStep(id) {
+        obj.BindJobStep(id);
+    }
+
+    function DeleteJobStep(id) {
+        obj.DeleteJobStep(id);
+    }
+
+    function _ReloadTableJob(id) {
+        obj.reloadTableJob(id);
+    }
+
+    function JobAction(jobId, type) {
+        switch (type) {
+            case 1: obj.AddJob(jobId); break; //add
+            case 2: obj.EditJob(jobId); break; //edit
+            case 3: obj.DeleteJob(jobId); break; //delete
+        }
+    }
+
+    function ReloadJobSteps(templateId) {
+        obj.GetJobSteps(templateId);
+    }
+
+</script>

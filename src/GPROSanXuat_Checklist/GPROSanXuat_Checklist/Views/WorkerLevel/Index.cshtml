@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Bậc Thợ";
+    Layout = null;
+} 
+<script src="~/Scripts/IED/WorkerLevel/WL_Index.js"></script>
+<div id="jtableWorkersLevel" class="table-center"></div>
+
+<div class="modal fade " id="popup_WorkersLevel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button"> × </button>
+                <h4 class="modal-title">Thông Tin Bậc thợ</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input type="hidden" id="wlId" data-bind="value: Id" />
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Tên Bậc thợ <span class="required-class">*</span></label>
+                        <input class="form-control" id="wlName" required="required" data-bind="value: Name" type="text" />
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Hệ số <span class="required-class">*</span></label>
+                        <input class="form-control" id="wlCoefficient" data-bind="value: Coefficient" type="text" />
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Hình thức sử dụng</label><br />
+                        <div>
+                            <input type="checkbox" id="wlIsPrivate" data-width="130" data-toggle="toggle" data-on="Nội bộ" data-off="Chung">
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Ghi chú</label>
+                        <textarea class="form-control" id="wlNote"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" wlcancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" wlsave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade   " id="popup_SearchWorkersLevel" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" wlclose data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label class="control-label">Từ khóa</label>
+                        <input class="form-control" id="wltxtSearch" type="text" />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button wlclose aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button wlsearch class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

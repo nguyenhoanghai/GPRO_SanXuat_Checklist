@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Kích cỡ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtable-size" class="table-center"></div>
+
+<div class="modal fade " id="popup-size" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin kích cỡ</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <input class="form-control" id="size-id" type="hidden" />
+                        <label class="control-label">Tên kích cỡ <span class="required-class">*</span></label>
+                        <input class="form-control" id="size-name" type="text" placeholder="Nhập Tên kích cỡ..." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="size-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" size-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" size-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script src="~/Scripts/IED/Size/size-index.js"></script>

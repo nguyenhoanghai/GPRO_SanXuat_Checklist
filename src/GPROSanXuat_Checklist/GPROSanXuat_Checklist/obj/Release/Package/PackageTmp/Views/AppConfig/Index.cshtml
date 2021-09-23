@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Cấu hình";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtable-app-config"></div>
+
+<div id="popup-app-config" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" app-config-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông Tin Cấu Hình</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <input type="hidden" id="app-config-id"  >
+                    <div class="form-group">
+                        <label for="name" class=" col-form-label">Tên cấu hình <span class="required-class">*</span></label>
+                        <div>
+                            <input type="text" class="form-control" id="app-config-name"  >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="code" class=" col-form-label">Mã cấu hình <span class="required-class">*</span></label>
+                        <div>
+                            <input type="text" class="form-control" id="app-config-code"  >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="value" class=" col-form-label">Giá trị <span class="required-class">*</span></label>
+                        <div>
+                            <input type="text" class="form-control" id="app-config-value"  >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="note" class=" col-form-label">Ghi chú</label>
+                        <div>
+                            <textarea class="form-control" id="app-config-note"  ></textarea>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" app-config-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" app-config-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/AppConfig/app-config.js"></script>

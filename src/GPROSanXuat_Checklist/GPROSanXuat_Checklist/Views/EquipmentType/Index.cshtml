@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Loại thiết bị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/IED/EType/ET_Index.js"></script>
+
+<div id="jtableEquipmentType" class="Jtable-css table-center"></div>
+
+<div class="modal  fade" id="popup_EquipmentType" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin loại thiết bị</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="col-md-12 form-group">
+                        <input class="form-control" type="hidden" data-bind="value: Id" />
+                        <div class="col-md-12 form-group">
+                            <label class="control-label">Mã loại thiết bị <span class="required-class">*</span></label><br />
+                            @Html.DropDownList("eType_default", null, null, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="control-label">Tên loại thiết bị<span class="required-class">*</span></label><br />
+                            <input class="form-control" id="etName" required="required" data-bind="value: Name" type="text" placeholder="Nhập Tên Loại Thiết Bị..." />
+                        </div>
+                        @*<div class="col-md-12 form-group">
+                                <label class="control-label">Mã Loại Thiết Bị <span class="required-class">*</span></label><br />
+                                <input class="form-control" id="etcode" data-bind="value: Code" type="text" placeholder="Nhập Mã Loại Thiết Bị..." />
+                            </div>*@
+                        <div class="col-md-12 form-group">
+                            <label class="control-label">Mô Tả </label>
+                            <textarea class="form-control" id="etDescription" data-bind="value: Description"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button etcancel aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button etsave class="btn btn-primary">
+                    <div class="button-image image-save"></div>
+                    Lưu Lại
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade   " id="popup_SearchEquipmentType" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" etclose data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Từ Khóa</label>
+                        <input class="form-control" id="etkeyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Bạn muốn tìm theo ?</label>
+                        <select class="form-control" id="etsearchBy">
+                            <option value="0">- - Chọn kiểu Tìm kiếm - -</option>
+                            <option value="1">Tên Bộ phận</option>
+                            @*<option value="2">Mã Loại Thiết Bị</option>*@
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button etclose aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button etsearch class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Attribute*@
+<div class="modal fade  " id="popup_EquipmentTypeAttribute" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel_attr aria-hidden="true" data-dismiss="modal" class="close" type="button">
+                    ×
+                </button>
+                <h4 class="modal-title">Loại Thiết Bị Thuộc Tính</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input class="form-control" type="hidden" data-bind="value: Id" />
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Tên Thuộc Tính <span class="required-class">*</span></label>
+                        <input class="form-control" id="etName_attr" required="required" data-bind="value: Name" type="text" placeholder="Nhập Tên Thuộc Tính ..." />
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Thứ Tự Sắp Xếp <span class="required-class">*</span></label><br />
+                        <input class="form-control" id="etindex" required="required" data-bind="value: OrderIndex" type="text" onkeypress=" return isNumberKey(event)" style="width: 70px !important" />
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Dùng Tính Thời Gian ?</label><br />
+                        <div>
+                            <input id="eIsUseForTime" type="checkbox" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button cancel_attr aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button save_attr class="btn btn-primary">
+                    <div class="button-image image-save"></div>
+                    Lưu Lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

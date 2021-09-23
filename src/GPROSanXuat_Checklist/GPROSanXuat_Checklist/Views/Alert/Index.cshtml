@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewBag.Title = "Tin nhắn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+<link href="~/Content/CheckList_View.css" rel="stylesheet" />
+
+<div id="jtableAlert" url=" "></div>
+
+<div id="myModal" class="modal fade" role="dialog" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="window-header">
+                <button cancel type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="member member-no-menu">
+                    <img class="member-avatar" id="employeeName" src="" srcset="" alt=" " title=" ">
+                </div>
+                <div class="window-title">
+                    <h2 class="card-detail-title-assist js-title-helper" dir="auto" id="jobName">Create UI prototype</h2>
+                </div>
+                <div class="window-header-inline-content quiet js-current-list">
+                    trong danh sách <a class="js-open-move-from-header" href="#" id="statusName">In-Progress</a> của Nhóm <a class="js-open-move-from-header" href="#" id="jobGroupName">In-Progress</a>
+                </div>
+            </div>
+            <div class="window-main-col">
+                <div class="requireBox" id="jobRequired">
+                    jhfks
+                </div>
+                <div class="window-module js-attachments-section u-clearfix">
+                    <div class="window-module-title window-module-title-no-divider">
+                        <span class="fa fa-paperclip"></span>
+                        <h3 class="u-inline-block">Các tập tin đính kèm</h3>
+                    </div>
+                    <div class="u-gutter">
+                        <div class="u-clearfix js-attachment-list"></div>
+                        <p class="js-show-fewer-attachments hide"><a class="quiet-button js-view-some-attachments" href="#">Ẩn bớt tập tin đính kèm.</a></p>
+                        <p class="js-show-more-attachments hide"><a class="quiet-button js-view-all-attachments" href="#">Hiện tất cả tập tin đính kèm (-3 ẩn)</a></p>
+                    </div>
+                </div>
+                
+                <div class="window-module">
+                    <div class="window-module-title window-module-title-no-divider">
+                        <i class="window-module-title-icon icon-lg fa fa-align-center"></i>
+                        <h3>Hoạt động</h3><span class="editing-members js-editing-members hide"></span>
+                    </div>
+                    <div class="js-list-actions" id="actionList">
+
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+ 
+<script src="~/Scripts/IED/Alert/alert-index.js"></script>

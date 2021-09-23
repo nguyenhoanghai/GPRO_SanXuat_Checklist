@@ -1,0 +1,171 @@
+﻿@using GPROCommon.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+    string[] dbs = ViewBag.dbs != null ? ((string)ViewBag.dbs).Split(',') : new string[] { };
+    ModelSelectItem info = (ModelSelectItem)ViewBag.info;
+}
+
+
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,300i" rel="stylesheet">
+
+<!-- Styles -->
+<link href="~/Content/sqlConnect/core.min.css" rel="stylesheet">
+<link href="~/Content/sqlConnect/core.min.css" rel="stylesheet" />
+<link href="~/Content/sqlConnect/app.min.css" rel="stylesheet">
+<link href="~/Content/sqlConnect/style.min.css" rel="stylesheet">
+
+<!-- Favicons -->
+<link rel="apple-touch-icon" href="https://thetheme.io/theadmin/assets/img/apple-touch-icon.png">
+<link rel="icon" href="https://thetheme.io/theadmin/assets/img/favicon.png">
+
+<style>
+    .do-float label, .label-floated {
+        top: -8px !important;
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        opacity: .5;
+        color: blue;
+        font-weight: bold;
+    }
+</style>
+
+<div class="row min-h-fullscreen center-vh p-20 m-0">
+    <div class="col-12">
+        <div class="card card-shadowed px-50 py-30 w-400px mx-auto" style="max-width: 100%">
+            <h5 class="text-uppercase">sql connection</h5>
+            <br>
+
+            <form class="form-type-material">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="servername" value="@info.Data1">
+                    <label for="servernames">Server name</label>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="type">
+                        <option>Windows Authentication</option>
+                        <option>SQL Server Authentication</option>
+                    </select>
+                    <label for="type">Authentication</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="uname" value="@info.Data3">
+                    <label for="uname">User name</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" class="form-control" id="pass" value="@info.Data4">
+                    <label for="pass">Password</label>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="databases">
+                        @for (int i = 0; i < dbs.Length; i++)
+                        {
+                            <option value="@dbs[i]">@dbs[i]</option>
+                        }
+                    </select>
+                    <label for="databases">Databases</label>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="system">
+                        <option value="0">Common system</option>
+                        <option value="1">Checklist_Production system</option>
+                        <option value="2">PMS system</option>
+                    </select>
+                    <label for="type">System</label>
+                </div>
+                <br>
+                <button class="btn btn-bold btn-block btn-primary" type="button" id="getDatabases">Get databases</button>
+                <button class="btn btn-bold btn-block btn-danger" type="button" id="save">Save Connection info</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="~/Content/sqlConnect/core.min.js"></script>
+<script src="~/Content/sqlConnect/app.min.js"></script>
+<script src="~/Content/sqlConnect/script.min.js"></script>
+<script>
+    $('#system').val(@ViewBag.system);
+
+    $('#type').change(() => {
+        checkChange();
+    });
+
+    $('#getDatabases').click(() => {
+        GetDatabases();
+    });
+
+    $('#save').click(() => {
+        saveConfig();
+    });
+
+    setValue();
+
+    function checkChange() {
+        switch ($('#type').val()) {
+            case 'Windows Authentication':
+                $('#uname,#pass').prop('disabled', true);
+                break;
+            case 'SQL Server Authentication':
+                $('#uname,#pass').prop('disabled', false);
+                break;
+        }
+    }
+
+    function setValue() {
+        var isAuthen =  ('@info.Data5')== 'True';
+        if (isAuthen) {
+            $('#type').val('Windows Authentication')
+        }
+        else {
+            $('#type').val('SQL Server Authentication')
+            }
+
+            $('#databases').val('@info.Data2');
+            checkChange();
+    }
+
+    function GetDatabases() {
+        $('#databases').empty();
+        $.ajax({
+            url: '/SQLConnect/getDatabases',
+            type: 'POST',
+            data: JSON.stringify({ 'ip': $('#servername').val(), 'uname': $('#uname').val(), 'pass': $('#pass').val(), 'isAuthen': $('#type').val() =='Windows Authentication' }),
+            contentType: 'application/json charset=utf-8',
+            success: function (data) {
+                if (data) {
+                    var dataArr = data.split(',');
+                    if (dataArr) {
+                        dataArr.map((item) => {
+                            $('#databases').append(`<option value="${item}">${item}</option>`)
+                            console.log(item);
+                        });
+                    }
+                    console.log(data);
+                    console.log(dataArr);
+                }
+            }
+        });
+    }
+
+    function saveConfig() {
+        $.ajax({
+            url: '/SQLConnect/SaveConfig',
+            type: 'POST',
+            data: JSON.stringify({'ip': $('#servername').val(), 'uname': $('#uname').val(), 'pass': $('#pass').val(), 'isAuthen': $('#type').val() == 'Windows Authentication', 'dbname': $('#databases').val(), 'system': $('#system').val() }),
+            contentType: 'application/json charset=utf-8',
+            success: function (data) {
+                if (data) {
+                    window.location.href = '/';
+                }
+            }
+        });
+    }
+</script>
+
+
+

@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Nguyên liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+<div id="jtable-materials" class="table-center"></div>
+
+<div class="modal fade " id="popup-materials" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" materials-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin nguyên liệu</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-12">
+                        <div class="form-group col-md-6" style="padding-top:4px">
+                            <img src="~/Content/Img/no-image.png" class="img-avatar" />
+                            <form id="materials-form-upload" name="materials-form-upload" enctype="multipart/form-data" method="post">
+                                <input type="file" id="materials-file-upload" name="materials-file-upload" filelist newurl="" style="display:none" accept="image/*" />
+                            </form>
+                            <button class="btn btn-primary" id="materials-btn-file-upload" style=" margin:0">Chọn ảnh ...</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Mã nguyên liệu <span class="required-class">*</span></label><br />
+                            <input class="form-control" id="materials-code" data-bind="value: Name" type="text" placeholder="Nhập mã nguyên liệu..." />
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input class="form-control" id="materials-id" type="hidden" />
+                            <label class="control-label">Tên nguyên liệu <span class="required-class">*</span></label>
+                            <input class="form-control" id="materials-name" data-bind="value: Name" type="text" placeholder="Nhập Tên nguyên liệu..." />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Đơn vị tính <span class="required-class">*</span></label><br />
+                            <select class="form-control" id="materials-unit"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Hình thức sử dụng</label><br />
+                        <div>
+                            <input type="checkbox" id="materials-isPrivate" data-width="130" data-toggle="toggle" data-on="Chung" data-off="Nội bộ" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label class="control-label">Mô tả</label><br />
+                        <textarea id="materials-note" class="form-control"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" materials-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" materials-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*popup search*@
+<div class="modal fade " id="materials-search-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" materials-close data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label class="control-label">Từ Khóa</label>
+                        <input class="form-control" id="materials-keyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                    </div> 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button materials-close aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button materials-search class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Materials/materials-index.js"></script>

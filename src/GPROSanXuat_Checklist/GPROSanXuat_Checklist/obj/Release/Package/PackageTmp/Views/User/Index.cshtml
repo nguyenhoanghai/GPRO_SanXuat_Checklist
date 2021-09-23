@@ -1,0 +1,240 @@
+﻿@using GPROSanXuat_Checklist.App_Global;
+@{
+    ViewBag.Title = "Tài khoản";
+   //   Layout = null;
+    List<SelectListItem> items = null;
+    if (ViewData["roles"] != null)
+    {
+        items = (List<SelectListItem>)ViewData["roles"];
+    }
+
+    List<SelectListItem> wkitems = null;
+    if (ViewData["workshops"] != null)
+    {
+        wkitems = (List<SelectListItem>)ViewData["workshops"];
+    }
+} 
+<script src="~/Scripts/IED/User/User.js"></script> 
+<style>
+    .avatar-cus {
+        margin-bottom: 0 !important;
+        border: none !important;
+        width: 100px !important;
+        height: 100px;
+    }
+</style>
+
+
+<div id="jtableUser"></div>
+
+@* --------   Create Modal  ---------------*@
+<div class="modal fade " id="userModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" close class="close" data-dismiss="modal" cancel aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tài Khoản</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <input type="hidden" txt="userId" data-bind="value: Id" />
+                    <input id="required" type="text" style="display: none" />
+                    <div class="col-md-4  " id="rowUsername">
+                        <label class="control-label">Tên Tài Khoản <span class="required-class">*</span></label>
+                        <input class="form-control" txt="userName" data-bind="value: UserName" type="text" placeholder="Nhập Tên Tài Khoản ..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Email</label>
+                        <input class="form-control" txt="email" data-bind="value: Email" type="text" placeholder="Nhập địa chỉ thư điện tử ..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Mật Khẩu <span class="required-class">*</span></label>
+                        <input class="form-control" txt="txtpass" data-bind="value: PassWord" type="password" placeholder="Nhập Mật Khẩu ..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Nhập lại Mật Khẩu <span class="required-class">*</span></label>
+                        <input class="form-control" txt="txtcpass" type="password" placeholder="Xác Nhận lại Mật Khẩu ..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Họ <span class="required-class">*</span></label>
+                        <input class="form-control" txt="txtho" data-bind="value: FirstName" type="text" placeholder="Nhập Họ ..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Tên <span class="required-class">*</span></label>
+                        <input class="form-control" txt="txtTen" data-bind="value: LastName" type="text" placeholder="Nhập Tên ..." />
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Hình Ảnh</label>
+                        <form id="FormUpload" name="FormUpload" enctype="multipart/form-data" method="post" style="margin:0 !important">
+                            <input type="file" id="uploader" name="uploader" filelist newurl="" accept="image/*" />
+                        </form>
+                    </div>
+                    <div id="mytest" class="col-md-8" style="margin-bottom:10px">
+                        <label class="control-label">Quyền Tài Khoản <span class="required-class">*</span></label>
+                        @Html.DropDownList("userRoles", items, null, new { @select = "userRoles", @class = "chosen-select", @multiple = "", @placeholder = "Chọn quyền cho Tài Khoản..." })
+                    </div>
+                    <div class="col-md-12 " style="clear:both">
+                        <label class="control-label">Phân xưởng</label><br />
+                        @Html.DropDownList("workshops", wkitems, null, new { @select = "workshops", @class = "chosen-select", @multiple = "", @placeholder = "Chọn phân xưởng" })
+
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button saveuser class="btn btn-primary">
+                    <div class="button-image image-save"></div>
+                    Lưu Lại
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@* --------   Change pass Modal  ---------------*@
+<div class="modal fade hide" id="fogotPassModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" cancel aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Thay Đổi Mật Khẩu</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="rows">
+                        <input type="hidden" txt="userId" data-bind="value: Id" />
+                        <div class="col-left" style="width: 95%">
+                            <label class="control-label">Yêu cầu từ Tài Khoản </label>
+                            <textarea data-bind="value: NoteForgotPassword" disabled style="width: 100%"></textarea>
+                        </div>
+
+                    </div>
+                    <div class="rows">
+                        <div class="col-left">
+                            <label class="control-label">Mật Khẩu mới</label>
+                            <input txt="txtNewPass" type="password" />
+                        </div>
+                        <div>
+                            <label class="control-label">Xác nhận Mật Khẩu</label>
+                            <input txt="txtConfirmNewPass" type="password" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button save class="btn btn-primary" btn="updatePassword">
+                    <div class="button-image image-save"></div>
+                    Lưu Lại
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+@* --------   Search Modal  ---------------*@
+<div class="modal fade hide" id="Search_popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" close-search aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="rows">
+                        <div class="col_left">
+                            <label class="control-label">Từ Khóa</label>
+                            <input type="text" id="keyword" placeholder="Nhập từ khóa cần tìm..." />
+                        </div>
+                        <div class="col-right">
+                            <label class="control-label">Kiểu tìm Kiếm</label>
+                            <select id="searchBy">
+                                <option value="0">Tìm theo Họ Tên</option>
+                                <option value="1">Tìm theo Tên Tài Khoản</option>
+                                <option value="2">Tìm theo Email</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="rows">
+                        <div class="col_left">
+                            <label class="control-label">Tài Khoản bị Khóa</label>
+                            <input id="isblock" type="checkbox" /> có.
+                        </div>
+                        <div>
+                            <label class="control-label">TK Yêu cầu đổi Mật Khẩu</label>
+                            <input id="ischangepass" type="checkbox" /> có.
+                        </div>
+                    </div>
+                    <div class="rows">
+                        <div class="col_left">
+                            <label class="control-label">Tài Khoản bị Khóa giờ</label>
+                            <input id="istimeblock" type="checkbox" /> có.
+                        </div>
+                        <div>
+                            <label class="control-label">Tài Khoản quên Mật Khẩu</label>
+                            <input id="isforgotpass" type="checkbox" /> có.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button close-search aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button search class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+
+
+<script>
+    function CuteWebUI_AjaxUploader_OnPostback() {
+        window.filesuploaded = true;
+        var submitbutton = document.getElementById('submit');
+        submitbutton.click();
+        return false;
+    }
+
+    function UploadFiles(files) {
+        var uploadobj = null;
+        var fileList = null;
+        uploadobj = document.getElementById('uploader');
+        fileList = $('[filelist]');
+        $.ajax({
+            url: '/UploadFile/Upload',
+            type: 'post',
+            data: JSON.stringify({ 'files': files }),
+            contentType: 'application/json',
+            beforeSend: function () { $('#loading').show(); },
+            success: function (result) {
+                $('#loading').hide();
+                uploadobj.cancelall();
+                fileList.val(result);
+                fileList.change();
+            }
+        });
+    }
+</script>
+

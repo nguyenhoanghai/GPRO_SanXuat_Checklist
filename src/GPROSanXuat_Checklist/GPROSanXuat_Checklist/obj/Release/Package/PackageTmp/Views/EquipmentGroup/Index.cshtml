@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Nhóm thiết bị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+} 
+<script src="~/Scripts/IED/EGroup/EG_Index.js"></script>
+
+<div id="jtable_E_Group" class="table-center"></div>
+
+<div class="modal   fade  " id="popup_E_Group" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin Nhóm Thiết Bị</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="rows">
+                        <input data-bind="value: Id" type="hidden" />
+                        <label class="control-label">Tên Nhóm Thiết Bị<span class="required-class">*</span></label>
+                        <input class="form-control" id="egname" data-bind="value: GroupName" type="text" placeholder="Nhập Tên Nhóm Thiết Bị..." />
+                    </div>
+                    <div class="rows">
+                        <label class="control-label">Mã Nhóm Thiết Bị</label><br />
+                        <input class="form-control" id="egcode" data-bind="value: GroupCode" type="text" placeholder="Nhập Mã Nhóm Thiết Bị..." />
+                    </div>
+                    <div class="rows">
+                        <label class="control-label">Icon Nhóm Thiết Bị</label>
+                        <form id="FormUpload" name="FormUpload" enctype="multipart/form-data" method="post" style="margin:0 !important">
+                            <input type="file" id="eguploader" name="eguploader" filelist newurl="" accept="image/*" />
+                        </form>
+                    </div>
+                    <div class="rows">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="egdes" data-bind="value: Note"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" egcancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" egsave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  search  -->
+<div class="modal fade   " id="egpopup_Search" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" egclose data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="rows">
+                        <label class="control-label">Từ Khóa</label>
+                        <input class="form-control" id="egkeyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                    </div>
+                    <div class="rows">
+                        <div>
+                            <label class="control-label">Bạn muốn tìm theo ?</label>
+                            <select id="egsearchBy" class="form-control">
+                                <option value="1">Tên Nhóm Thiết Bị </option>
+                                <option value="2">Mã Nhóm Thiết Bị</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button egclose aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button egsearch class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div> 

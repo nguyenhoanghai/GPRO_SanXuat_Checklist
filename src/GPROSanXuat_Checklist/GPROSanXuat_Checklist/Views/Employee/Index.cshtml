@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Nhân Viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtableEmployee" class="table-center"></div>
+
+<div class="modal   fade " id="popup_Employee" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button"> × </button>
+                <h4 class="modal-title">Thông Tin Nhân Viên</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input class="form-control" type="hidden" id="e-id" />
+                    <div class="form-group col-md-12">
+                        <div class="form-group col-md-4" style="padding-top:4px">
+                            <img src="~/Content/Img/no-image.png" class="img-avatar" />
+                            <form id="e-form-upload" name="e-form-upload" enctype="multipart/form-data" method="post">
+                                <input type="file" id="e-file-upload" name="e-file-upload" filelist newurl="" style="display:none" accept="image/*" />
+                            </form>
+                            <button class="btn btn-primary" id="e-btn-file-upload" style=" margin:0">Chọn ảnh ...</button>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Mã nhân viên <span class="required-class"> *</span></label>
+                            <input class="form-control" id="ecode" type="text" placeholder="Nhập Mã Nhân Viên." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Giới tính  </label>
+                            <div>
+                                <input type="checkbox" id="eGender" data-width="130" data-toggle="toggle" data-on="Nam " data-off="Nữ ">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Họ <span class="required-class"> *</span></label>
+                            <input class="form-control" id="efirst" data-bind="value: FirstName" type="text" placeholder="Nhập Họ Nhân Viên." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Tên <span class="required-class"> *</span></label>
+                            <input class="form-control" id="elast" data-bind="value: LastName" type="text" placeholder="Nhập Tên Nhân Viên." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Ngày sinh <span class="required-class"> *</span></label> <br />
+                            <input class="form-control" id="EBirthday" type="text" />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Điện thoại  </label>
+                            <input class="form-control" id="e-phone" type="text" />
+                        </div>
+                        <div class="col-md-8" style="margin-top:10px">
+                            <label class=" control-label">TK hệ thống</label> 
+                            <div class="select-box">
+                                <select id="e-user"></select>
+                                <i re-e-user class="fa fa-refresh clickable red"></i>
+                                <a href="/User/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <label class="control-label">Email  </label>
+                            <input class="form-control" id="e-email" type="email" />
+                        </div>
+                     
+                        
+                    </div>
+
+
+                    <div class="clearfix">  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ecancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" esave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Employee/Employ_Index.js"></script>

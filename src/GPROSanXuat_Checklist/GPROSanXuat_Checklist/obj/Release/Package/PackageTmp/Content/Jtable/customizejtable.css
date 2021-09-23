@@ -1,0 +1,24 @@
+﻿div.jtable-main-container > div.jtable-bottom-panel span.jtable-page-info {  
+  margin-left:5px;
+}
+
+div.jtable-main-container > div.jtable-title {  
+  background-color: #f5f5f5;
+  background-image: -moz-linear-gradient(center top , #ffffff, #f5f5f5);
+  background-repeat: repeat-x;
+  border: 1px solid #ccc;
+}
+div.jtable-main-container > div.jtable-title div.jtable-title-text {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 34px;
+  color: #323232;
+}
+
+div.jtable-main-container > div.jtable-title div.jtable-toolbar span.jtable-toolbar-item.jtable-toolbar-item-search-record span.jtable-toolbar-item-icon {
+  background-image: url('themes/metro/search.png');
+}
+div.jtable-main-container > div.jtable-title div.jtable-toolbar span.jtable-toolbar-item.jtable-toolbar-item-show-record span.jtable-toolbar-item-icon {
+  background-image: url('themes/metro/show.png');
+}

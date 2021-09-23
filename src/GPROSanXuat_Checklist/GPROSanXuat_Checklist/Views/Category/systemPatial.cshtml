@@ -1,0 +1,50 @@
+﻿<div class="modal fade   " id="SystemCategoryModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" close class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Nhóm Danh Mục</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <input type="hidden" txt="categoryId" />
+                        <div class="col-md-6 form-group">                            
+                            <label class="control-label">Vị Trí</label>
+                            <select id="SysPosition">
+                                <option value="0">-- Vị trí Menu --</option>
+                                <option value="LEFT">Bên Trái</option>
+                                <option value="TOP">Bên Trên</option>
+                            </select> 
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Thứ Tự Nhóm Danh Mục</label>
+                            <input id="order" txt="SyscategoryOrder" data-bind="value: OrderIndex" style="width: 50px; text-align: center" type="number" />
+
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Nhóm Danh Mục Icon</label>
+                            <div id="picture">
+                                <img id="SysIcon" src="~/Content/MasterPage/Images/no-image-2.png" />
+                            </div>
+                            <div id="uploadFile">
+                                <input id="SystemUploader" type="file" />
+                                <input id="SystemFileList" type="hidden" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button btn="saveSysCategory" save class="btn btn-primary">
+                    <div class="button-image image-save"></div>
+                    Lưu Lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

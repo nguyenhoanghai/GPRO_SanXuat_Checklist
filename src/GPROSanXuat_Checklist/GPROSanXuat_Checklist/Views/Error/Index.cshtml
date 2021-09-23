@@ -1,0 +1,65 @@
+﻿@using GPROCommon.Enums
+@{
+    ViewBag.Title = "Lỗi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="contain ">
+    <div>
+        <div class="error" style="display:flex">
+            <div class="error-left" style="width:50%"> 
+                <img src="~/Content/Img/404.jpg" style="width:100%" />
+            </div>
+            <div class="error-right" style="text-align: center;
+    width: 50%;
+    margin: auto 0;">
+                <div class="error-title" style="font-size:35px ; text-transform:capitalize">thông báo lỗi</div>
+                <div class="short-error">
+                    @if (Model.Id != 0)
+                    {<span>@eErrorMessage.UnKnowwn</span> }
+                else
+                { <span>@Model.ErrorCaption</span>}
+                </div>
+                <div class="button-err" style="padding-top:10px">
+                    <a btn="Logout" class="btn btn-primary">Quay Lại Trang Chủ</a>
+                    @if (Model.Id != 0 && Model.IsDeveloper)
+                    {
+                        <a class="btn btn-danger" data-toggle="collapse" href="#collapseError" aria-expanded="false" aria-controls="collapseError">Xem Chi Tiết</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+
+</div>
+
+
+
+@*error detail*@
+@if (Model.Id != 0 && Model.IsDeveloper)
+{
+    <div class="collapse" id="collapseError">
+        <div class="well">
+            <h3>Module Name : @Model.ModuleName</h3>
+            <h3>Class Name : @Model.ErrorClass</h3>
+            <h3>Method Name : @Model.ErrorMethod</h3>
+            <h3>Acction Name : @Model.ActionError</h3>
+            <h3>Class Name : @Model.ErrorClass</h3>
+            Target Site :
+            <span>@Model.TargetSite </span>
+            Strack Trace:
+            <span>@Model.StrackTrace </span>
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('[btn="Logout"]').click(function () {
+            window.location.href = '/home/index';
+        });
+    });
+</script>
+

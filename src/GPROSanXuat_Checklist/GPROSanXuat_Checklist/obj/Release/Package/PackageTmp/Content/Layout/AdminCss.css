@@ -1,0 +1,42 @@
+﻿body {
+    background-image:none
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: blue;
+}
+
+.Textbox, input[type=file] {
+    font-size: 16px;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 35px !important; 
+}
+
+.TextArea {
+    font-size: 16px;
+    width: 100% !important;
+    min-height: 70px !important;
+      max-width: 100% !important; 
+}
+
+#FormUpload{
+    margin-top:10px
+}
+ 
+#img{
+    height: 152px; 
+    
+}
+
+#img img{
+height:inherit
+}
+
+.row{
+    margin-bottom:10px
+}
+
+

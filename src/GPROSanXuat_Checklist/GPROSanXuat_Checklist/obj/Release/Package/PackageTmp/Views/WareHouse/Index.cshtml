@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="warehouse-jtable"></div>
+
+<!-- Modal MType-->
+<div id="warehouse-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" warehouse-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông tin Kho</h4>
+            </div>
+            <div class="modal-body" style="background-color: rgba(230,243,255,0.3)">
+                <div class="form-horizontal">
+                    <input type="hidden" id="warehouse-id"  >
+                    <div class="form-group">
+                        <label class=" control-label ">Mã Kho</label>
+                        <div>
+                            <input type="text" class="form-control" data-bind="value: Code" disabled id="warehouse-index">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label ">Tên Kho</label><span style="color:red"> *</span>
+                        <div>
+                            <input type="text" class="form-control" id="warehouse-name"  placeholder="nhập tên kho">
+                        </div>
+                    </div>                    
+                    <div class="form-group">
+                        <label class=" control-label ">là Đại Lý ? </label><br />
+                        <div>
+                            <input type="checkbox" name="warehouse-isagency" id="warehouse-isagency" data-width="130" data-toggle="toggle" data-on="Có" data-off="Không" />
+                        </div> 
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label ">Mô tả</label>
+                        <div>
+                            <textarea class="form-control" id="warehouse-note"  ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: white">
+                <button type="button" warehouse-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" warehouse-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script src="~/Scripts/IED/WareHouse/WareHouse.js"></script>

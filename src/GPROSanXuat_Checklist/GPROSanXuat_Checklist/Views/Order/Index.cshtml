@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "Đơn đặt hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+    #table-details th,
+    #table-details td {
+        border: 1px solid black;
+        text-align: center
+    }
+
+        #table-details th:first-child,
+        #table-details th:last-child,
+        #table-details tr td:first-child,
+        #table-details tr td:last-child {
+            width: 50px !important;
+            text-align: center !important
+        }
+
+    .table-detail td {
+        line-height: 34px !important
+    }
+
+    .w-50px {
+        width: 50px !important
+    }
+
+    .w-100px {
+        width: 100px !important
+    }
+
+    .w-150px {
+        width: 150px !important
+    }
+
+    .number-input {
+        text-align: right
+    }
+
+    #jtable-detail-order .jtable-column-header:first-child,
+    #jtable-detail-order .jtable-column-header:last-child,
+    #jtable-detail-order .jtable-data-row td:first-child,
+    #jtable-detail-order .jtable-data-row td:last-child {
+        width: 50px !important;
+        text-align: center
+    }
+
+    #jtable-detail-order .jtable-column-header:nth-child(3),
+    #jtable-detail-order .jtable-column-header:nth-child(4),
+    #jtable-detail-order .jtable-column-header:nth-child(5),
+    #jtable-detail-order .jtable-data-row td:nth-child(3) input,
+    #jtable-detail-order .jtable-data-row td:nth-child(3),
+    #jtable-detail-order .jtable-data-row td:nth-child(4) input,
+    #jtable-detail-order .jtable-data-row td:nth-child(4),
+    #jtable-detail-order .jtable-data-row td:nth-child(5) {
+        width: 100px !important;
+        text-align: right
+    }
+
+    .total-box {
+        padding: 10px 0px;
+        display: flex;
+        line-height: 34px;
+        float: right;
+    }
+
+        .total-box select {
+            width: 100px;
+            margin-left: 10px;
+        }
+
+        .total-box input {
+            margin-left: 5px;
+            text-align: right;
+            width: 50px
+        }
+
+    .box-info,
+    .box-info .form-group {
+        padding: 0
+    }
+</style>
+<div id="jtable-order" class="table-center"></div>
+
+<div class="modal fade " id="popup-order" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-100  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" order-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin đơn hàng</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-12">
+                        <div class="form-group col-md-9" style="padding-left:10px">
+                            <select class="form-control" id="order-po-select" style="margin-top:-5px; width:400px; margin-right:5px"></select>
+                            <button type="button" btn-order-get-po-info class="btn btn-primary"><i class="fa fa-cloud-download"></i> Lấy thông tin từ phiếu báo giá </button>
+                            <button type="button" btn-order-reset-po-info class="btn btn-danger"><i class="fa fa-ban"></i> Hủy bỏ </button>
+
+                            <div id="jtable-detail-order"></div>
+                            <div class="total-box">Tổng tiền: <span id="total-order" class="red bold" style="padding-left:5px"></span>  <select class="form-control" id="order-unit"></select><input class="form-control" id="order-exchange" type="text" onkeypress="return isNumberKey(event)" /></div>
+                            <div class="form-group col-md-12" style="padding:0">
+                                <label class="control-label">Ghi chú</label><br />
+                                <textarea id="order-note" class="form-control"></textarea>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group col-md-3 box-info" style="padding:0">
+                            <div class="form-group col-md-12">
+                                <input class="form-control" id="order-id" type="hidden" />
+                                <label class="control-label">Mã đơn hàng </label>
+                                <input class="form-control" id="order-code" disabled type="text" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Khách hàng </label><br /> 
+                                <div class="select-box">
+                                    <select class="form-control" id="order-customer"></select>
+                                    <i re_customer class="fa fa-refresh clickable red"></i>
+                                    <a href="/khach-hang" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Người liên hệ</label><br />
+                                <input class="form-control" id="order-contact-name" type="text" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Số điện thoại </label><br />
+                                <input class="form-control" id="order-phone" type="text" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Email</label><br />
+                                <input class="form-control" id="order-email" type="text" />
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Ngày giao hàng</label><br />
+                                <div>
+                                    <input class="form-control" id="order-delivery-date" type="text" placeholder="dd/mm/yyyy" style="max-width: 226px" />
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12" style="padding:0">
+                                <label class="control-label">Địa chỉ giao hàng</label><br />
+                                <textarea id="order-address" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class="control-label">Trạng thái</label><br />
+                                <select class="form-control" id="order-status"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" order-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" order-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade " id="order-view-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-100">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" order-close data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Thông tin đơn hàng</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-12">
+                        <div id="order-file-content-area"> </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button order-close aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button order-export class="btn btn-primary">
+                    <i class="fa fa-file-word-o"></i>
+                    Xuất file word
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<form>
+    <div id="order-word-content" style="width:100%; display:none"></div>
+</form>
+<datalist id="products-order"></datalist>
+<script src="~/Scripts/IED/Order/order-index.js"></script>

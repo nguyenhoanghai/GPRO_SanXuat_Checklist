@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/Layout/animate.min.css" rel="stylesheet" />
+    <link href="~/Content/Layout/Web/main.min.css" rel="stylesheet" />
+    <link href="~/Content/Layout/Web/Layout.min.css" rel="stylesheet" />
+    <link href="~/Content/Layout/Web/Responsive.min.css" rel="stylesheet" />
+    <link href="~/Content/Layout/icheck/flat/green.css" rel="stylesheet" />
+    <link href="~/Content/Layout/nprogress.css" rel="stylesheet" />
+    <link href="~/Content/Layout/AdminCss.css" rel="stylesheet" />
+    <!--[if lt IE 9]>
+          <script src="../assets/js/ie8-responsive-file-warning.js"></script>
+          <![endif]-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+    @*<link href="~/Content/custom.min.css" rel="stylesheet" />*@
+    <link href="~/Content/custom.css" rel="stylesheet" />
+    <link href="~/Content/Jtable/themes/metro/green/jtable.min.css" rel="stylesheet" />
+    <link href="~/Content/Jtable/customizejtable.css" rel="stylesheet" />
+    <link href="~/Content/KendoUI/kendo.material.min.css" rel="stylesheet" />
+    <link href="~/Content/KendoUI/kendo.common-material.min.css" rel="stylesheet" />
+    <link href="~/Content/KendoUI/kendo.default.mobile.min.css" rel="stylesheet" />
+    <link href="~/Content/Jquery.alerts/jquery.alerts.min.css" rel="stylesheet" />
+
+    <link href="~/Content/jqwidgets-ver3.8.0/jqwidgets/styles/jqx.base.min.css" rel="stylesheet" />
+    <link href="~/Content/jqwidgets-ver3.8.0/jqwidgets/styles/jqx.orange.min.css" rel="stylesheet" />
+
+
+    <script src="~/Scripts/Client/Layout/js/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @*<script src="~/Scripts/bootstrap.min.js"></script>*@
+    <script src="~/Scripts/Client/Layout/js/nprogress.min.js"></script>
+    <script src="~/Scripts/Client/Layout/js/custom.min.js"></script>
+
+
+    <script src="~/Scripts/modernizr-2.5.3.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script src="~/Scripts/knockout-2.1.0.js"></script>
+    <script src="~/Content/Jtable/jquery.jtable.min.js"></script>
+    <script src="~/Content/Jtable/localization/jquery.jtable.vi.js"></script>
+    <script src="~/Content/Jquery.alerts/common.min.js"></script>
+    <script src="~/Content/Jquery.alerts/jquery.alerts.min.js"></script>
+
+    <script src="~/Content/KendoUI/kendo.all.min.js"></script>
+    <script src="~/Content/KendoUI/Kendo.Cultures.vn.min.js"></script>
+    <script src="~/Content/jqwidgets-ver3.8.0/jqwidgets/jqx-all.js"></script>
+    <script src="~/Scripts/IED/Common.min.js"></script>
+    <script src="~/Scripts/IED/IED_StandCommon.js"></script>
+</head>
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            @Html.Action("HeadPartial", "Shared")
+            <div class="right_col" role="main">
+                <div class="clearfix"></div>
+
+                @RenderBody()
+                <footer style="margin:auto !important">
+                    <div style="text-align:center">
+                        IED Stand Alone <br />Nhà Phát triển : GPRO COMPANY<br />Email : trivodai@yahoo.com - Điện Thoại : 0918 319714.
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <div id="custom_notifications" class="custom-notifications dsp_none">
+        <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group"></ul>
+        <div class="clearfix"></div>
+        <div id="notif-group" class="tabbed_notifications"></div>
+    </div>
+    <div id="loading" style=" display:none">
+        <img src="~/Content/Img/loading.gif" />
+    </div>
+    <style>
+        .tab-content {
+            padding: 5px;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        footer {
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            border-left: none;
+            border-right: none;
+            background: #172D44;
+            font-weight: bold;
+            color: #ccc;
+        }
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            background: rgba(204, 204, 204, 0.37);
+            top: 0 !important;
+        }
+
+            #loading img {
+                position: fixed;
+                top: 35%;
+                right: 50%;
+            }
+
+        .toggle{
+            padding-top:5px !important
+        }
+
+        nav {
+            background: #EDEDED !important;
+        }
+        #menu_toggle {
+            color: #5A738E !important;
+        }
+    </style>
+
+    <script>
+        NProgress.done();
+        $(document).ready(function () {
+            $('#menu_toggle').click();
+        });
+    </script>
+
+</body>
+</html>

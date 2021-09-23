@@ -1,0 +1,480 @@
+﻿@using GPROSanXuat_Checklist.App_Global
+@using GPRO.Core.Interface
+@using GPROSanXuat_Checklist.Models
+@{
+    Layout = "~/Views/Shared/NewLayout.cshtml";
+    ViewBag.Title = "Công việc";
+    UserInfoModel userInfo = ViewData["userInfo"] as UserInfoModel;
+    string UserAvatar = userInfo.ImagePath.ToString().Trim();
+}
+
+<link href="~/Content/CheckList_View.css" rel="stylesheet" />
+
+<script src="~/Scripts/IED/checkList-user/CL_View.js"></script>
+<style>
+    .modal-full {
+        width: 100%;
+        padding: 0 !important;
+    }
+
+    #div_web object {
+        width: 100%;
+        height: 390px;
+    }
+
+
+    .main-box {
+        box-sizing: border-box;
+        border-radius: 3px;
+        position: relative;
+        margin: 0 4px 4px 0;
+        min-width: 0;
+    }
+
+        .main-box a {
+            display: flex;
+            font-weight: 700;
+            height: 36px;
+            overflow: hidden;
+            padding: 0;
+            position: relative;
+            text-decoration: none;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+            .main-box a .div-1 {
+                background-size: cover;
+                background-position: center center;
+                position: absolute;
+                width: 100%;
+                height: 36px;
+                opacity: 1;
+                border-radius: 3px;
+                background-color: rgb(201 227 243);
+            }
+
+            .main-box a .div-2 {
+                display: inline-block;
+                flex: 0 0 auto;
+                background-size: cover;
+                border-radius: 3px 0 0 3px;
+                height: 36px;
+                width: 36px;
+                position: relative;
+                opacity: 0.7;
+                background-color: rgb(0, 121, 191);
+            }
+
+            .main-box a .div-3 {
+                display: flex;
+                position: relative;
+                flex: 1;
+                width: 100%;
+                padding: 9px 0 9px 10px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+                .main-box a .div-3 div {
+                    display: block;
+                    padding-right: 12px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    color: #172B4D;
+                    font-weight: bold;
+                }
+</style>
+
+
+<input id="Id" value="@ViewData["Id"]" type="hidden" userid="@userInfo.UserId" />
+<div id="header">
+    <a class="header-logo js-home-via-logo" href="/" aria-label="Trang chủ Checklist">
+        <span class="header-logo-loading"></span>
+        <span class="header-logo-default"></span> Checklist
+    </a>
+    <div class="header-boards-button">
+        <a id="callPopup" class="header-btn header-boards js-boards-menu">
+            <i class="header-btn-icon icon-lg fa fa-table light"></i><span class="header-btn-text">Dự án</span>
+        </a>
+    </div>
+    <div class="header-user">
+        <a class="header-btn js-open-header-info-menu" href="#" aria-label="Mở menu thông tin">
+            <i class="header-btn-icon icon-lg fa fa-info light"></i>
+        </a>
+        <a class="header-btn header-notifications js-open-header-notifications-menu new-notifications" href="#" aria-label="Thông báo">
+            <i class="header-btn-icon icon-lg fa fa-bell-o light "></i>
+        </a>
+
+        <a class="header-btn header-member js-open-header-member-menu" href="#" aria-label="Mở Menu Thành Viên">
+            <span class="member">
+                <img class="member-avatar" height="30" width="30" src="@UserAvatar" srcset="@UserAvatar" alt="@userInfo.EmployeeName" title="@userInfo.EmployeeName">
+            </span>
+            <span class="header-btn-text js-member-name">@userInfo.EmployeeName</span>
+        </a>
+        
+    </div>
+</div>
+
+<div class="main">
+    <div id="sortable-div" class=" addSub">
+        <div class="padLR10"> </div>
+        <div id="dragdrop">
+            <div class="well clearfix">
+                <div class="header">Soạn thảo</div>
+                <div class="dragbleList" myid="1">
+                    <ul id="editorJob" class="sortable-list"></ul>
+                </div>
+            </div>
+        </div>
+        <div id="dragdrop" class=" ">
+            <div class="well clearfix" myid="2">
+                <div class="header">Đang xử lý</div>
+                <ul class="sortable-list" id="ProcessJobs"></ul>
+            </div>
+        </div>
+        <div id="dragdrop" class=" ">
+            <div id="my-timesheet" class="well clearfix" myid="4">
+                <div class="header">Đang xử lý lỗi phát sinh</div>
+                <ul class="sortable-list" id="ErrorJobs"></ul>
+            </div>
+        </div>
+        <div id="dragdrop" class=" ">
+            <div id="my-timesheet" class="well clearfix" myid="3">
+                <div class="header">Đang chờ duyệt</div>
+                <ul class="sortable-list" id="ApproveJobs"></ul>
+            </div>
+        </div>
+        <div id="dragdrop" class=" ">
+            <div id="my-timesheet" class="well clearfix" myid="5">
+                <div class="header">Hoàn thành</div>
+                <ul class="sortable-list" id="DoneJobs"></ul>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<div id="boardPopup" class="boards-drawer ">
+    <div class="board-drawer-content u-fancy-scrollbar" style="max-height: 645px;">
+        <input id="searchbox" type="text" />
+        <div id="accordion">
+        </div>
+    </div>
+</div>
+  
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog" data-keyboard="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="window-header">
+                <button cancel type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="member member-no-menu">
+                    <img class="member-avatar" id="employeeName" src="" srcset="" alt=" " title=" ">
+                </div>
+                <div class="window-title">
+                    <h2 class="card-detail-title-assist js-title-helper" dir="auto" id="jobName">Create UI prototype</h2>
+                </div>
+                <div class="window-header-inline-content quiet js-current-list">
+                    trong danh sách <a class="js-open-move-from-header" href="#" id="statusName">In-Progress</a> của Nhóm <a class="js-open-move-from-header" href="#" id="jobGroupName">In-Progress</a>
+                </div>
+            </div>
+            <div class="window-main-col">
+                <div class="requireBox" id="jobRequired">
+                    jhfks
+                </div>
+                <div class="window-module js-attachments-section u-clearfix">
+                    <div class="window-module-title window-module-title-no-divider">
+                        <span class="fa fa-paperclip"></span>
+                        <h3 class="u-inline-block">Các tập tin đính kèm</h3>
+                    </div>
+                    <div class="u-gutter">
+                        <div class="u-clearfix js-attachment-list"></div>
+                        <p class="js-show-fewer-attachments hide"><a class="quiet-button js-view-some-attachments" href="#">Ẩn bớt tập tin đính kèm.</a></p>
+                        <p class="js-show-more-attachments hide"><a class="quiet-button js-view-all-attachments" href="#">Hiện tất cả tập tin đính kèm (-3 ẩn)</a></p>
+                        @* <p><a class="quiet-button js-attach" href="#" data-toggle="modal" data-target="#modal_attach">Thêm tập tin đính kèm...</a></p>*@
+                        <p>
+                            <a class="quiet-button js-attach" id="p-btn-file-upload" href="#">Thêm tập tin đính kèm...</a> 
+                            <form id="p-form-upload" name="p-form-upload" enctype="multipart/form-data" method="post">
+                                <input type="file" id="p-file-upload" name="p-file-upload" filelist newurl="" style="display:none"   />
+                            </form> 
+                        </p>
+                    </div>
+                </div>
+                <div class="window-module add-comment-section">
+                    <div class="window-module-title window-module-title-no-divider">
+                        <i class="window-module-title-icon icon-lg fa fa-comments-o"></i>
+                        <h3>Thêm bình luận</h3><span class="editing-members js-editing-members hide"></span>
+                    </div>
+                    <div class="new-comment js-new-comment">
+                        <div class="member member-no-menu">
+                            <img class="member-avatar" id="currentUser" height="30" width="30" src="" srcset="" alt="" title="">
+                        </div>
+                        <div class="att-box">
+                            <input type="hidden" id="jobId" />
+                            <textarea id="txtComment" class="form-control" placeholder="Viết bình luận..." tabindex="1" dir="auto"></textarea>
+                            <div>
+                                <i class="tbnDecapComment" title="Đề cập một thành viên...">&#64;</i>
+                            </div>
+                        </div>
+                        <div class="comment-controls u-clearfix" style="margin-top:10px">
+                            <button class="btn btn-primary" disabled id="btnComment" type="button" tabindex="3">Gửi bình luận</button>
+                            <button class="btn btn-danger" id="btnError" type="button" tabindex="4" data-toggle="modal" data-target="#modal_Error_add">Thêm lỗi phát sinh</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="window-module">
+                    <div class="window-module-title window-module-title-no-divider">
+                        <i class="window-module-title-icon icon-lg fa fa-align-center"></i>
+                        <h3>Hoạt động</h3><span class="editing-members js-editing-members hide"></span>
+                    </div>
+                    <div class="js-list-actions" id="actionList">
+
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<!--    Modal Attach    -->
+<div id="modal_attach" class="modal fade " tabindex="-1" role="dialog" data-keyboard="false">
+    <div class="modal-dialog  modal-full" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Đính kèm</h4>
+            </div>
+            <div class="modal-body" style="padding:10px 0 0 0 !important">
+                <div class="form-group col-md-3">
+                    <label class="control-label">Loại tệp</label>
+                    <select class="form-control" id="att_type">
+                        <option value="1">Phiếu lấy mẫu</option>
+                        <option value="2">Hồ sơ kiểm nghiệm</option>
+                        @*<option value="3">Biểu mẫu</option>*@
+                    </select>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Mã tệp</label>
+                    <input type="text" class="form-control" id="att_code" placeholder="Nhập Mã tệp">
+                </div>
+                <div class="form-group col-md-3">
+                    <label class="control-label">Tên tệp</label>
+                    <label class="form-control" id="att_name"></label>
+                </div>
+                <div class="form-group col-md-3">
+                    <label class=" control-label">Đề cập thành viên</label>
+                    <div class="att-box">
+                        <textarea class="form-control" id="att_note"></textarea>
+                        <div>
+                            <i data-toggle="modal" data-target="#abc" class="att_note" title="Đề cập một thành viên...">&#64;</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group col-md-12" id="div_web" style="margin-bottom: 0 !important; height:400px;overflow:auto;border:1px solid #ccc">
+                    <object type="text/html" data=""></object>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer" style="margin-top:0 !important; padding: 10px 20px 10px 20px;">
+                <button type="button" cancel class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button type="button" save class="btn btn-primary">Thêm tệp</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="abc" class="modal fade " tabindex="-1" role="dialog" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <button cancel type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Nhắc tới </h4>
+            </div>
+            <div class="modal-body">
+                <input id="customers" style="width:100%" placeholder="Tìm kiếm thành viên ..." />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pop-over mod-notifications">
+    <div data-reactroot="">
+        <div class="pop-over-header js-pop-over-header">
+            <span class="pop-over-header-title">Thông báo</span>
+            <a class="pop-over-header-close-btn icon-sm icon-close"><i class="fa fa-times"> </i></a>
+        </div>
+        <div>
+            <div id="popupContent" class="pop-over-content js-pop-over-content u-fancy-scrollbar js-tab-parent" style="max-height: 605px;">
+            </div>
+            <label class="control-label" style="padding:0 15px">Bạn có <span class="red bold" id="unread">0</span> thông báo mới.</label> <a target="_blank" href="/Alert/Index">Xem tất cả.</a>
+        </div>
+    </div>
+</div>
+
+<div class="pop-over mod-user-info">
+    <div data-reactroot="">
+        <div class="pop-over-header js-pop-over-header">
+            <span class="pop-over-header-title">Thông báo</span>
+            <a class="pop-over-header-close-btn icon-sm icon-close"><i class="fa fa-times"> </i></a>
+        </div>
+        <div>
+            <div id="popupContent" class="pop-over-content js-pop-over-content u-fancy-scrollbar js-tab-parent" style="max-height: 605px;">
+            </div>
+            <label class="control-label" style="padding:0 15px">Bạn có <span class="red bold" id="unread">0</span> thông báo mới.</label> <a target="_blank" href="/Alert/Index">Xem tất cả.</a>
+        </div>
+    </div>
+</div>
+
+<ul class="dropdown-menu dropdown-usermenu pull-right" style="right:-18px !important; top:33px !important">
+   @* <li><a data-toggle="modal" data-target="#popup_userInfo"><i class="fa fa-info-circle clickable pull-right"></i> Thông tin tài khoản</a></li>*@
+    <li><a id="Logout"><i class="fa fa-sign-out clickable pull-right"></i> Đăng xuất</a></li>
+</ul>
+
+<!--    Modal Error    -->
+<div id="modal_Error_add" class="modal fade " tabindex="-1" role="dialog" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <button cancel type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Lỗi phát sinh</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class=" control-label">Mã lỗi</label>
+                    <div class="att-box">
+                        <input class="form-control" id="err_code" placeholder="Nhập mã lỗi phát sinh..." />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class=" control-label">Thông báo</label>
+                    <div class="att-box">
+                        <textarea class="form-control" id="err_member" placeholder="Nhập nội dung lỗi phát sinh cần thông báo"></textarea>
+                        <div>
+                            <i data-toggle="modal" data-target="#abc" class="err_content" title="Đề cập một thành viên...">&#64;</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Thời điểm phát sinh</label>
+                    <input type="text" class="form-control" id="err_time">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default">Đóng</button>
+                <button type="button" save class="btn btn-primary">Thêm lỗi phát sinh</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--    Modal Error process   -->
+<div id="modal_Error_process" class="modal fade " tabindex="-1" role="dialog" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <button cancel type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Xử lý Lỗi phát sinh</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class=" control-label">Hướng giải quyết </label>
+                    <div class="att-box">
+                        <textarea class="form-control" id="err_solution" placeholder="Nhập hướng giải quyết lỗi phát sinh"></textarea>
+                        <div>
+                            <i data-toggle="modal" data-target="#abc" class="err_solution" title="Đề cập một thành viên...">&#64;</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Thời gian KT dự kiến</label>
+                    <input type="text" class="form-control" id="err_finishDK">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default">Hủy</button>
+                <button type="button" save class="btn btn-primary">Tiếp nhận xử lý lỗi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--    Modal Error result   -->
+<div id="modal_Error_result" class="modal fade " tabindex="-1" role="dialog" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-sm">
+            <div class="modal-header">
+                <button cancel type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Trả kết quả xử lý lỗi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class=" control-label">Kết quả xử lý</label>
+                    <input type="checkbox" id="err_result" data-width="130" data-toggle="toggle" data-on="Kết thúc" data-off="Chưa kết thúc">
+                </div>
+
+                <div class="form-group kt hidden">
+                    <label class="control-label">Thời gian KT thực tế</label>
+                    <input type="text" class="form-control" id="err_finishTT">
+                </div>
+                <div class="form-group kt hidden">
+                    <label class="control-label">Cảnh báo</label>
+                    <textarea class="form-control" id="err_warning"></textarea>
+                </div>
+
+                <div class="form-group kkt">
+                    <label class="control-label">Lý do không hoàn thành</label>
+                    <input type="text" class="form-control" id="err_reasion">
+                </div>
+                <div class="form-group">
+                    <label class=" control-label">Thông báo người liên quan</label>
+                    <div class="att-box">
+                        <textarea class="form-control" id="err_sms" placeholder="Chọn những người sẽ nhận được thông báo này..."></textarea>
+                        <div>
+                            <i data-toggle="modal" data-target="#abc" class="err_sms" title="Đề cập một thành viên...">&#64;</i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default">Hủy</button>
+                <button type="button" save class="btn btn-primary">Lưu kết quả</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var CheckList = new GPRO.CheckList();
+    CheckList.Init();
+    CheckList.GetGlobal().Data.PMSUrl = '';
+
+    function getDetail(jobId) {
+        CheckList.GetJobDetail(jobId);
+    }
+
+    function deleteAtt(Id) {
+        CheckList.DeleteAttachment(Id);
+    }
+
+    function DisableAlert(id) {
+        CheckList.DisableAlert(id);
+    }
+
+    function hideModal(jobErrId) {
+        $('#myModal').css('z-index', 1030);
+        CheckList.GetGlobal().Data.JobErrId = parseInt(jobErrId);
+    }
+</script>
+
+

@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewBag.Title = "Nhóm phụ liệu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtable-accessory-type" class="table-center"></div>
+
+<div class="modal fade " id="popup-accessory-type" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" accessory-type-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin nhóm phụ liệu</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+
+                    <div class="form-group">
+                        <input class="form-control" id="accessory-type-id" type="hidden" />
+                        <label class="control-label">Mã <span class="required-class">*</span></label>
+                        <input class="form-control" id="accessory-type-code" type="text" placeholder="Nhập mã nhóm phụ liệu..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên nhóm phụ liệu <span class="required-class">*</span></label>
+                        <input class="form-control" id="accessory-type-name" type="text" placeholder="Nhập tên nhóm phụ liệu..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="accessory-type-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" accessory-type-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" accessory-type-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*popup search*@
+<div class="modal fade " id="accessory-type-search-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" accessory-type-close data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label class="control-label">Từ Khóa</label>
+                        <input class="form-control" id="accessory-type-keyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button accessory-type-close aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button accessory-type-search class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal   fade  " id="popup-accessory" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin phụ liệu</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-12">
+                        <div class="form-group col-md-4" style="padding-top:4px">
+                            <img src="~/Content/Img/no-image.png" class="img-avatar" />
+                            <form id="accessory-form-upload" name="accessory-form-upload" enctype="multipart/form-data" method="post">
+                                <input type="file" id="accessory-file-upload" name="accessory-file-upload" filelist newurl="" style="display:none" accept="image/*" />
+                            </form>
+                            <button class="btn btn-primary" id="accessory-btn-file-upload" style=" margin:0">Chọn ảnh ...</button>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Mã phụ liệu <span class="required-class">*</span></label>
+                            <input class="form-control" id="accessory-code" type="text" placeholder="Nhập Tên phụ liệu..." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Tên phụ liệu <span class="required-class">*</span></label>
+                            <input class="form-control" id="accessory-name" type="text" placeholder="Nhập Tên phụ liệu..." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <input class="form-control" id="accessory-id" type="hidden" />
+                            <label class="control-label">Nhóm phụ liệu <span class="required-class">*</span></label>
+                            <select class="form-control" id="accessory-type-select"></select>
+                            @*<i re-accessory-type style="cursor:pointer" class="fa fa-sync-alt"></i>*@
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Đơn vị tính <span class="required-class">*</span></label><br />
+                            <select class="form-control" id="accessory-unit"></select>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label class="control-label">Mô Tả</label><br />
+                            <textarea id="accessory-note" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" accessory-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" accessory-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Accessory/accessory-index.js"></script>

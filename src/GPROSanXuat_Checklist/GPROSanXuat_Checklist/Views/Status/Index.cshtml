@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Trạng thái";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/IED/Status/status-index.js"></script>
+<div id="jtable-status" class="table-center"></div>
+
+<div class="modal   fade  " id="popup-status" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin Đơn vị</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <input class="form-control" id="status-id" type="hidden" />
+                        <label class="control-label">Tên Đơn vị <span class="required-class">*</span></label>
+                        <input class="form-control" id="status-name" type="text" placeholder="Nhập Tên Đơn vị..." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="status-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" status-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" status-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*popup search*@
+<div class="modal fade   " id="status-search-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" pclose data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label class="control-label">Từ Khóa</label>
+                        <input class="form-control" id="status-keyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button status-close aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button status-search class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

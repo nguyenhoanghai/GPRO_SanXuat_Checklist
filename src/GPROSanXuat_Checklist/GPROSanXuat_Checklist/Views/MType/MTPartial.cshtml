@@ -1,0 +1,147 @@
+﻿@*popup search*@
+<div class="modal fade   " id="Search_Popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" close data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm Thao Tác</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="rows">
+                        <div>
+                            <label class="control-label">Từ Khóa</label>
+                            <input class="form-control" id="keyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                        </div>
+                    </div>
+                    <div class="rows">
+                        <div>
+                            <label class="control-label">Bạn muốn tìm theo ?</label>
+                            <select id="searchBy">
+                                <option value="0">- - Chọn kiểu Tìm kiếm - -</option>
+                                <option value="2">Mã Thao Tác</option>
+                                <option value="1">Tên Thao Tác</option>
+                            </select>
+                        </div>
+                    </div>
+                    @*<div class="rows">
+                            <div>
+                                <label class="control-label">Loại Thao Tác</label>
+                                <select id="Manipulation">
+                                    <option value="0">- Chọn Loại Thao Tác - </option>
+                                </select>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button close aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button search class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--   POPUP MANIPULATION   -->
+<div class="modal   fade " id="popup_Manipulation" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel-mani class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin Thao Tác</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input class="form-control" id="MId" value="0" type="hidden" />
+                    <div id="use-machine">
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Tên Thao Tác<span class="required-class">*</span></label>
+                            <input class="form-control" id="Mname" type="text" placeholder="Nhập Tên Thao Tác..." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Mã </label>
+                            <input class="form-control" id="code-mani" type="text" placeholder="Nhập Mã Thao Tác ..." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Loại Thiết Bị <span class="required-class">*</span></label><br />
+                            <select class="form-control" id="equipmentType"></select>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Mô Tả</label><br />
+                            <textarea class="form-control" id="MDes"></textarea>
+                        </div>
+                        <div id="cut-sewing-box">
+                                <div class="col-md-4 form-group">
+                                    <label class="control-label">Khoảng Cách ( cm ) <span class="required-class">*</span></label><br />
+                                    <input class="form-control" type="text" id="distance" value="0" onkeypress=" return isNumberKey(event)" style="width:100px !important" />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label class="control-label">Độ dừng Chính Xác (TMU) <span class="required-class">*</span></label>
+                                    <select class="form-control" id="stopPrecision"></select>
+                                </div>
+                                <div id="cut-box">
+                                    <div class="col-md-4 form-group">
+                                        <label class="control-label">Tính Chất Cắt ( Hệ số ) <span class="required-class">*</span></label><br />
+                                        <select class="form-control" id="natureCut"></select>
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <label class="control-label">Lực Tác Dụng ( lớp ) <span class="required-class">*</span></label><br />
+                                        <select class="form-control" id="ApplyPressure"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="clearfix"></div>
+                    </div>
+                     
+                    <div id="without-machine">
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Tên Thao Tác <span class="required-class">*</span></label>
+                            <input class="form-control" id="Mname-1" type="text" placeholder="Nhập Tên Thao Tác..." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Mã <span class="required-class">*</span></label>
+                            <input class="form-control" id="code-mani-1" type="text" placeholder="Nhập Mã Thao Tác ..." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Số TMU Chuẩn <span class="required-class">*</span></label>
+                            <input class="form-control" id="TMU-standard-1" type="text" onkeypress=" return isNumberKey(event)" />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Số TMU tự chọn</label>
+                            <input class="form-control" id="TMU-user-1" type="text" onkeypress=" return isNumberKey(event)" />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Mô Tả</label>
+                            <textarea class="form-control" id="MDes-1"></textarea>
+                        </div>
+
+                        @*<div class="col-md-4 form-group">
+                            <label class="control-label">File Mẫu</label>
+
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">File hiện có</label><br />
+                            <table id="tb-file"></table>
+                        </div>*@
+
+                        <div class="col-md-12" id="tb-use-machine">
+                                <div style="margin-top: 20px" id="jtable-maniTMU"></div>
+                            </div>
+                        <div class="clearfix"> </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" cancel-mani class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                    <button type="button" save-mani class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

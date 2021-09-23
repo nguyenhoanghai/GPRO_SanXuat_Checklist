@@ -1,0 +1,29 @@
+﻿@{ Layout = null; }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link href="~/Content/Login/LoginPage.css" rel="stylesheet" />
+    <link href="~/Content/Login/style.css" rel="stylesheet" /> 
+</head>
+<body>
+    <div class="title-login">
+        <h2><img src="~/Content/Img/HinhBanhRangXoay.gif" style="width:50px" />Hệ Thống Quản Trị</h2><hr />
+    </div>
+    <div class="login">
+        <p><input type="text" id="username" placeholder="Tên Đăng Nhập" autocomplete="off" /></p>
+        <p><input type="password" name="password" id="password" placeholder="Mật Khẩu"></p>
+        <p class="login-submit"><button type="button" btn="Login" class="login-button">Đăng Nhập </button></p>
+        <p class="forgot-password"><a href="#" id="showPopup" data-toggle="modal" data-target="#SystemMenuModal">Bạn quên mật khẩu ?</a></p>
+    </div>
+    <div id="loading" style="display:none">
+        <img src="~/Content/Img/loading.gif" />
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/modernizr-2.5.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/respond.min.js"></script>
+    <script src="~/Scripts/IED/Authenticate/Login.js"></script>
+</body>
+</html>

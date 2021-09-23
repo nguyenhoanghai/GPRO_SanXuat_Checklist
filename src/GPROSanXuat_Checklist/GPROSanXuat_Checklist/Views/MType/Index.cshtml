@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Thư Viện Thao Tác";
+       Layout = null;
+} 
+<script src="~/Scripts/IED/MType/MT_Index.js"></script>
+
+<div id="mainSplitter">
+    <div style="overflow-y:auto">
+        <div id='jqxTree' style='border: none'></div>
+
+        <div id='jqxMenu'>
+            <ul>
+                <li>Thêm Mới Loại Thao Tác</li>
+                <li>Cập Nhật Loại Thao Tác</li>
+                <li>Xóa Loại Thao Tác</li>
+            </ul>
+        </div>
+    </div>
+    <div style="overflow-y:auto">
+        <div id="jtableManipulation"></div>
+    </div>
+</div>
+
+
+<!--   POPUP MANIPULATION TYPE  -->
+<div class="modal   fade" id="popup_MType" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" mtcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin Loại Thao Tác</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="col-md-6 form-group">
+                        <input class="form-control" data-bind="value: Id" type="hidden" />
+                        <label class="control-label">Tên Loại Thao Tác<span class="required-class">*</span></label>
+                        <input class="form-control" class="form-control" id="mtname" data-bind="value:  Name" type="text" placeholder="Nhập Tên Loại Thao Tác..." />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Mã Loại</label><br />
+                        <input class="form-control" id="mtcode" data-bind="value:  Code" type="text" placeholder="Nhập Mã Loại Thao Tác ..." />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Có Sử dụng Thiết Bị ?</label><br />
+                        <div>
+                            <input class="form-control" type="checkbox" id="mtIsUseMachine" data-width="100" data-toggle="toggle" data-on="Có" data-off="Không">
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea class="form-control" id="mtdes" data-bind="value:  Description"></textarea>
+                    </div>
+                    <div class="clearfix">  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" mtcancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" mtsave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.Partial("MTPartial");
+
+
+
+<!--   POPUP MANIPULATION WITHOUT USING MACHINE   -->
+<div class="modal hide fade modal-3-col" id="popup_Equipment" data-backdrop="static" data-keyboard="false">
+    <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" cancel-equip-popup class="close" type="button">×</button>
+        <h4 class="modal-title">Danh Sách Thiết Bị</h4>
+    </div>
+    <div class="modal-body form-inline">
+        <div class="container-fluid">
+            <div class="rows">
+                <div id="jtable-equipment"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--   POPUP MANIPULATION SLIDESHOW   -->
+<div class="modal hide fade" id="popupManipulationFile" data-backdrop="static" data-keyboard="false">
+    <div class="modal-header">
+        <button aria-hidden="true" data-dismiss="modal" closefile class="close" type="button">×</button>
+        <h4 class="modal-title">File Mẫu</h4>
+    </div>
+    <div class="modal-body form-inline">
+        <div class="container-fluid">
+            <div id="manipulationFile"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    var ManipulationType = new GPRO.MType();
+    ManipulationType.Init();
+
+    $("#mainSplitter").jqxSplitter({
+        width: '100%',
+        height: '500px',
+        panels: [{ size: 300 }]
+    });
+
+    $('#cut-sewing-box').hide();
+    $('#code-mani').prop('disabled', false);
+
+    $('#cut-box').hide();
+    $('#machine-box').hide();
+    $('#distance').prop('disabled', true);
+    $('#use-machine').hide();
+    $('#tb-use-machine').hide();
+    $('#without-machine').hide();
+
+
+    function deleteFileList(id) {
+        $.each(ManipulationType.GetGlobal().Data.ModelFileUploaded, function (index, item) {
+            ID = id.trim().substr(1, id.length);
+            if (item.Id == parseInt(ID)) {
+                ManipulationType.GetGlobal().Data.ModelFileUploaded.splice(index, 1);
+                $('#tb-file').find('tr#' + id).remove();
+                ManipulationType.GetGlobal().Data.ModelManipulation.isListAttachFileChange = true;
+                return;
+            }
+        });
+    }
+
+</script>

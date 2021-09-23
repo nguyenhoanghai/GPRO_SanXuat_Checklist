@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Phân Xưởng";
+  //  Layout = null;
+} 
+
+
+<div id="jtableWorkShop" class="table-center"></div>
+
+<div class="modal   fade  " id="popup_WorkShop" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button">   ×  </button>
+                <h4 class="modal-title">Thông Tin Phân Xưởng</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="container-fluid">
+                    <input class="form-control" id="wk-id" type="hidden"  />
+                    <div class="form-group hide">
+                        <label class="control-label">Mã Phân Xưởng <span class="required-class">*</span></label>
+                        <input class="form-control" id="wk-code"   type="text" placeholder="Nhập Mã Phân Xưởng ..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên Phân Xưởng <span class="required-class">*</span></label>
+                        <input class="form-control" id="wk-name" required="required"   type="text" placeholder="Nhập Tên Phân Xưởng ..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả </label>
+                        <textarea class="form-control" id="wk-note" required="required" data-bind="value: Description"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" wkcancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" wksave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Workshop/wk_Index.js"></script>
+
+
+
+

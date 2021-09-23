@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Mẫu biểu mẫu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtable-template-file" templateType="@ViewBag.type" tempTypeId="@ViewBag.tempType"></div>
+ 
+<div id="popup-template-file" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-full">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" template-file-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Soạn Thảo mẫu biểu mẫu</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid"> 
+                    <input type="hidden" id="template-file-id" />
+                    <div class="form-group col-md-3">
+                        <label class=" control-label  ">Mã Biểu Mẫu </label>
+                        <div>
+                            <input type="text" class="form-control" id="template-file-code" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class=" control-label  ">Tên Biểu Mẫu </label><span style="color:red"> *</span>
+                        <div>
+                            <input type="text" class="form-control" id="template-file-name" placeholder="Tên Biểu Mẫu">
+                        </div>
+                    </div>
+
+                    @*<div class="form-group col-md-2">
+                            <label class=" control-label  ">Trạng Thái Duyệt</label>
+                            <div>
+                                <input type="checkbox" id="template-file-approve" data-width="130" data-toggle="toggle" data-on="Đã Duyệt" data-off="Chưa Duyệt">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label class=" control-label ">Người Duyệt </label>
+                            <div class="select-box">
+                                <select template-file-employee id="template-file-approved-user"></select>
+                                <i re_employee class="fa fa-refresh clickable red"></i>
+                                <a href="@AppGlobal.GetHRMUrl/Employee/Create/0" target="_blank" ><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class=" control-label  ">Ngày Duyệt </label>
+                            <div>
+                                <input type="text" class="form-control" id="template-file-approved-date" placeholder="dd/mm/yyyy"  >
+                            </div>
+                        </div>*@ 
+                    <div class="form-group col-md-6">
+                        <label class=" control-label  ">Ghi Chú </label>
+                        <textarea class="form-control" id="template-file-note"></textarea>
+                    </div> 
+                    <div class="form-group col-md-12">
+                        <label class=" control-label  ">Nội Dung</label><br />
+                        <textarea name="templateFileEditor" id="templateFileEditor" rows="10" cols="80"></textarea>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" template-file-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng</button>
+                <button type="button" template-file-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+                <button type="button" template-file-approve class="btn btn-danger"><i class="fa fa-floppy-o"></i> Lưu & Duyệt</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="html_content" style="display:none"></div>
+<style>
+    .modal-full {
+        width: 100%;
+    }
+
+        .modal-full iframe {
+            width: 100%;
+            height: 550px;
+            overflow: auto;
+        }
+</style>
+
+<script src="~/Scripts/IED/TemplateFie/template-file.js"></script>

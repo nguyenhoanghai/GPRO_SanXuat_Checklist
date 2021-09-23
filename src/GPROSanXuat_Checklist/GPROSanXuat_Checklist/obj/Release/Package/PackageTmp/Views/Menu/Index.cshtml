@@ -1,0 +1,175 @@
+﻿@using GPROSanXuat_Checklist.App_Global;
+@{
+    ViewBag.Title = "Danh mục";
+    //Layout = null;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+} 
+<script src="~/Scripts/IED/Menu/M_Index.js"></script>
+
+<ul class="nav nav-tabs" role="tablist" id="myTab">
+    <li role="presentation" class="active"><a href="#Menu" aria-controls="Menu" role="tab" data-toggle="tab">Danh Mục của Bạn</a></li>
+    @* <li role="presentation"><a href="#SystemMenu" aria-controls="SystemMenu" role="tab" data-toggle="tab">Danh Muc Hệ Thống</a></li>*@
+</ul>
+<div class="tab-content" id="content" style="padding: 5px">
+    @*tab Menu*@
+    <div role="tabpanel" class="tab-pane active" id="Menu">
+        <div id="jtableMenu"></div>
+    </div>
+    @*tab System Menu*@
+    <div role="tabpanel" class="tab-pane " id="SystemMenu">
+        <div id="jtableSystemMenu"></div>
+    </div>
+</div>
+
+<div class="modal fade " id="menupopup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" close class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Thông tin danh mục</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <input type="hidden" txt="menuId" data-bind="value: Id" />
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Hệ Thống <span class="required">*</span></label>
+                            @Html.DropDownList("Module", null, null, new { @select = "moduleId", @class = "form-control" })
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Nhóm Danh Mục <span class="required">*</span></label>
+                            <select class="form-control" id="MenuCategory" categoryid>
+                                <option value="0">- Chọn Nhóm Danh Mục - </option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Tên Danh Mục <span class="required">*</span></label>
+                            <input class="form-control" txt="menuName" data-bind="value: MenuName" type="text" placeholder="Nhập tên danh mục ..." />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Đường dẫn</label>
+                            <input class="form-control" data-bind="value: Link" type="text" />
+                        </div>
+
+                        <div class="col-md-2 form-group">
+                            <label class="control-label">Số Thứ tự </label>
+                            <input class="form-control" txt="menuOrder" index data-bind="value: OrderIndex" style="width: 65px; text-align: center" type="number" onkeypress=" return isNumberKey(event)" />
+                        </div>
+                        <div class="col-md-10 form-group">
+                            <label class="control-label">Mô tả</label>
+                            <textarea class="form-control" data-bind="value: Description" cols="3" placeholder="Nhập mô tả ..."></textarea>
+                        </div>
+
+                        <div style="clear: both"></div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* modal popup system Menu  *@
+@*<div class="modal fade hide modalsmall" id="SystemMenuModal" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" close class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Danh Mục Hệ Thống</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <input data-bind="value: MenuName" style="width: 200px;" type="hidden" />
+                        <input type="hidden" data-bind="value: MenuCategoryId" />
+                        <input data-bind="value: Link" style="width: 150px;" type="hidden" />
+                        <input data-bind="checked: IsViewIcon" type="hidden" />
+                        <input data-bind="value: Description" type="hidden">
+                        <input data-bind="checked: IsShow" type="hidden" value="" />
+                        <div class="rows">
+                            <div>
+                                <label class="control-label">Số Thứ tự</label><input index data-bind="value: OrderIndex" style="width: 45px; text-align: center" type="number" />
+                            </div>
+                            <div>
+                                <label class="control-label">Danh Mục Icon</label>
+                                <div>
+                                    <div id="picture">
+                                        <img id="SysIcon" src="~/Content/MasterPage/Images/no-image-2.png" />
+                                    </div>
+                                    <div id="uploadFile">
+                                        <input id="SystemUploader" type="file" />
+                                        <input id="SystemFileList" type="hidden" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button cancel aria-hidden="true" data-dismiss="modal" class="btn">
+                        <div class="button-image image-close"></div>
+                        Đóng
+                    </button>
+                    <button btn="saveSystemMenu" save class="btn btn-primary">
+                        <div class="button-image image-save"></div>
+                        Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+@*popup search*@
+<div class="modal fade hide modalsmall" id="menuSearch_Popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" close data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="rows">
+                        <div>
+                            <label class="control-label">Kiểu Tìm Kiếm </label>
+                            <select id="searchBy">
+                                <option value="">---   Chọn kiểu tìm kiếm   --- </option>
+                                <option value="1">Tên Danh Mục</option>
+                                <option value="2">Tên Nhóm Danh Mục</option>
+                                <option value="3">Đường dẫn</option>
+                                <option value="4">Tên Hệ Thống</option>
+                            </select>
+                        </div>
+                        <div id="key">
+                            <label class="control-label">Từ khóa</label>
+                            <input id="keyword" type="text" placeholder="Nhập từ khóa cần tìm..." />
+                        </div>
+                        <div id="cate" style="display: none">
+                            <label class="control-label">Tên Nhóm Danh Mục</label>
+                            @Html.DropDownList("MenuCategory", null, null, new { @select = "cateId" })
+                        </div>
+                        <div id="modu" style="display: none">
+                            <label class="control-label">Tên Hệ Thống</label>
+                            @Html.DropDownList("Module", null, null, new { @select = "moduId" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button close aria-hidden="true" data-dismiss="modal" class="btn">
+                <div class="button-image image-close"></div>
+                Đóng
+            </button>
+            <button search class="btn btn-primary">
+                <div class="button-image image-search"></div>
+                Tìm Kiếm
+            </button>
+        </div>
+    </div>
+</div>

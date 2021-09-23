@@ -1,0 +1,111 @@
+﻿@{ 
+    ViewBag.Title = "Lệnh sản xuất";
+} 
+
+<div id="lenh-jtable" class="table-center"></div>
+
+<div class="modal fade " id="lenh-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-100 ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" lenh-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin lệnh sản xuất</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <fieldset>
+                        <legend>Thông tin chung</legend>
+
+                        <input id="lenh-id" type="hidden" />
+
+                        <div class="  form-group col-md-2">
+                            <label class="control-label">Ngày lập lệnh <span class="required-class">*</span></label> <br />
+                            <input class="form-control" id="lenh-date" type="text" placeholder="dd/mm/yyyy" style="max-width: 150px" />
+                        </div>
+                        <div class="  form-group col-md-2">
+                            <label class="control-label">Ngày bắt đầu sản xuất <span class="required-class">*</span></label> <br />
+                            <input class="form-control" id="lenh-startdate" type="text" placeholder="dd/mm/yyyy" style="max-width: 150px" />
+                        </div>
+                        <div class="  form-group col-md-3">
+                            <label class="control-label">Số lệnh <span class="required-class">*</span></label>
+                            <input class="form-control" id="lenh-code" type="text" />
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label class="control-label">Người phụ trách <span class="required-class">*</span></label>
+                            <div class="select-box">
+                                <select class="form-control" id="lenh-employee"></select>
+                                <i re_customer class="fa fa-refresh clickable red"></i>
+                                <a href="/nhan-vien" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nội dung</label>
+                            <textarea id="lenh-note" class="form-control"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="form-group col-md-12">
+                        <legend>Sản phẩm sản xuất</legend>
+                        <div style="display:flex;  line-height:35px">
+                            <span class="bold" style="margin-right:5px">Thêm sản phẩm từ : </span>
+                            <button type="button" id="btn-checklist-po" class="btn btn-default blue" data-toggle="modal" data-target="#popup-lenh-po">Danh mục PO</button>
+                            <button type="button" id="btn-checklist-product" class="btn btn-default blue" data-toggle="modal" data-target="#popup-lenh-product">Danh mục sản phẩm</button>
+                        </div>
+                        <div id="lenh-jtable-product" class="table-center"></div>
+                    </fieldset>
+
+                    <fieldset class="form-group col-md-12">
+                        <legend>Định mức NPL sản xuất</legend>
+                        <div id="lenh-jtable-material" class="table-center"></div>
+                    </fieldset>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" lenh-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" lenh-save-draft class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu nháp </button>
+                <button type="button" lenh-save class="btn btn-danger"><i class="fa fa-floppy-o"></i> Lưu duyệt </button>
+            </div>
+        </div>
+    </div>
+</div>
+<datalist id="lenh-material"></datalist>
+
+
+<div class="modal fade " id="popup-lenh-po" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-100">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" popup-checklist-po-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Danh sách PO</h4>
+            </div>
+            <div class="modal-body form-inline" style="margin-bottom:10px">
+                <div class="container-fluid" style="max-height:400px ;overflow:auto"> 
+                    <div class="bold blue"><span class="required-class">*</span> Click mã PO để chọn</div> 
+                    <div id="jtable-checklist-po"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="popup-lenh-product" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-100">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" popup-checklist-product-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Danh sách sản phẩm</h4>
+            </div>
+            <div class="modal-body form-inline" style="margin-bottom:10px">
+                <div class="container-fluid" style="max-height:400px ;overflow:auto">
+                    <div class="bold blue"><span class="required-class">*</span> Click tên sản phẩm để chọn.</div>
+                    <div id="jtable-checklist-product"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Lenh/lenh-index.js"></script>

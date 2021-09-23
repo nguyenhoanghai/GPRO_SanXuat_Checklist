@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Cụm công đoạn";
+   Layout = null;
+}
+<script src="~/Scripts/IED/PhaseGroup/PG_Index.js"></script>
+<div id="Jtable-PhaseGroup" class="table-center"></div>
+
+<div class="modal fade " id="popup_PhaseGroup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pgcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin cụm công đoạn</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input id="pgid" data-bind="value: Id" type="hidden" />
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Tên cụm công đoạn<span class="required-class">*</span></label>
+                        <input class="form-control" id="pgname" data-bind="value: Name" type="text" placeholder="Nhập Tên cụm công đoạn..." />
+                    </div>
+                    <div class="col-md-4 form-group hide">
+                        <label class="control-label">Mã cụm công đoạn</label><br />
+                        <input class="form-control" id="pgcode" data-bind="value: Code" type="text" placeholder="Nhập Mã cụm công đoạn..." />
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Chỉ số Nhỏ nhất<span class="required-class">*</span></label>
+                        <input class="form-control" id="pgMinLevel" data-bind="value: MinLevel" type="text" style="width: 70px" onkeypress=" return isNumberKey(event)" />
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Chỉ số Lớn Nhất</label><br />
+                        <input class="form-control" id="pgMaxLevel" data-bind="value: MaxLevel" type="text" style="width: 70px" onkeypress=" return isNumberKey(event)" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Phân xưởng</label><br />
+                        <select id="pgworkshop" class="form-control chosen-select" multiple="multiple"> 
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="pgdes" class="form-control" data-bind="value: Description"></textarea>
+                    </div>
+                    <div class="clearfix">  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" pgcancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" pgsave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*popup search*@
+<div class="modal fade   " id="pgSearch_Popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" pgclose data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label class="control-label">Từ Khóa</label>
+                        <input class="form-control" id="pgkeyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Bạn muốn tìm theo ?</label>
+                        <select class="form-control" id="pgsearchBy">
+                            <option value="1">Tên cụm công đoạn</option>
+                            @*<option value="2">Mã cụm công đoạn</option>*@
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button pgclose aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button pgsearch class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

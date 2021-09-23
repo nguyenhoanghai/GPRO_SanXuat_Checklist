@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1d597e09e9754f39a0edea8ebedc4ac5" Name="Diagram1" ZoomLevel="75">
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist" Width="1.5" PointX="5.25" PointY="15.5" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job" Width="1.5" PointX="9.75" PointY="32" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job_ActionLog" Width="1.5" PointX="12" PointY="28.875" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job_Alert" Width="1.5" PointX="12" PointY="22" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job_Attachment" Width="1.5" PointX="12" PointY="41.5" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job_Comment" Width="1.5" PointX="12" PointY="37.375" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job_EmployeeReference" Width="1.5" PointX="12" PointY="45.375" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job_Error" Width="1.5" PointX="12" PointY="31.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_Job_NotifyLog" Width="1.5" PointX="12" PointY="25.875" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Checklist_JobStep" Width="1.5" PointX="7.5" PointY="32.875" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Delivery" Width="1.5" PointX="8.75" PointY="40.25" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.DeliveryDetail" Width="1.5" PointX="11" PointY="8.25" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Lenh_Products" Width="1.5" PointX="8.25" PointY="16.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Lenh_VatTu" Width="1.5" PointX="8.25" PointY="22" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.LenhSanXuat" Width="1.5" PointX="6" PointY="10.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.LotSupply" Width="1.5" PointX="8.75" PointY="7.625" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.MaterialNorm" Width="1.5" PointX="10.75" PointY="12.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Order" Width="1.5" PointX="3" PointY="21.625" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.OrderDetail" Width="1.5" PointX="5.25" PointY="22.5" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.P_Config" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.PO_Sell" Width="1.5" PointX="0.75" PointY="19.375" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.PO_SellDetail" Width="1.5" PointX="3" PointY="16.375" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.ProductionBatch" Width="1.5" PointX="12.75" PointY="12.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.ProductionFile" Width="1.5" PointX="5.25" PointY="1.25" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.ProFileControl" Width="1.5" PointX="7.5" PointY="2.125" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Receiption" Width="1.5" PointX="11.75" PointY="1.25" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.ReceiptionDetail" Width="1.5" PointX="14" PointY="8.5" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.SConfig" Width="1.5" PointX="13.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Template_Checklist" Width="1.5" PointX="3" PointY="12" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Template_CL_Job" Width="1.5" PointX="7.5" PointY="26.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.Template_CL_JobStep" Width="1.5" PointX="5.25" PointY="26.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.TemplateControl" Width="1.5" PointX="5.25" PointY="6.5" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.TemplateFile" Width="1.5" PointX="3" PointY="2.75" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.TemplateFileType" Width="1.5" PointX="0.75" PointY="3.5" />
+        <EntityTypeShape EntityType="SanXuatCheckListModel.W_Config" Width="1.5" PointX="14.75" PointY="12.75" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_JobStep_Checklist" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_PO_Sell" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Template_Checklist" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_ActionLog_Checklist_Job" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_Alert_Checklist_Job" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_Attachment_Checklist_Job" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_Checklist_JobStep" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_Comment_Checklist_Job" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_EmployeeReference_Checklist_Job" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_Error_Checklist_Job" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Checklist_Job_NotifyLog_Checklist_Job" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_W_DeliveryDetail_W_Delivery" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_W_DeliveryDetail_W_LotSupplies" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Lenh_Products_LenhSanXuat" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Lenh_Products_PO_SellDetail" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Lenh_VatTu_LenhSanXuat" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_W_ReceiptionDetail_W_LotSupplies" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Order_PO_Sell" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_OrderDetail_Order" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_PO_SellDetail_PO_Sell" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_P_ProductionFile_P_TemplateFile" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_P_ProFileControl_P_ProductionFile" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_W_ReceiptionDetail_W_Receiption" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Template_CL_JobStep_Template_Checklist" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_Template_CL_Job_Template_CL_JobStep" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_P_TemplateControl_P_TemplateFile" />
+        <AssociationConnector Association="SanXuatCheckListModel.FK_TemplateFile_TemplateFileType" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

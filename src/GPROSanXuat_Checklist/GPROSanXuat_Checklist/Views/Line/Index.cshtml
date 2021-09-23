@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Quản Lý Chuyền";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtableLine" class="table-center"></div>
+
+<div class="modal fade " id="popup_Line" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel_line aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">Thông Tin Chuyền</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input type="hidden" id="line-id"  />
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Mã Chuyền <span class="required-class">*</span></label>
+                        <input class="form-control" id="lineCode"  type="text" placeholder="Nhập Mã Chuyền ..." />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Tên Chuyền <span class="required-class">*</span></label>
+                        <input class="form-control" id="lineName"   type="text" placeholder="Nhập Tên Chuyền ..." />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Số LĐ Định Biên <span class="required-class">*</span></label><br />
+                        <input class="form-control" id="lineCountOfLabours"   type="text" onkeypress=" return isNumberKey(event)" style="width: 100px !important" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Chọn Lầu - Phân Xưởng <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select id="line_floor"></select>
+                            <i re_line_floor class="fa fa-refresh clickable red"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label class="control-label">Mô Tả Chuyền</label>
+                        <textarea class="form-control" id="line-note"  ></textarea>
+                    </div>
+                    <div class="clearfix">  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button cancel_line aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button save_line class="btn btn-primary">
+                    <div class="button-image image-save"></div>
+                    Lưu Lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Line/Line.js"></script>

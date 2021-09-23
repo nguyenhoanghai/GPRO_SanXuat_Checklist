@@ -1,0 +1,205 @@
+﻿@using GPROSanXuat_Checklist.App_Global;
+@using GPRO.Core.Interface;
+@using GPROCommon.Models;
+@{
+    List<IModule> modules = null;
+    List<IMenuCategory> categories = null;
+
+    if (ViewData["Module"] != null)
+    { modules = ViewData["Module"] as List<IModule>; }
+
+    if (ViewData["Category"] != null)
+    { categories = ViewData["Category"] as List<IMenuCategory>; }
+
+    UserInfo userInfo = ViewData["userInfo"] as UserInfo;
+}
+
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="/Home/Index" class="site_title"><i class="fa fa-heartbeat"></i> <span>@(categories != null && categories.Count > 0 ? categories[0].ModuleName : "")</span></a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="profile">
+
+            <div class="profile_pic">
+                <img src="@userInfo.ImagePath" alt="..." class="img-circle profile_img" />
+            </div>
+            <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>@userInfo.EmployeeName</h2>
+            </div>
+        </div>
+        <br />
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <h3>&nbsp;</h3>
+                <ul class="nav side-menu">
+                    @if (modules.Count > 0)
+                    {
+                        <li>
+                            <a><i class="fa fa-cog fa-spin fa-fw red  "></i>Hệ Thống<span class="fa fa-chevron-down"></span></a>
+                            <ul class="nav child_menu" style="display: none">
+                                @foreach (var item in modules)
+                                {
+                                    <li><a target="_blank" href="@item.ModuleUrl">@item.ModuleName</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    @if (categories.Count > 0)
+                    {
+                        foreach (var item in categories.OrderBy(x => x.OrderIndex))
+                        {
+                            <li>
+                                <a @*href="/Admin/Service"*@><i class="fa fa-tags"></i>@item.Category<span class="fa fa-chevron-down"></span></a>
+                                @if (item.ListMenu.Count > 0)
+                                {
+                                    <ul class="nav child_menu" style="display: none">
+                                        @foreach (var menu in item.ListMenu.OrderBy(x => x.OrderIndex))
+                                        {
+
+                                            @*<li><a onclick="MenuClick('@menu.Link.Trim()','@menu.MenuName.Trim()')">@menu.MenuName</a></li>*@
+                                            <li> <a href="@menu.Link">@menu.MenuName</a></li>
+                                        }
+                                    </ul>
+                                }
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="top_nav">
+    <div class="nav_menu">
+        <nav class="" role="navigation">
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <img src="@userInfo.ImagePath" alt="">@userInfo.EmployeeName
+                        <span class=" fa fa-angle-down"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                        <li><a data-toggle="modal" data-target="#popup_userInfo"><i class="fa fa-info-circle clickable pull-right"></i> Thông tin tài khoản</a></li>
+                        <li><a id="Logout"><i class="fa fa-sign-out clickable pull-right"></i> Đăng xuất</a></li>
+                    </ul>
+                </li>
+
+                <li class="">
+                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-bell-o red"></i>
+                        <span newnotify="" class="badge bg-red" style="right:3px; color:white !important">1</span>
+                    </a>
+                    <ul id="menu2" class="dropdown-menu dropdown-usermenu pull-right" style=" width: 300px; "></ul>
+                </li>
+
+                <li role="presentation" class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-clock-o"></i>
+                        <span id="lockNo" class="badge bg-red" style="right:3px; color:white">0</span>
+                    </a>
+                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu"></ul>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Logout').click(function () {
+            window.location.href = '/Authenticate/Logout';
+        });
+        $('[btn="userProfile"]').click(function () {
+            window.location.href = '/UserProFile/Index';
+        });
+    });
+
+</script>
+
+<div class="modal   fade " id="popup_userInfo" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-full">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel-type class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin tài khoản</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div>
+                        <div class="col-md-5" style="padding-left:35px; padding-top:25px">
+                            <div class="box-avatar col-md-12" style="background: url() center center no-repeat;">
+                                <img src="@(userInfo.ImagePath == null ? "/Images/no_image.png" : userInfo.ImagePath)" alt="">
+                            </div>
+                            <input type="file" id="UserAvartar" style="display:none" />
+                            <button type="button" openuseravatar class="btn btn-danger"><i class="fa fa-image"></i>  Thay đổi ảnh đại diện</button>
+                        </div>
+                        <div class="col-md-7" style="padding-left:50px">
+                            <div class="form-group">
+                                <label class="control-label">Họ <span class="required-class">*</span></label>
+                                <input class="form-control" id="HeadfirstName" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Tên <span class="required-class">*</span></label><br />
+                                <input class="form-control" id="HeadLastName" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Email</label><br />
+                                <input class="form-control" id="HeadEmail" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <button type="button" style="margin-top:10px" save-type class="btn btn-primary"><i class="fa fa-edit"></i> Cập nhật thông tin </button>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+
+
+
+                    @*<input class="form-control" data-bind="value: Id" type="hidden" />
+                        <div class="form-group">
+                            <label class="control-label">Tên Loại Thời Gian<span class="required-class">*</span></label>
+                            <input class="form-control" id="name-timetype" data-bind="value: Name" type="text" placeholder="Nhập Tên Loại Thời Gian..." />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Mã Loại Thời Gian</label><br />
+                            <input class="form-control" id="timetypecode" data-bind="value: Code" type="text" placeholder="Nhập Mã Loại Thời Gian..." />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Hình thức sử dụng</label><br />
+                            <div>
+                                <input type="checkbox" id="timetypeisPublic" data-width="130" data-toggle="toggle" data-on="Khác" data-off="Nội bộ">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Mô Tả</label><br />
+                            <textarea id="timetypedes" data-bind="value: Description"></textarea>
+                        </div>*@
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" cancel-type class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                    <button type="button" save-type class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+                </div>*@
+        </div>
+    </div>
+</div>
+<style>
+    .box-avatar {
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+        height: 150px;
+        background-size: 100%;
+    }
+</style>

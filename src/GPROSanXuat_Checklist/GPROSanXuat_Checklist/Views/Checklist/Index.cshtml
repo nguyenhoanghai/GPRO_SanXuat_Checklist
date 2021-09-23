@@ -1,0 +1,311 @@
+﻿
+@{
+    ViewBag.Title = "Admin Checklist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/CheckList_View.css" rel="stylesheet" />
+<style>
+    .table-checklist {
+        border: 1px solid #ccc;
+    }
+
+        .table-checklist thead th {
+            text-align: center;
+            color: blue;
+            border: 1px solid #ccc;
+            background-color: yellow;
+            min-width: 100px
+        }
+
+        .table-checklist tbody td {
+            text-align: center;
+            border: 1px solid #ccc;
+            min-width: 100px
+        }
+
+        .table-checklist thead th div:last-child {
+            color: red
+        }
+
+    .filter-box {
+        width: 250px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 99
+    }
+
+    .jtable-title, .jtable-title-text {
+        height: 43px;
+        line-height: 43px !important
+    }
+
+    .pro-info {
+        height: auto;
+        min-height: 34px;
+        background: #eee
+    }
+
+        .pro-info ul {
+            padding: 0 14px;
+            margin-bottom: 0px
+        }
+
+    .checklist-filter-box {
+        padding-top: 5px;
+        padding-left: 5px;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        text-align: right;
+    }
+
+        .checklist-filter-box .col-md-4 {
+            margin-bottom: 5px !important;
+            float: right;
+            padding-right: 5px !important;
+        }
+</style>
+
+<div class="form-group">
+    <div class="checklist-filter-box">
+        <div class=" col-md-4">
+            <input class="form-control" type="text" placeholder="Nhập từ khóa." id="checklist-search" />
+        </div>  <button class="btn btn-primary" data-toggle="modal" data-target="#popup-checklist"><i class="fa fa-plus"></i> Tạo mới checklist</button>
+
+        <div class="clearfix"></div>
+    </div>
+    <div style="overflow-y:scroll">
+        <table class="table-checklist table table-center">
+            <thead>
+                <tr>
+                    <th>
+                        <div>Checklist</div>
+                        <div> </div>
+                    </th>
+                    <th>
+                        <div>Chuyền</div>
+                        <div>Line</div>
+                    </th>
+                    <th>LSL</th>
+                    <th>Ngày LSL</th>
+                    <th>
+                        <div>Khách hàng</div>
+                        <div>Customer</div>
+                    </th>
+                    <th>
+                        <div>Sản phẫm</div>
+                        <div>Product</div>
+                    </th>
+                    <th>
+                        <div>Năng suất</div>
+                        <div>Productivity</div>
+                    </th>
+                    <th>
+                        <div>Số ngày SX</div>
+                        <div>Production days</div>
+                    </th>
+                    <th>
+                        <div>Số lượng</div>
+                        <div>Quantities</div>
+                    </th>
+                    <th>
+                        <div>Ngày lên chuyền</div>
+                        <div>Input Date</div>
+                    </th>
+                    <th>
+                        <div>Ngày kết thúc(dự kiến)</div>
+                        <div>End Date</div>
+                    </th>
+                    <th>
+                        <div>Ngày xuất hàng</div>
+                        <div>Delivery date</div>
+                    </th>
+                    <th>
+                        <div>Trạng thái</div>
+                        <div>Status</div>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade " id="popup-checklist" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-80">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" checklist-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin checklist</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <input class="form-control" id="checklist-id" type="hidden" />
+                            <label class="control-label">Tên checklist <span class="required-class">*</span></label>
+                            <input class="form-control" id="checklist-name" type="text" placeholder="Nhập tên loại đơn vị..." />
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Mẫu checklist <span class="required-class">*</span></label>
+                            <div class="select-box">
+                                <select class="form-control" id="checklist-template-select"></select>
+                                <i re_template class="fa fa-refresh clickable red"></i>
+                                @*<a href="/khach-hang" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label class="control-label">Loại checklist </label>
+                            <select class="form-control" id="checklist-type-select">
+                                <option value="0">Checklist nhân sự</option>
+                                <option value="1">Checklist sản phẩm</option>
+                                <option value="2">Checklist PO</option>
+                            </select>
+                        </div>
+                        <div class="div-sp-po">
+                            @*<div class="col-md-3 form-group">
+                                    <label class="control-label">Chuyền <span class="required-class">*</span></label>
+                                    <div class="select-box">
+                                        <select class="form-control" id="checklist-line"></select>
+                                        <i re_line class="fa fa-refresh clickable red"></i>
+                                        <a href="/chuyen" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                                    </div>
+                                </div>*@
+                            <div class="form-group col-md-2" style=" margin-bottom:0 !important">
+                                <label class="control-label">Chọn ...</label>
+                                <div style="display:flex; ">
+                                    <button class="btn btn-warning" id="btn-checklist-po" data-toggle="modal" data-target="#popup-checklist-po">Chọn PO</button>
+                                    <button class="btn btn-primary" id="btn-checklist-product" data-toggle="modal" data-target="#popup-checklist-product">Chọn sản phẩm</button>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-10">
+                                <label class="control-label ">Thông tin sản phẩm</label>
+                                <div class="form-control pro-info" id="checklist-product-info"></div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="control-label">Số lượng </label>
+                                <div style="display:flex">
+                                    <input type="text" class="form-control text-center" onkeypress="return isNumberKey(event)" id="checklist-quantities" style="max-width:100px !important" /><span class="bold red" style="margin-left:5px; line-height:34px" id="span-pro-unit"></span>
+                                </div>
+                            </div>
+                            
+
+
+
+
+                            <div class="form-group col-md-2">
+                                <label class="control-label">Số ngày sản xuất <span class="required-class">*</span></label>
+                                <input class="form-control" id="checklist-productiondays" min="1" type="number" onkeypress="return isNumberKey(event)" />
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label class="control-label">Năng suất/ngày <span class="required-class">*</span></label><br />
+                                <input class="form-control" id="checklist-productivity" type="text" onkeypress="return isNumberKey(event)" />
+                            </div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label">Ngày bắt đầu</label><br />
+                            <input class="form-control datepicker" id="checklist-input-date" type="text" />
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label">Ngày kết thúc (dự kiến)</label><br />
+                            <input class="form-control datepicker" id="checklist-end-date" type="text" />
+                        </div>
+                        <div class="form-group col-md-2 div-sp-po">
+                            <label class="control-label">Ngày xuất hàng</label><br />
+                            <input class="form-control datepicker" id="checklist-dilivery-date" type="text" />
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label class="control-label">Trạng thái <span class="required-class">*</span></label><br />
+                            <div class="select-box">
+                                <select class="form-control" id="checklist-status"></select>
+                                <i re_status class="fa fa-refresh clickable red"></i>
+                                @*<a href="/chuyen" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                            </div>
+                        </div>
+                        <div class="col-md-10 form-group related-box">
+                            <label class="control-label">Người làm việc trong dự án</label>
+                            <select id="checklist-related-employee" multiple> </select>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Ghi chú</label>
+                            <textarea id="checklist-note" class="form-control"></textarea>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" checklist-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" checklist-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="popup-checklist-po" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-80">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" checklistpopup-checklist-po-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Danh sách PO</h4>
+            </div>
+            <div class="modal-body form-inline" style="margin-bottom:10px">
+                <div class="container-fluid">
+                    <div class="filter-box ">
+                        <input class="form-control" id="checklist-keyword-po" type="text" placeholder="Tìm theo mã - tên PO" />
+                    </div>
+                    <div id="jtable-checklist-po"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="popup-checklist-product" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-80">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" popup-checklist-product-cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Danh sách sản phẩm</h4>
+            </div>
+            <div class="modal-body form-inline" style="margin-bottom:10px">
+                <div class="container-fluid">
+                    <div class="filter-box ">
+                        <input class="form-control" id="checklist-keyword-product" type="text" placeholder="Tìm theo mã - tên sản phẩm" />
+                    </div>
+                    <div id="jtable-checklist-product"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Checklist/checklist-index.js"></script>
+<script>
+    var obj = new GPRO.Checklist();
+    obj.Init();
+    $('.datepicker').kendoDatePicker({
+        format: 'dd/MM/yyyy'
+    });
+
+    function Info(Id) {
+        obj.Info(Id);
+    }
+
+    function Edit(Id) {
+        obj.Edit(Id);
+    }
+
+    function Delete(Id) {
+        obj.Delete(Id);
+    }
+
+    function Export(Id) {
+        obj.Export(Id);
+    }
+</script>

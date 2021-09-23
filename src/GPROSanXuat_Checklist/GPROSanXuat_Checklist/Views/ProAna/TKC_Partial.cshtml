@@ -1,0 +1,143 @@
+﻿ <link href="~/Scripts/IED/ProAna/ProAna_tkc.css" rel="stylesheet" />
+@*<link href="~/Scripts/IED/ProAna/ProAna_tkc.min.css" rel="stylesheet" />*@
+@*<script src="~/Scripts/IED/ProAna/PA_TKC.min.js"></script>*@
+<script src="~/Scripts/IED/ProAna/PA_TKC.js"></script>
+
+<!--   POPUP CREATE COMMODITY - COMMODITY INFORMATION  -->
+<div class="modal fade " id="popup_tkc" data-backdrop="static" data-keyboard="false" parentid="0" node="0">
+    <div class="modal-dialog  modal_full ">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Sơ đồ thiết kế chuyền</h4>
+                <div style="position:absolute; top:11px;right:5px">
+                    <button add_row class="btn btn-danger"><i class="fa fa-plus-circle"></i> Thêm vị trí</button>
+                    <button type="button" tkc_cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                    <button type="button" tkc_save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+                </div>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="pa_new_box">
+                    <div class="new_box">
+                        <input id="tkc_id" type="hidden" />
+                        <div class="form-group col-md-6  ">
+                            <label class="control-label">Số Lượng Vị Trí <span class="required-class">*</span></label>
+                            <input type="text" id="tkc_sl_line" onkeypress="return isNumberKey(event)" class="center form-control" />
+                        </div>
+                        <div class="form-group col-md-6  ">
+                            <label class="control-label">Tên chuyền<span class="required-class">*</span></label>
+                            <div class="select-box">
+                                <select id="tkc_lineName"></select>
+                                <i re_line_tkc class="fa fa-refresh clickable red"></i>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6  " style=" display:none">
+                            <label class="control-label">Ghi chú</label>
+                            <textarea class="form-control" id="tkc_des"></textarea>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Phân Xưởng </label><span id="workshop_" class="blue form-control"></span>
+                        </div>
+                        <div class=" form-group col-md-6">
+                            <label class="control-label">TỔNG THỜI GIAN (s)</label><span id="time-per-commo" class="blue form-control">0</span>
+                        </div>
+                        <div class=" form-group col-md-6">
+                            <label class="control-label">NS BQ ĐẦU NGƯỜI (sp)</label><span id="pro-per-person" class="blue form-control">0</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">NS TỔ/ 1H (sp)</label><span id="pro-group-per-hour" class="form-control blue">0</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">NS TỔ/ NGÀY (<span id="time-per-day" class="blue">0</span> H) (sp)</label><span id="pro-group-per-day" class="form-control blue">0</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Nhịp Sản Xuất (s)</label><span id="paced-product" class="form-control blue">0</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Lao Động </label><span id="workers" class="form-control blue">0</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">GHI CHÚ </label><span id="note" class="form-control blue"></span>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="but_new_box"><i class="fa fa-angle-double-right " title="Thông tin thiết kế chuyền"></i></div>
+                </div>
+                <div id="line-box"></div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<datalist id="autoCompleteSource"></datalist>
+<datalist id="autoCompleteSource_Code"></datalist>
+
+
+
+@*popup Line Position*@
+<div class="modal fade  " id="tkc_popup_position" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel_tkc_po class="close" type="button">×</button>
+                <h4 class="modal-title">Danh sách Vị Trí</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="col-md-6">
+                    <label class="control-label">Chọn Nhân Viên</label>
+                     <div class="select-box"> 
+                        <select class="form-control" id="tkc_Employee"></select>
+                        <i re_employ_tkc="" class="fa fa-refresh clickable red"></i>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="control-label">Tổng Lao Động Phân Công</label>
+                    <input id="total_worker" type="text" class="number form-control" style="text-align: center" disabled value="0" />
+                </div>
+                <div class="clearfix"></div>
+                <div id="Jtable_tkc_Phase"></div>
+            </div>
+            <div class="modal-footer">
+                <button cancel_tkc_po aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button save_tkc_po class="btn btn-primary">
+                    <div class="button-image image-save"></div>
+                    Lưu Lại
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var draw = new GPRO.LaborDivision();
+    draw.Init();
+
+    function ChooseEmployee(id) {
+        draw.ChooseEmployee(id);
+    }
+
+    function insert_Exit(id) {
+        draw.insert_Exit(id);
+    }
+
+    function insert_BTP(id) {
+        draw.insert_BTP(id);
+    }
+
+    function delete_Po(id) {
+        draw.delete_Po(id);
+    }
+
+    function ChangeIndex(index) {
+        draw.ChangeIndex(index);
+    }
+
+</script>

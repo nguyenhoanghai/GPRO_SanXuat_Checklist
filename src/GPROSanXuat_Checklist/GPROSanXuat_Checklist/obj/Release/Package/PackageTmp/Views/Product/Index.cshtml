@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Sản phẩm";
+    //Layout = null;
+}
+<style>
+    .img-avatar {
+        height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+</style>
+
+
+<div id="jtableProduct" class="table-center"></div>
+
+<div class="modal   fade  " id="popup_Product" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin sản phẩm</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-12">
+                        <div class="form-group col-md-6" style="padding-top:4px">
+                            <img src="~/Content/Img/no-image.png" class="img-avatar" />
+                            <form id="p-form-upload" name="p-form-upload" enctype="multipart/form-data" method="post">
+                                <input type="file" id="p-file-upload" name="p-file-upload" filelist newurl="" style="display:none" accept="image/*" />
+                            </form>
+                            <button class="btn btn-primary" id="p-btn-file-upload" style=" margin:0">Chọn ảnh ...</button>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <input class="form-control" id="pid" data-bind="value: Id" type="hidden" />
+                            <label class="control-label">Tên sản phẩm <span class="required-class">*</span></label>
+                            <input class="form-control" id="pname" data-bind="value: Name" type="text" placeholder="Nhập Tên sản phẩm..." />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Khách hàng <span class="required-class">*</span></label><br />
+                            <div class="select-box">
+                                <select class="form-control" id="pcustomer"></select>
+                                <i re_customer class="fa fa-refresh clickable red"></i>
+                                <a href="/khach-hang" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Kích cỡ <span class="required-class">*</span></label><br />
+                            <div class="select-box">
+                                <select class="form-control" id="psize"></select>
+                                <i re_size class="fa fa-refresh clickable red"></i>
+                                <a href="/size" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Đơn vị tính</label>
+                        <div class="select-box">
+                            <select class="form-control" id="punit"></select>
+                            <i re_unit class="fa fa-refresh clickable red"></i>
+                            <a href="/don-vi-tinh" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Hình thức sử dụng</label><br />
+                        <div>
+                            <input type="checkbox" id="proIsPrivate" data-width="130" data-toggle="toggle" data-on="Chung" data-off="Nội bộ" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Mô tả</label><br />
+                        <textarea id="pdes" class="form-control"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" pcancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" psave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script src="~/Scripts/IED/Product/product-index.js"></script>

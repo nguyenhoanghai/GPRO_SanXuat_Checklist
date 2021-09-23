@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Thiết Bị";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+} 
+<script src="~/Scripts/IED/Equipment/E_Index.js"></script>
+<div id="jtableEquipment" class="table-center"></div>
+
+<div class="modal fade " id="popup_Equipment" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                <h4 class="modal-title">Thông Tin Thiết Bị</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input class="form-control" id="eId" type="hidden" data-bind="value: Id" />
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Mã Thiết Bị <span class="required-class">*</span></label>
+                        <input class="form-control" id="eCode" type="text" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Tên Thiết Bị <span class="required-class">*</span></label>
+                        <input class="form-control" id="eName" required="required" type="text" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Chọn Loại Thiết Bị <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select id="elistEquipmentType"></select>
+                            <i re_etype class="fa fa-refresh clickable red"></i>
+                            <a href="/Equipmenttype/index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Chọn Nhóm Thiết Bị <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select id="elistEquipmentGroup"></select>
+                            <i re_egroup class="fa fa-refresh clickable red"></i>
+                            <a href="/Equipmentgroup/index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Hao Phí Thiết Bị (%)<span class="required-class">*</span></label>
+                        <input class="form-control" id="eexpend" type="text" value="0" class="number" onkeypress=" return isNumberKey(event)" />
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label class="control-label">Mô Tả</label>
+                        <textarea id="eDescription" class="form-control"></textarea>
+                    </div>
+                    <div id="myTable">
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" ecancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" esave class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade  " id="popup_SearchEquipment" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" eclose data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="rows">
+                        <label class="control-label">Từ Khóa</label>
+                        <input class="form-control" id="ekeyword" type="text" placeholder="Nhập thông tin bạn cần tìm ..." />
+                    </div>
+                    <div class="rows">
+                        <label class="control-label">Bạn muốn tìm theo ?</label>
+                        <select id="esearchBy" class="form-control">
+                            <option value="1">Tên Thiết Bị</option>
+                            <option value="2">Mã Thiết Bị</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button eclose aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button esearch class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+    </div>
+</div>  

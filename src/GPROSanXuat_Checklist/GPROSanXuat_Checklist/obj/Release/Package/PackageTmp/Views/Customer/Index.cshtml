@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewBag.Title = "Khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="jtableCustomer" class="table-center"></div>
+
+<div class="modal   fade  " id="popup_Customer" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-80">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin khách hàng</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-4">
+                        <input class="form-control" id="c-id" type="hidden" />
+                        <label class="control-label">Mã khách hàng <span class="required-class">*</span></label>
+                        <input class="form-control" id="c-index" type="text" disabled/>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Tên khách hàng <span class="required-class">*</span></label>
+                        <input class="form-control" id="c-name" type="text" placeholder="Nhập Tên khách hàng..." />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Hình thức sử dụng</label><br />
+                        <div>
+                            <input type="checkbox" id="c-IsPrivate" data-width="130" data-toggle="toggle" data-on="Chung" data-off="Nội bộ" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4 col-sm-4">
+                        <label for="type" class=" col-form-label">Loại Khách Hàng</label><span style="color:red"> *</span>
+                        <div>
+                            <select name="type" id="type" style="width:100%" class="form-control">
+                                <option value="1">Khách Hàng</option>
+                                <option value="2">Nhà Cung Cấp</option>
+                                <option value="3">Nhân Viên</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Di động</label>
+                        <input class="form-control" onkeypress="return isNumberKey(event)" id="c-phone" type="text" placeholder="Nhập số điện thoại..." />
+                    </div>
+                     
+                    <div class="form-group col-md-4">
+                        <label for="telephone" class=" col-form-label">Điện Thoại </label><span style="color:red"> *</span>
+                        <div>
+                            <input type="text" onkeypress="return isNumberKey(event)" class="form-control" id="c-telephone" data-bind="value: Telephone">
+                        </div>
+                    </div> 
+                    <div class="form-group col-md-4">
+                        <label for="fax" class=" col-form-label">Fax</label>
+                        <div>
+                            <input type="text" onkeypress="return isNumberKey(event)" class="form-control" id="c-fax" data-bind="value: Fax">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="email" class=" col-form-label">Email</label>
+                        <div>
+                            <input type="email" class="form-control" id="c-email" data-bind="value: Email">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="taxcode" class=" col-form-label">Mã Số Thuế</label> 
+                        <div>
+                            <input type="text" onkeypress="return isNumberKey(event)" class="form-control" id="c-taxcode" data-bind="value: TaxCode">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="cardnumber" class=" col-form-label">Số Thẻ Khách Hàng</label>
+                        <div>
+                            <input type="text" onkeypress="return isNumberKey(event)" class="form-control" id="c-cardnumber" data-bind="value: CardNumber">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="bankaccount" class=" col-form-label">Số Tài Khoản Ngân Hàng</label>
+                        <div>
+                            <input type="text" onkeypress="return isNumberKey(event)" class="form-control" id="c-bankaccount" data-bind="value: BankAccount">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="representative" class=" col-form-label">Người Đại Diện</label> 
+                        <div>
+                            <input type="text" class="form-control" id="c-representative" data-bind="value: Representative">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="creditaccount" class=" col-form-label">Số Tài Khoản Công Nợ</label>
+                        <div>
+                            <input type="text" onkeypress="return isNumberKey(event)" class=" form-control" id="c-creditaccount" data-bind="value: CreditAccount">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="defaultaccount" class=" col-form-label">Tài Khoản Ngầm Định</label>
+                        <div>
+                            <input type="text" class="form-control" id="c-defaultaccount" data-bind="value: DefaultAccount">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="defaultaccountcode" class=" col-form-label">Mã Tài Khoản Ngầm Định</label>
+                        <div>
+                            <input type="text" class="form-control" id="c-defaultaccountcode" data-bind="value: DefaultAccountCode">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="debitlimitstandard" class=" col-form-label">Hạn Mức Công Nợ Chuẩn</label>
+                        <div>
+                            <input type="text" class="form-control" onkeypress="return isNumberKey(event)" id="c-debitlimitstandard" data-bind="value: DebitLimitStandard">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="debitlimitallow" class=" col-form-label">Hạn Mức Công Nợ Cho Phép</label>
+                        <div>
+                            <input type="text" class="form-control" onkeypress="return isNumberKey(event)" id="c-debitlimitallow" data-bind="value: DebitLimitAllow">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="upadjust" class=" col-form-label">Điều Chỉnh Tăng</label>
+                        <div>
+                            <input type="text" onkeypress="return isNumberKey(event)" class="form-control" id="c-upadjust" data-bind="value: UpAdjust">
+                        </div>
+                    </div>
+                     
+                    <div class="form-group  col-md-6">
+                        <label class="control-label">Địa chỉ</label><br />
+                        <textarea id="c-address" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label class="control-label">Ghi chú</label><br />
+                        <textarea id="c-des" class="form-control"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" c-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" c-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<script src="~/Scripts/IED/Customer/customer.js"></script>

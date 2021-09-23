@@ -1,0 +1,130 @@
+﻿@using GPROSanXuat_Checklist.App_Global;
+@{
+    ViewBag.Title = "Nhóm danh mục";
+    //Layout = null;    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*<link href="~/Content/SystemAccount/ModalCustom.css" rel="stylesheet" />*@
+
+<script src="~/Scripts/IED/Category/C_Index.js"></script> 
+@*<script src="~/Scripts/IED/Category/SystemCategory.js"></script>*@
+
+<ul class="nav nav-tabs" role="tablist" id="myTab">
+    <li role="presentation" liCategory class="active"><a href="#Category" aria-controls="Category" role="tab" data-toggle="tab">Nhóm Danh Mục</a></li>
+    <li role="presentation" liCategorySystem><a href="#SystemCategory" aria-controls="SystemCategory" role="tab" data-toggle="tab">Nhóm Danh Mục Hệ Thống</a></li>
+</ul>
+<div class="tab-content" id="content" style="padding: 5px">
+    @*tab Menu*@
+    <div role="tabpanel" class="tab-pane active" id="Category">
+        <div id="jtableCategory"></div>
+    </div>
+    @*tab System Menu*@
+    <div role="tabpanel" class="tab-pane " id="SystemCategory">
+        <div id="jtableSystemCategory"></div>
+    </div>
+</div>
+
+@*user category model*@
+<div class="modal fade  " id="categoryModal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" close class="close" cancel data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Thông tin </h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <input type="hidden" txt="menuId" />
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Hệ Thống</label>
+                            @Html.DropDownList("Module", null, null, new { @select = "moduleId", @class = "form-control" })
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Tên nhóm danh mục</label>
+                            <input class="form-control" txt="categoryName" type="text" />
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Đường dẫn</label>
+                            <input class="form-control" link type="text" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">STT hiển thị</label>
+                            <input class="form-control" onkeypress="return isNumberKey(evt);" order style="width: 75px; text-align: center" type="number" value="0" />
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label class="control-label">Mô tả</label>
+                            <textarea class="form-control" des cols="3"></textarea>
+                        </div>
+                        <div style="clear: both"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" savecategory class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*popup search*@
+<div class="modal fade " id="Search_Popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" close data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Tìm Kiếm Nhóm Danh Mục</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="rows">
+                        @*<div>
+                                <label>Kiểu Tìm Kiếm </label>
+                                <select id="searchBy">
+                                    <option value="0">---   Chọn kiểu tìm kiếm   --- </option>
+                                    <option value="1">Tên Nhóm Danh Mục</option>
+                                    <option value="2">Vị trí</option>
+                                    <option value="3">Tên Hệ Thống</option>
+                                </select>
+                            </div>*@
+                        <div id="key">
+                            <label>Từ khóa</label>
+                            <input id="keyword" type="text" placeholder="Nhập tên nhóm danh mục cần tìm..." />
+                        </div>
+                        <div id="posi">
+                            <label>Vị Trí Nhóm Danh Mục</label>
+                            <select id="S_Position">
+                                <option value="0" selected="selected">---   Chọn Vị Trí   ---  </option>
+                                <option value="LEFT">Bên Trái</option>
+                                <option value="TOP">Bên Trên</option>
+                            </select>
+                        </div>
+                        <div id="modu">
+                            <label>Tên Hệ Thống</label>
+                            @Html.DropDownList("Module", null, null, new { @select = "moduId" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button close aria-hidden="true" data-dismiss="modal" class="btn">
+                    <div class="button-image image-close"></div>
+                    Đóng
+                </button>
+                <button search class="btn btn-primary">
+                    <div class="button-image image-search"></div>
+                    Tìm Kiếm
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+@Html.Partial("systemPatial", "Category")
+

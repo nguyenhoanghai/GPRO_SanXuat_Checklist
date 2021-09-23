@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewBag.Title = "QL Lô Vật Tư";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .inline-number {
+        display: flex
+    }
+
+        .inline-number input {
+            width: 90px;
+            text-align: center
+        }
+
+        .inline-number i, .inline-number span {
+            margin: 0 5px;
+            line-height: 34px
+        }
+</style>
+<div id="lot-supplies-jtable"></div>
+
+<!-- Modal MType-->
+<div id="lot-supplies-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" lot-supplies-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông Tin Lô Vật Tư</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input type="hidden" id="lot-supplies-Id" />
+                    <div class="form-group">
+                        <div class="  col-md-4">
+                            <label class=" control-label  ">Mã Lô Vật Tư</label>
+                            <input type="text" class="form-control" id="lot-supplies-index" disabled />
+                        </div>
+                        <div class="  col-md-4">
+                            <label class=" control-label  ">Tên Lô Vật Tư <span style="color:red">*</span></label>
+                            <input type="text" class="form-control" id="lot-supplies-name" placeholder="Tên Lô vật tư" />
+                        </div>
+                        <div class="  col-md-4">
+                            <label class="control-label">Vật Tư <span style="color:red">*</span></label>
+                            <div class="select-box">
+                                <select id="lot-supplies-material" class="form-control"></select>
+                                <i re_material class="fa fa-refresh clickable red"></i>
+                                <a href="/MaterialType/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        @*<div class="  col-md-4">
+            <label class=" control-label  ">Khách Hàng </label><span style="color:red">(*)</span>
+            <div class="col-md-12">
+                <div class="select-box">
+                    <select id="customerid"></select>
+                    <i re_customer class="fa fa-refresh clickable red"></i>
+                    <a href="/Customer/Create/0" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                </div>
+            </div>
+        </div>*@
+                        <div class="  col-md-4">
+                            <label class="control-label">Kho lưu trữ</label><span style="color:red"> *</span>
+                            <div class="select-box">
+                                <select id="lot-supplies-warehouse" class="form-control" disabled></select>
+                                @*<i re_warehouse class="fa fa-refresh clickable red"></i>
+                <a href="/WareHouse/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                            </div>
+                        </div>
+                        <div class="  col-md-4">
+                            <label class=" control-label ">Số Lượng Nhập / Tồn kho</label><span style="color:red"> *</span>
+                            <div class="inline-number">
+                                <input type="text" class="form-control" onkeypress="return isNumberKey(event)" id="lot-supplies-quantity" value="0" style="width: 107px !important;text-align:center ">
+                                <i class="fa fa-arrow-right red"> </i>
+                                <ab class="form-control" id="lot-supplies-currentquantity" style=" width:107px;text-align:center ">0</ab>
+                                <span id="receiption-detail-unit">Cái</span>
+                            </div>
+                        </div>
+                        <div class="  col-md-4">
+                            <label class=" control-label  ">Quy cách đóng gói  </label>
+                            <input type="text" class="form-control" id="lot-supplies-specifications-paking" value="" />
+                        </div>
+                        <div class="  col-md-4">
+                            <label class=" control-label ">Ngày Nhập Kho </label><span style="color:red"> *</span><br />
+                            <input class="form-control" id="lot-supplies-inputdate" disabled />
+                        </div>
+                        <div class="  col-md-4" style="margin-bottom:5px !important">
+                            <label class=" control-label ">Đơn Giá - Loại Tiền - Tỷ Giá</label><span style="color:red"> *</span>
+                            <div>
+                                <input type="text" onkeypress="return isNumberKey(event)" value="0" class="form-control" id="lot-supplies-price" style="display: inline-block; width: 70px; margin-top: -3px;text-align:center" />
+                                <i class="fa fa-arrow-right red" style="line-height:34px;   "></i>
+                                <div class="select-box" style="display: inline-block; width: 84px; margin-right: -5px">
+                                    <select id="lot-supplies-moneytype" class="form-control" style="width: 80px" disabled></select>
+                                </div>
+                                <i class="fa fa-arrow-right red" style="line-height:34px;   "></i>
+                                <input type="text" onkeypress="return isNumberKey(event)" value="0" disabled class="form-control" style="display: inline-block; width: 70px; margin-top: -3px;text-align:center" id="lot-supplies-exchangerate" />
+                            </div>
+                        </div>
+                        <div class="  col-md-4">
+                            <label class=" control-label ">Ngày Sản Xuất </label><span style="color:red"> *</span><br />
+                            <input class="form-control" id="lot-supplies-manufacturedate" />
+                        </div>
+
+
+                        <div class="  col-md-4">
+                            <label class=" control-label ">Ngày Bảo Hành </label><br />
+                            <input class="form-control" id="lot-supplies-warrantydate" />
+                        </div>
+                        <div class="  col-md-4">
+                            <label class=" control-label ">Hạn Sử Dụng </label><br />
+                            <input class="form-control" id="lot-supplies-expirydate" />
+                        </div>
+                        @* <div class="  col-md-4">
+            <label class=" control-label ">Trạng Thái </label><span style="color:red"> *</span>
+            <div class="select-box  ">
+                <select name="statusid" id="statusid" statusid style="width:234.6px"></select>
+                <i re_status class="fa fa-refresh clickable red"></i>
+            </div>
+        </div>*@
+                        <div class=" col-md-4">
+                            <label class=" control-label ">Mô Tả</label>
+                            <textarea class="form-control" id="lot-supplies-note"></textarea>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" lot-supplies-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" lot-supplies-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Search MType-->
+<div id="lot-supplies-popup-search" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modalsmall">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" lot-supplies-close class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Tìm kiếm</h4>
+            </div>
+            <div class="modal-body" style="background-color: rgba(230,243,255,0.3)">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class=" control-label  ">Từ khóa</label>
+                        <div>
+                            <input type="text" class="form-control" id="lot-supplies-keyword" placeholder="Nhập Mã hoặc tên Lô Vật Tư">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background-color: white">
+                <button type="button" close class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" search class="btn btn-primary" data-dismiss="modal"><i class="fa fa-search"></i> Tìm kiếm </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/LotSupplies/lot-supplies-index.js"></script>

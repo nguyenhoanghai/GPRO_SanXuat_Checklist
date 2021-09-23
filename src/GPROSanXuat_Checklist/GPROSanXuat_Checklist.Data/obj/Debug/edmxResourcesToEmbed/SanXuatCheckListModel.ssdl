@@ -1,0 +1,1122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SanXuatCheckListModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Checklist">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" />
+    <Property Name="CustomerId" Type="int" />
+    <Property Name="PODetailId" Type="int" />
+    <Property Name="ObjectType" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ProductionDays" Type="float" Nullable="false" />
+    <Property Name="Quantities" Type="int" Nullable="false" />
+    <Property Name="Productivity" Type="float" Nullable="false" />
+    <Property Name="DeliveryDate" Type="datetime" />
+    <Property Name="InputDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="RealEndDate" Type="datetime" />
+    <Property Name="RelatedEmployees" Type="varchar" MaxLength="500" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Checklist_Job">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FakeId" Type="int" Nullable="false" />
+    <Property Name="ChecklistJobStepId" Type="int" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="JobIndex" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="JobContent" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" />
+    <Property Name="RelatedEmployees" Type="varchar" MaxLength="500" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="RealEndDate" Type="datetime" />
+    <Property Name="ReminderDate" Type="datetime" />
+    <Property Name="Quantities" Type="float" Nullable="false" />
+    <Property Name="RealQuantities" Type="float" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Checklist_Job_ActionLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="ActionInfo" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Checklist_Job_Alert">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Alert" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="IsViewed" Type="bit" Nullable="false" />
+    <Property Name="UserSendId" Type="int" Nullable="false" />
+    <Property Name="ObjectId" Type="int" />
+    <Property Name="ObjectType" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="Reciever" Type="varchar" MaxLength="50" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Checklist_Job_Attachment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Url" Type="varchar" MaxLength="500" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="Note" Type="nvarchar" MaxLength="500" />
+  </EntityType>
+  <EntityType Name="Checklist_Job_Comment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Checklist_Job_EmployeeReference">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="ReminderDate" Type="datetime" />
+    <Property Name="IsStopAlarm" Type="bit" Nullable="false" />
+    <Property Name="CompanyId" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Checklist_Job_Error">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="ErrorMessage" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TimeError" Type="datetime" Nullable="false" />
+    <Property Name="TimeFinish_DK" Type="datetime" />
+    <Property Name="TimeFinish_TT" Type="datetime" />
+    <Property Name="UserProcessId" Type="int" />
+    <Property Name="Solution" Type="nvarchar(max)" />
+    <Property Name="ReasonNotFinish" Type="nvarchar(max)" />
+    <Property Name="Warning" Type="nvarchar(max)" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Checklist_Job_NotifyLog">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="JobId" Type="int" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="IsNotifited" Type="bit" Nullable="false" />
+    <Property Name="IsDisabled" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Checklist_JobStep">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ChecklistId" Type="int" Nullable="false" />
+    <Property Name="StepIndex" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="JobStepContent" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" />
+    <Property Name="RelatedEmployees" Type="varchar" MaxLength="500" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="RealEndDate" Type="datetime" />
+    <Property Name="ReminderDate" Type="datetime" />
+    <Property Name="Quantities" Type="float" Nullable="false" />
+    <Property Name="RealQuantities" Type="float" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Delivery">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="WarehouseId" Type="int" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="Reciever" Type="nvarchar" MaxLength="500" />
+    <Property Name="UnitId" Type="int" Nullable="false" />
+    <Property Name="ExchangeRate" Type="float" Nullable="false" />
+    <Property Name="TransactionType" Type="int" Nullable="false" />
+    <Property Name="DateOfAccounting" Type="datetime" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="ApprovedUser" Type="int" />
+    <Property Name="ApprovedDate" Type="datetime" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
+    <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
+    <Property Name="Deliverier" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="DeliveryDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DeliveryId" Type="int" Nullable="false" />
+    <Property Name="LotSupliesId" Type="int" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Lenh_Products">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LenhId" Type="int" Nullable="false" />
+    <Property Name="PODetailId" Type="int" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="Quantity_PC" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Lenh_VatTu">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LenhId" Type="int" Nullable="false" />
+    <Property Name="MaterialId" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="float" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="LenhSanXuat">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="EmployeeId" Type="int" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="LotSupplies">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="MaterialId" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="float" Nullable="false" />
+    <Property Name="QuantityUsed" Type="float" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="ManufactureDate" Type="datetime" Nullable="false" />
+    <Property Name="ExpiryDate" Type="datetime" />
+    <Property Name="WarrantyDate" Type="datetime" />
+    <Property Name="SpecificationsPaking" Type="nvarchar" MaxLength="500" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="MaterialNorms">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MaterialId" Type="int" Nullable="false" />
+    <Property Name="ObjectId" Type="int" Nullable="false" />
+    <Property Name="Quantities" Type="float" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FromPOId" Type="int" />
+    <Property Name="Code" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="ContactName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="250" />
+    <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="MoneyUnitId" Type="int" Nullable="false" />
+    <Property Name="Exchange" Type="float" Nullable="false" />
+    <Property Name="DeliveryDate" Type="datetime" />
+    <Property Name="StatusId" Type="int" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="Quantities" Type="int" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+  </EntityType>
+  <EntityType Name="P_Config">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="500" />
+    <Property Name="Note" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="PO_Sell">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="MoneyUnitId" Type="int" Nullable="false" />
+    <Property Name="Exchange" Type="float" Nullable="false" />
+    <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+  </EntityType>
+  <EntityType Name="PO_SellDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="POId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="Quantities" Type="int" Nullable="false" />
+    <Property Name="Quantities_Lenh" Type="int" Nullable="false" />
+    <Property Name="Quantities_PC" Type="int" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductionBatch">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="250" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
+    <Property Name="EndDate" Type="datetime" Nullable="false" />
+    <Property Name="QuantityKH" Type="float" Nullable="false" />
+    <Property Name="QuantityTT" Type="float" Nullable="false" />
+    <Property Name="UnitId" Type="int" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+  </EntityType>
+  <EntityType Name="ProductionFile">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="1000" Nullable="false" />
+    <Property Name="TemplateFileId" Type="int" Nullable="false" />
+    <Property Name="Content" Type="nvarchar(max)" />
+    <Property Name="CodeUrl" Type="varchar" MaxLength="50" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
+    <Property Name="ApprovedUser" Type="int" />
+    <Property Name="ApprovedDate" Type="datetime" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ProFileControl">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProductFileId" Type="int" Nullable="false" />
+    <Property Name="ControlName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ControlType" Type="int" Nullable="false" />
+    <Property Name="Checked" Type="bit" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Receiption">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="FromWarehouseId" Type="int" />
+    <Property Name="FromCustomerId" Type="int" />
+    <Property Name="StoreWarehouseId" Type="int" Nullable="false" />
+    <Property Name="RecieverId" Type="int" Nullable="false" />
+    <Property Name="MoneyTypeId" Type="int" Nullable="false" />
+    <Property Name="ExchangeRate" Type="float" Nullable="false" />
+    <Property Name="TransactionType" Type="int" Nullable="false" />
+    <Property Name="DateOfAccounting" Type="datetime" Nullable="false" />
+    <Property Name="InputDate" Type="datetime" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="ApprovedUser" Type="int" />
+    <Property Name="ApprovedDate" Type="datetime" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="ReceiptionDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ReceiptionId" Type="int" Nullable="false" />
+    <Property Name="LotSuppliesId" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="SConfig">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConpanyId" Type="int" Nullable="false" />
+    <Property Name="TableName" Type="nvarchar" MaxLength="50" />
+    <Property Name="ObjectId" Type="int" />
+    <Property Name="IsHidden" Type="bit" Nullable="false" />
+    <Property Name="IsDefault" Type="bit" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Template_Checklist">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Template_CL_Job">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Template_JobStepId" Type="int" Nullable="false" />
+    <Property Name="ParentId" Type="int" />
+    <Property Name="JobIndex" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="JobContent" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="Template_CL_JobStep">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateId" Type="int" Nullable="false" />
+    <Property Name="StepIndex" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="JobStepContent" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="TemplateControl">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateId" Type="int" Nullable="false" />
+    <Property Name="ControlName" Type="nvarchar" MaxLength="250" Nullable="false" />
+    <Property Name="ControlType" Type="int" Nullable="false" />
+    <Property Name="Checked" Type="bit" Nullable="false" />
+    <Property Name="Value" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TemplateFile">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateFileTypeId" Type="int" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="Content" Type="nvarchar(max)" />
+    <Property Name="IsApprove" Type="bit" Nullable="false" />
+    <Property Name="ApprovedDate" Type="datetime" />
+    <Property Name="ApprovedUser" Type="int" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+  </EntityType>
+  <EntityType Name="TemplateFileType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="IsDeleted" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedUser" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedUser" Type="int" />
+    <Property Name="DeletedDate" Type="datetime" />
+    <Property Name="DeletedUser" Type="int" />
+  </EntityType>
+  <EntityType Name="W_Config">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="Value" Type="nvarchar" MaxLength="500" />
+    <Property Name="Note" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_Checklist_Job_ActionLog_Checklist_Job">
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="1" />
+    <End Role="Checklist_Job_ActionLog" Type="Self.Checklist_Job_ActionLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job_ActionLog">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Job_Alert_Checklist_Job">
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="1" />
+    <End Role="Checklist_Job_Alert" Type="Self.Checklist_Job_Alert" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job_Alert">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Job_Attachment_Checklist_Job">
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="1" />
+    <End Role="Checklist_Job_Attachment" Type="Self.Checklist_Job_Attachment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job_Attachment">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Job_Checklist_JobStep">
+    <End Role="Checklist_JobStep" Type="Self.Checklist_JobStep" Multiplicity="1" />
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_JobStep">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job">
+        <PropertyRef Name="ChecklistJobStepId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Job_Comment_Checklist_Job">
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="1" />
+    <End Role="Checklist_Job_Comment" Type="Self.Checklist_Job_Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job_Comment">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Job_EmployeeReference_Checklist_Job">
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="1" />
+    <End Role="Checklist_Job_EmployeeReference" Type="Self.Checklist_Job_EmployeeReference" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job_EmployeeReference">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Job_Error_Checklist_Job">
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="1" />
+    <End Role="Checklist_Job_Error" Type="Self.Checklist_Job_Error" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job_Error">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Job_NotifyLog_Checklist_Job">
+    <End Role="Checklist_Job" Type="Self.Checklist_Job" Multiplicity="1" />
+    <End Role="Checklist_Job_NotifyLog" Type="Self.Checklist_Job_NotifyLog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist_Job">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_Job_NotifyLog">
+        <PropertyRef Name="JobId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_JobStep_Checklist">
+    <End Role="Checklist" Type="Self.Checklist" Multiplicity="1" />
+    <End Role="Checklist_JobStep" Type="Self.Checklist_JobStep" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Checklist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist_JobStep">
+        <PropertyRef Name="ChecklistId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_PO_Sell">
+    <End Role="PO_SellDetail" Type="Self.PO_SellDetail" Multiplicity="0..1" />
+    <End Role="Checklist" Type="Self.Checklist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PO_SellDetail">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist">
+        <PropertyRef Name="PODetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Checklist_Template_Checklist">
+    <End Role="Template_Checklist" Type="Self.Template_Checklist" Multiplicity="1" />
+    <End Role="Checklist" Type="Self.Checklist" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Template_Checklist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Checklist">
+        <PropertyRef Name="TemplateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lenh_Products_LenhSanXuat">
+    <End Role="LenhSanXuat" Type="Self.LenhSanXuat" Multiplicity="1" />
+    <End Role="Lenh_Products" Type="Self.Lenh_Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LenhSanXuat">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Lenh_Products">
+        <PropertyRef Name="LenhId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lenh_Products_PO_SellDetail">
+    <End Role="PO_SellDetail" Type="Self.PO_SellDetail" Multiplicity="0..1" />
+    <End Role="Lenh_Products" Type="Self.Lenh_Products" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PO_SellDetail">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Lenh_Products">
+        <PropertyRef Name="PODetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Lenh_VatTu_LenhSanXuat">
+    <End Role="LenhSanXuat" Type="Self.LenhSanXuat" Multiplicity="1" />
+    <End Role="Lenh_VatTu" Type="Self.Lenh_VatTu" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LenhSanXuat">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Lenh_VatTu">
+        <PropertyRef Name="LenhId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_PO_Sell">
+    <End Role="PO_Sell" Type="Self.PO_Sell" Multiplicity="0..1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PO_Sell">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="FromPOId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_Order">
+    <End Role="Order" Type="Self.Order" Multiplicity="1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_P_ProductionFile_P_TemplateFile">
+    <End Role="TemplateFile" Type="Self.TemplateFile" Multiplicity="1" />
+    <End Role="ProductionFile" Type="Self.ProductionFile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TemplateFile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProductionFile">
+        <PropertyRef Name="TemplateFileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_P_ProFileControl_P_ProductionFile">
+    <End Role="ProductionFile" Type="Self.ProductionFile" Multiplicity="1" />
+    <End Role="ProFileControl" Type="Self.ProFileControl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductionFile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProFileControl">
+        <PropertyRef Name="ProductFileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_P_TemplateControl_P_TemplateFile">
+    <End Role="TemplateFile" Type="Self.TemplateFile" Multiplicity="1" />
+    <End Role="TemplateControl" Type="Self.TemplateControl" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TemplateFile">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplateControl">
+        <PropertyRef Name="TemplateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PO_SellDetail_PO_Sell">
+    <End Role="PO_Sell" Type="Self.PO_Sell" Multiplicity="1" />
+    <End Role="PO_SellDetail" Type="Self.PO_SellDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PO_Sell">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PO_SellDetail">
+        <PropertyRef Name="POId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Template_CL_Job_Template_CL_JobStep">
+    <End Role="Template_CL_JobStep" Type="Self.Template_CL_JobStep" Multiplicity="1" />
+    <End Role="Template_CL_Job" Type="Self.Template_CL_Job" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Template_CL_JobStep">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Template_CL_Job">
+        <PropertyRef Name="Template_JobStepId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Template_CL_JobStep_Template_Checklist">
+    <End Role="Template_Checklist" Type="Self.Template_Checklist" Multiplicity="1" />
+    <End Role="Template_CL_JobStep" Type="Self.Template_CL_JobStep" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Template_Checklist">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Template_CL_JobStep">
+        <PropertyRef Name="TemplateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TemplateFile_TemplateFileType">
+    <End Role="TemplateFileType" Type="Self.TemplateFileType" Multiplicity="1" />
+    <End Role="TemplateFile" Type="Self.TemplateFile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TemplateFileType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TemplateFile">
+        <PropertyRef Name="TemplateFileTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_W_DeliveryDetail_W_Delivery">
+    <End Role="Delivery" Type="Self.Delivery" Multiplicity="1" />
+    <End Role="DeliveryDetail" Type="Self.DeliveryDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Delivery">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DeliveryDetail">
+        <PropertyRef Name="DeliveryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_W_DeliveryDetail_W_LotSupplies">
+    <End Role="LotSupplies" Type="Self.LotSupplies" Multiplicity="0..1" />
+    <End Role="DeliveryDetail" Type="Self.DeliveryDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LotSupplies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DeliveryDetail">
+        <PropertyRef Name="LotSupliesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_W_ReceiptionDetail_W_LotSupplies">
+    <End Role="LotSupplies" Type="Self.LotSupplies" Multiplicity="1" />
+    <End Role="ReceiptionDetail" Type="Self.ReceiptionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LotSupplies">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReceiptionDetail">
+        <PropertyRef Name="LotSuppliesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_W_ReceiptionDetail_W_Receiption">
+    <End Role="Receiption" Type="Self.Receiption" Multiplicity="1" />
+    <End Role="ReceiptionDetail" Type="Self.ReceiptionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receiption">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReceiptionDetail">
+        <PropertyRef Name="ReceiptionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SanXuatCheckListModelStoreContainer">
+    <EntitySet Name="Checklist" EntityType="Self.Checklist" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job" EntityType="Self.Checklist_Job" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job_ActionLog" EntityType="Self.Checklist_Job_ActionLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job_Alert" EntityType="Self.Checklist_Job_Alert" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job_Attachment" EntityType="Self.Checklist_Job_Attachment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job_Comment" EntityType="Self.Checklist_Job_Comment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job_EmployeeReference" EntityType="Self.Checklist_Job_EmployeeReference" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job_Error" EntityType="Self.Checklist_Job_Error" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_Job_NotifyLog" EntityType="Self.Checklist_Job_NotifyLog" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Checklist_JobStep" EntityType="Self.Checklist_JobStep" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Delivery" EntityType="Self.Delivery" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DeliveryDetail" EntityType="Self.DeliveryDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Lenh_Products" EntityType="Self.Lenh_Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Lenh_VatTu" EntityType="Self.Lenh_VatTu" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LenhSanXuat" EntityType="Self.LenhSanXuat" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LotSupplies" EntityType="Self.LotSupplies" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MaterialNorms" EntityType="Self.MaterialNorms" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="P_Config" EntityType="Self.P_Config" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PO_Sell" EntityType="Self.PO_Sell" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PO_SellDetail" EntityType="Self.PO_SellDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductionBatch" EntityType="Self.ProductionBatch" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProductionFile" EntityType="Self.ProductionFile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProFileControl" EntityType="Self.ProFileControl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Receiption" EntityType="Self.Receiption" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ReceiptionDetail" EntityType="Self.ReceiptionDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="SConfig" EntityType="Self.SConfig" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Template_Checklist" EntityType="Self.Template_Checklist" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Template_CL_Job" EntityType="Self.Template_CL_Job" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Template_CL_JobStep" EntityType="Self.Template_CL_JobStep" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TemplateControl" EntityType="Self.TemplateControl" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TemplateFile" EntityType="Self.TemplateFile" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TemplateFileType" EntityType="Self.TemplateFileType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="W_Config" EntityType="Self.W_Config" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Checklist_Job_ActionLog_Checklist_Job" Association="Self.FK_Checklist_Job_ActionLog_Checklist_Job">
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+      <End Role="Checklist_Job_ActionLog" EntitySet="Checklist_Job_ActionLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Job_Alert_Checklist_Job" Association="Self.FK_Checklist_Job_Alert_Checklist_Job">
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+      <End Role="Checklist_Job_Alert" EntitySet="Checklist_Job_Alert" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Job_Attachment_Checklist_Job" Association="Self.FK_Checklist_Job_Attachment_Checklist_Job">
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+      <End Role="Checklist_Job_Attachment" EntitySet="Checklist_Job_Attachment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Job_Checklist_JobStep" Association="Self.FK_Checklist_Job_Checklist_JobStep">
+      <End Role="Checklist_JobStep" EntitySet="Checklist_JobStep" />
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Job_Comment_Checklist_Job" Association="Self.FK_Checklist_Job_Comment_Checklist_Job">
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+      <End Role="Checklist_Job_Comment" EntitySet="Checklist_Job_Comment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Job_EmployeeReference_Checklist_Job" Association="Self.FK_Checklist_Job_EmployeeReference_Checklist_Job">
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+      <End Role="Checklist_Job_EmployeeReference" EntitySet="Checklist_Job_EmployeeReference" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Job_Error_Checklist_Job" Association="Self.FK_Checklist_Job_Error_Checklist_Job">
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+      <End Role="Checklist_Job_Error" EntitySet="Checklist_Job_Error" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Job_NotifyLog_Checklist_Job" Association="Self.FK_Checklist_Job_NotifyLog_Checklist_Job">
+      <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+      <End Role="Checklist_Job_NotifyLog" EntitySet="Checklist_Job_NotifyLog" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_JobStep_Checklist" Association="Self.FK_Checklist_JobStep_Checklist">
+      <End Role="Checklist" EntitySet="Checklist" />
+      <End Role="Checklist_JobStep" EntitySet="Checklist_JobStep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_PO_Sell" Association="Self.FK_Checklist_PO_Sell">
+      <End Role="PO_SellDetail" EntitySet="PO_SellDetail" />
+      <End Role="Checklist" EntitySet="Checklist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Checklist_Template_Checklist" Association="Self.FK_Checklist_Template_Checklist">
+      <End Role="Template_Checklist" EntitySet="Template_Checklist" />
+      <End Role="Checklist" EntitySet="Checklist" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lenh_Products_LenhSanXuat" Association="Self.FK_Lenh_Products_LenhSanXuat">
+      <End Role="LenhSanXuat" EntitySet="LenhSanXuat" />
+      <End Role="Lenh_Products" EntitySet="Lenh_Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lenh_Products_PO_SellDetail" Association="Self.FK_Lenh_Products_PO_SellDetail">
+      <End Role="PO_SellDetail" EntitySet="PO_SellDetail" />
+      <End Role="Lenh_Products" EntitySet="Lenh_Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Lenh_VatTu_LenhSanXuat" Association="Self.FK_Lenh_VatTu_LenhSanXuat">
+      <End Role="LenhSanXuat" EntitySet="LenhSanXuat" />
+      <End Role="Lenh_VatTu" EntitySet="Lenh_VatTu" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_PO_Sell" Association="Self.FK_Order_PO_Sell">
+      <End Role="PO_Sell" EntitySet="PO_Sell" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_Order" Association="Self.FK_OrderDetail_Order">
+      <End Role="Order" EntitySet="Order" />
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_P_ProductionFile_P_TemplateFile" Association="Self.FK_P_ProductionFile_P_TemplateFile">
+      <End Role="TemplateFile" EntitySet="TemplateFile" />
+      <End Role="ProductionFile" EntitySet="ProductionFile" />
+    </AssociationSet>
+    <AssociationSet Name="FK_P_ProFileControl_P_ProductionFile" Association="Self.FK_P_ProFileControl_P_ProductionFile">
+      <End Role="ProductionFile" EntitySet="ProductionFile" />
+      <End Role="ProFileControl" EntitySet="ProFileControl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_P_TemplateControl_P_TemplateFile" Association="Self.FK_P_TemplateControl_P_TemplateFile">
+      <End Role="TemplateFile" EntitySet="TemplateFile" />
+      <End Role="TemplateControl" EntitySet="TemplateControl" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PO_SellDetail_PO_Sell" Association="Self.FK_PO_SellDetail_PO_Sell">
+      <End Role="PO_Sell" EntitySet="PO_Sell" />
+      <End Role="PO_SellDetail" EntitySet="PO_SellDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Template_CL_Job_Template_CL_JobStep" Association="Self.FK_Template_CL_Job_Template_CL_JobStep">
+      <End Role="Template_CL_JobStep" EntitySet="Template_CL_JobStep" />
+      <End Role="Template_CL_Job" EntitySet="Template_CL_Job" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Template_CL_JobStep_Template_Checklist" Association="Self.FK_Template_CL_JobStep_Template_Checklist">
+      <End Role="Template_Checklist" EntitySet="Template_Checklist" />
+      <End Role="Template_CL_JobStep" EntitySet="Template_CL_JobStep" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TemplateFile_TemplateFileType" Association="Self.FK_TemplateFile_TemplateFileType">
+      <End Role="TemplateFileType" EntitySet="TemplateFileType" />
+      <End Role="TemplateFile" EntitySet="TemplateFile" />
+    </AssociationSet>
+    <AssociationSet Name="FK_W_DeliveryDetail_W_Delivery" Association="Self.FK_W_DeliveryDetail_W_Delivery">
+      <End Role="Delivery" EntitySet="Delivery" />
+      <End Role="DeliveryDetail" EntitySet="DeliveryDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_W_DeliveryDetail_W_LotSupplies" Association="Self.FK_W_DeliveryDetail_W_LotSupplies">
+      <End Role="LotSupplies" EntitySet="LotSupplies" />
+      <End Role="DeliveryDetail" EntitySet="DeliveryDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_W_ReceiptionDetail_W_LotSupplies" Association="Self.FK_W_ReceiptionDetail_W_LotSupplies">
+      <End Role="LotSupplies" EntitySet="LotSupplies" />
+      <End Role="ReceiptionDetail" EntitySet="ReceiptionDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_W_ReceiptionDetail_W_Receiption" Association="Self.FK_W_ReceiptionDetail_W_Receiption">
+      <End Role="Receiption" EntitySet="Receiption" />
+      <End Role="ReceiptionDetail" EntitySet="ReceiptionDetail" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
