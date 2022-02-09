@@ -61,6 +61,10 @@ GPRO.PO = function () {
         GetProducts();
         GetStatusSelect('po-status', 'AppStatus');
         InitPopupView();
+        $("#po-delivery-date").kendoDatePicker({
+            format: "dd/MM/yyyy",
+            // min: new Date()
+        });
     }
 
     var RegisterEvent = function () {
@@ -164,8 +168,9 @@ GPRO.PO = function () {
                             $('#po-id').val(data.record.Id);
                             $('#po-code').val(data.record.Code);
                             $('#po-customer').val(data.record.CustomerId);
-                            $('#po-phone').val(data.record.Phone);
-                            $('#po-delivery-date').val(ddMMyyyy(data.record.DeliveryDate));
+                            $('#po-phone').val(data.record.Phone); 
+                            $('#po-delivery-date').data("kendoDatePicker").value(new Date(moment(data.record.DeliveryDate)));
+                             
                             $('#po-unit').val(data.record.MoneyUnitId).change();
                             $('#po-exchange').val(data.record.Exchange);
                             $('#po-status').val(data.record.StatusId);
@@ -269,8 +274,8 @@ GPRO.PO = function () {
     setToDefault = () => {
         $('#po-id').val(0);
         $('#po-code').val('');
-        $('#po-phone').val('');
-        $('#po-delivery-date').val('');
+        $('#po-phone').val(''); 
+        $('#po-delivery-date').data("kendoDatePicker").value(new Date( ));
         $('#po-status').val(0);
         $('#po-customer').val(0);
         $('#po-note').val('');
@@ -328,7 +333,7 @@ GPRO.PO = function () {
             Code: $('#po-code').val(),
             CustomerId: $('#po-customer').val(),
             Phone: $('#po-phone').val(),
-            DeliveryDate: $('#po-delivery-date').val(),
+            DeliveryDate: $('#po-delivery-date').data("kendoDatePicker").value(),
             MoneyUnitId: $('#po-unit').val(),
             Exchange: parseFloat($('#po-exchange').val()),
             StatusId: $('#po-status').val(),

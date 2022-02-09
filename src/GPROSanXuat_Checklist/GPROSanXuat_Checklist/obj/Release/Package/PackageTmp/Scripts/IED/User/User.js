@@ -224,7 +224,7 @@ GPRO.User = function () {
             $('[txt="userName"]').val(user.UserName);
             $('[txt="txtpass"]').val(user.PassWord);
             $('[txt="txtTen"]').val(user.LastName);
-            $('[txt="txtho"]').val(user.FisrtName);
+            $('[txt="txtho"]').val(user.FirstName);
             $('[txt="email"]').val(user.Email); 
         }
         else {
@@ -363,11 +363,11 @@ GPRO.User = function () {
                         return text;
                     }
                 },
-                FisrtName: {
+                FirstName: {
                     title: "Họ Tên",
                     width: "20%",
                     display: function (data) {
-                        txt = data.record.FisrtName + ' ' + data.record.LastName;
+                        txt = data.record.FirstName + ' ' + data.record.LastName;
                         return txt;
                     }
                 },

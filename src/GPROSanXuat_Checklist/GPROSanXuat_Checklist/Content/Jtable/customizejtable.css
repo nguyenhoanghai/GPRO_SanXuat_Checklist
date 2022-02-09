@@ -22,3 +22,9 @@ div.jtable-main-container > div.jtable-title div.jtable-toolbar span.jtable-tool
 div.jtable-main-container > div.jtable-title div.jtable-toolbar span.jtable-toolbar-item.jtable-toolbar-item-show-record span.jtable-toolbar-item-icon {
   background-image: url('themes/metro/show.png');
 }
+
+.search-input {
+    padding: 3px 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+}
