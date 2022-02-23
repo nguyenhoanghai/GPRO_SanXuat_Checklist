@@ -1,0 +1,71 @@
+﻿.gantt-fullscreen {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    padding: 2px;
+    font-size: 32px;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+    text-align: center;
+    -webkit-transition: background-color 0.5s, opacity 0.5s;
+    transition: background-color 0.5s, opacity 0.5s;
+}
+
+    .gantt-fullscreen:hover {
+        background: rgba(150, 150, 150, 0.5);
+        opacity: 1;
+    }
+
+.weekend {
+    background: #ccc;
+}
+
+.gantt_selected .weekend {
+    background: #f7eb91;
+}
+
+.gantt_task_progress {
+    text-align: left;
+    padding-left: 10px;
+    box-sizing: border-box;
+    color: white;
+    font-weight: bold;
+}
+
+.controls_bar {
+    border-top: 1px solid #bababa;
+    border-bottom: 1px solid #bababa;
+    clear: both;
+    margin-top: 90px;
+    height: 28px;
+    background: #f1f1f1;
+    color: #494949;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    padding-left: 10px;
+    line-height: 25px;
+}
+
+.gantt_grid_scale .gantt_grid_head_cell {
+    color: blue;
+    font-weight: bold;
+}
+
+.gantt_task .gantt_task_scale .gantt_scale_cell {
+    color: blue;
+    font-weight: bold;
+}
+
+.gantt_grid_data .gantt_cell {
+        border-right: 1px solid #ebebeb;
+}
+.gantt_task_content {
+    font-weight: bold;
+}
+
+.gantt_message_area{
+    display:none !important
+}

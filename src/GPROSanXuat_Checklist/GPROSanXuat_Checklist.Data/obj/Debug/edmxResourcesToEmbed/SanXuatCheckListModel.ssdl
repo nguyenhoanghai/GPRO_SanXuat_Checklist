@@ -365,6 +365,9 @@
     <Property Name="ProductId" Type="int" Nullable="false" />
     <Property Name="Quantities" Type="int" Nullable="false" />
     <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="DeliveryDate" Type="datetime" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedUser" Type="int" Nullable="false" />
@@ -415,6 +418,9 @@
     <Property Name="Quantities_Lenh" Type="int" Nullable="false" />
     <Property Name="Quantities_PC" Type="int" Nullable="false" />
     <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
+    <Property Name="DeliveryDate" Type="datetime" />
     <Property Name="Note" Type="nvarchar(max)" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />

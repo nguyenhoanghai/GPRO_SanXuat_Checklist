@@ -110,6 +110,12 @@ function ParseDateToString_cl(date) {
     return dd;
 }
 
+function parseDate(strDate) {
+    if (strDate)
+        return new Date(moment(strDate));
+    return '';
+}
+
 function ddMMyyyy(strDate) {
     if (strDate)
         return moment(strDate).format('DD/MM/YYYY');

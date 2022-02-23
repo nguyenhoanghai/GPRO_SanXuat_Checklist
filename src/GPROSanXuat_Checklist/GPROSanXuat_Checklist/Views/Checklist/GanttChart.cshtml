@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "Sơ đồ Gantt";
+}
+@*gantt chart plugin*@
+<link href="~/Content/pro_css.css" rel="stylesheet" />
+<link href="~/Content/Gantt_Chart/dhtmlxgantt.css" rel="stylesheet" />
+<link href="~/Content/Gantt_Chart/gantt_customize.css" rel="stylesheet" />
+<style>
+    .gantt_task_line, .gantt_line_wrapper {
+        margin-top: -9px;
+    }
+
+    .gantt_side_content {
+        margin-bottom: 7px;
+    }
+
+    .gantt_task_link .gantt_link_arrow {
+        margin-top: -12px;
+    }
+
+    .gantt_side_content.gantt_right {
+        bottom: 0;
+    }
+
+    .baseline {
+        position: absolute;
+        border-radius: 2px;
+        opacity: 0.6;
+        margin-top: -7px;
+        height: 12px;
+        background: red;
+        border: 1px solid rgb(255,153,0);
+    }
+</style>
+
+
+<div style="border: 1px solid #ccc;border-radius: 5px;padding: 5px 10px;background: gainsboro;">
+    <input type="text" id="proAna" style="margin-bottom:0" list="source" />
+    <input value="Export to PDF" type="button" id="btn-pdf" class="btn btn-primary" style='margin-left:20px;'>
+    <input value="Export to PNG" type="button" id="btn-png" class="btn btn-primary" style='margin-left:20px;'>
+    <label>Zoom</label>
+    <input type="radio" id="zoom" name="zoom" value="week" /> Giờ
+    <input type="radio" id="zoom" name="zoom" value="trplweek" checked /> Ngày
+    <input type="radio" id="zoom" name="zoom" value="year" /> Tháng
+</div>
+
+<div id="gantt_here" style="width:100%; min-height:400px; overflow:auto; background:white; z-index: 999"> </div>
+<datalist id="source"></datalist>
+
+<script src="~/Content/Gantt_Chart/dhtmlxgantt.js"></script>
+<script src="~/Content/Gantt_Chart/api.js"></script>
+<script src="~/Content/Gantt_Chart/locale_vi.js"></script>
+<script src="~/Content/Gantt_Chart/dhtmlxgantt_tooltip.js"></script>
+<script src="~/Content/Gantt_Chart/dhtmlxgantt_grouping.js"></script>
+<script src="~/Content/Gantt_Chart/dhtmlxgantt_fullscreen.js"></script>
+ 
+<script src="~/Scripts/IED/Checklist/Gantt.js"></script>

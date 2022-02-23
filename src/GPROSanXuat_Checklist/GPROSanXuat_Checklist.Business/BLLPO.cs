@@ -182,7 +182,8 @@ namespace GPROSanXuat_Checklist.Business
                         Quantities_PC = x.Quantities_PC,
                         Quantities_Lenh = x.Quantities_Lenh,
                         Price = x.Price,
-                        Note = x.PO_Sell.Note
+                        Note = x.PO_Sell.Note,
+                        
                     }).ToList(), pageNumber, pageSize);
                     return objs;
                 }
@@ -228,7 +229,10 @@ namespace GPROSanXuat_Checklist.Business
                             Price = x.Price,
                             ProductId = x.ProductId,
                             //ProductName = x.Product.Name,
-                            //ProductUnit = x.Product.Unit.Name
+                            //ProductUnit = x.Product.Unit.Name,
+                            StartDate = x.StartDate,
+                            EndDate = x.EndDate,
+                            DeliveryDate = x.DeliveryDate
                         })
                         .ToList();
                     obj.Total = details.Sum(x => x.Quantities * x.Price);
@@ -345,6 +349,9 @@ namespace GPROSanXuat_Checklist.Business
                                             {
                                                 // có update thong tin moi
                                                 item.Quantities = found.Quantities;
+                                                item.StartDate = found.StartDate;
+                                                item.EndDate = found.EndDate;
+                                                item.DeliveryDate = found.DeliveryDate;
                                                 item.Price = found.Price;
                                                 item.UpdatedUser = model.ActionUser;
                                                 item.UpdatedDate = obj.UpdatedDate;

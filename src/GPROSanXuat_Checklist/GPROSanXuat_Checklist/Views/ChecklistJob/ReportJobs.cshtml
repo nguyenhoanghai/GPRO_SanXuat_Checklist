@@ -1,0 +1,458 @@
+﻿@{
+    ViewBag.Title = "Báo cáo công việc";
+}
+
+<style>
+    #table-report-job td {
+        text-align: center;
+        font-weight: 400;
+        color: black
+    }
+
+    #table-report-job thead td,
+    #table-report-job tbody td:first-child {
+        font-weight: 700;
+        color: blue;
+        background: #efefef;
+        text-align: center;
+    }
+</style>
+<style>
+    .table-checklist {
+        border: 1px solid #ccc;
+        margin: 0
+    }
+
+        .table-checklist thead th {
+            text-align: center;
+            color: blue;
+            border: 1px solid #ccc;
+            background-color: yellow;
+            min-width: 100px
+        }
+
+        .table-checklist tbody td {
+            text-align: center;
+            border: 1px solid #ccc;
+            min-width: 100px
+        }
+
+        .table-checklist thead th div:last-child {
+            color: red
+        }
+
+    .jtable-title, .jtable-title-text {
+        height: 43px;
+        line-height: 43px !important
+    }
+
+    .pro-info {
+        height: auto;
+        min-height: 34px;
+        background: #eee
+    }
+
+        .pro-info ul {
+            padding: 0 14px;
+            margin-bottom: 0px
+        }
+
+    .checklist-filter-box {
+        padding-top: 5px;
+        padding-left: 5px;
+        border: 1px solid #ccc;
+        border-bottom: none;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center
+    }
+
+    .main-box {
+        border: 1px solid #ccc;
+        border-top: none
+    }
+
+    .box-title {
+        padding: 5px;
+        /*color: black;*/
+        font-weight: 600;
+        font-size: 14px;
+        border-bottom: 1px solid #ccc;
+        line-height: 30px;
+        text-align: center
+    }
+
+    .box-item {
+        border: 1px solid #ccc;
+        border-left: none;
+        border-top: none;
+        border-bottom: none;
+        width: 250px
+    }
+
+        .box-item div:first-child,
+        .box-item div:nth-child(2),
+        .box-item div:nth-child(3) {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .box-item div {
+            min-height: 30px;
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+        }
+
+            .box-item div:last-child {
+                border-bottom: none;
+            }
+
+            .box-item div:nth-child(1) {
+                font-weight: 600;
+                color: black
+            }
+
+            .box-item div:nth-child(2),
+            .box-item div:nth-child(4) {
+                background: aquamarine;
+                color: blue;
+            }
+
+            .box-item div:nth-child(3) {
+                background: paleturquoise;
+                color: red;
+            }
+
+            .box-item div button {
+                margin: 0
+            }
+
+    .action .fa {
+        padding: 5px;
+        color: black;
+        cursor: pointer
+    }
+
+    .action .fa-edit {
+        color: blue
+    }
+
+    .action .fa-trash {
+        color: red
+    }
+
+    .div-item {
+        padding: 5px;
+        border-bottom: 1px dotted #ccc;
+    }
+
+        .div-item .div-item-action {
+            float: right;
+            display: none
+        }
+
+        .div-item:hover {
+            background: #efefef
+        }
+
+            .div-item:hover .div-item-action {
+                display: block
+            }
+
+        .div-item .fa {
+            cursor: pointer;
+            padding: 2px
+        }
+
+        .div-item .fa-space {
+            padding-right: 10px
+        }
+
+        .div-item .fa-plus {
+            color: black
+        }
+
+        .div-item .fa-edit {
+            color: blue
+        }
+
+        .div-item .fa-trash {
+            color: red
+        }
+
+        .div-item .fa-minus {
+            font-size: 8px
+        }
+
+        .div-item .fa-caret-right {
+            color: darkorange
+        }
+
+    .modal-full {
+        width: 100%;
+    }
+
+    .index-col {
+        display: flex;
+        background: none
+    }
+
+        .index-col div {
+            border: none;
+            background: none !important;
+        }
+
+            .index-col div:first-child {
+                width: 75%;
+                line-height: 30px;
+                padding: 0
+            }
+
+            .index-col div:last-child {
+                padding: 0;
+            }
+
+                .index-col div:last-child i {
+                    padding: 0;
+                    padding-top: 10px;
+                    cursor: pointer
+                }
+
+    .info-col {
+        display: flex
+    }
+
+        .info-col, .info-col .col {
+            padding: 0 !important;
+            background: none !important;
+            border: none !important
+        }
+
+            .info-col .col:first-child {
+                border-right: 1px solid #ccc !important
+            }
+
+            .info-col .col {
+                width: 50%
+            }
+
+                .info-col .col div {
+                    border: none;
+                    font-weight: normal !important
+                }
+
+    .status-box {
+        width: 50px;
+        height: 50px;
+        border: 1px solid #eee;
+        margin-right: 10px
+    }
+
+    .not-yet {
+        background: white !important;
+        color: black !important
+    }
+
+    .doing {
+        background: green !important;
+        color: black !important
+    }
+
+    .error {
+        background: red !important;
+        color: white !important
+    }
+
+    .doing .red {
+        color: black !important
+    }
+
+    .error .red {
+        color: white !important
+    }
+
+    .done {
+        background: yellow !important;
+        color: black !important
+    }
+
+    .done-tre {
+        background: orange !important;
+        color: white !important
+    }
+</style>
+
+<div class="container-fluid">
+    <fieldset>
+        <legend>Lọc thông tin</legend>
+        @*<div class="col-md-2 form-group ">
+                <label class="control-label">Phân xưởng<span class="required-class">*</span></label>
+                <div class="select-box">
+                    <select class="form-control" id="report-cutting-workshop"></select>
+                    <i re_line class="fa fa-refresh clickable red"></i>
+                    <a href="/phan-xuong" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                </div>
+            </div>
+            <div class="col-md-2 form-group ">
+                <label class="control-label">Lầu <span class="required-class">*</span></label>
+                <div class="select-box">
+                    <select class="form-control" id="report-cutting-floor"></select>
+                    <i re_line class="fa fa-refresh clickable red"></i>
+                    <a href="/floor" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-2 form-group ">
+                <label class="control-label">Từ ngày <span class="required-class">*</span></label>
+                <input class="form-control" id="report-cutting-from" type="text" />
+            </div>
+
+            <div class="col-md-2 form-group ">
+                <label class="control-label">đến <span class="required-class">*</span></label>
+                <input class="form-control" id="report-cutting-to" type="text" />
+            </div>*@
+
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Loại công việc </label>
+            <select class="form-control" id="report-job">
+                <option value="1">Trễ hạn</option>
+                <option value="2">Đúng hạn</option>
+                <option value="3">Trước hạn</option>
+            </select>
+        </div>
+        <div class="col-md-4 form-group ">
+            <button type="button" id="btn-report-job-view" class="btn btn-primary" style="margin-top:25px"><i class="fa fa-search-minus"></i> Tìm kiếm </button>
+           @* <button type="button" id="btn-report-job-excel" class="btn btn-danger" style="margin-top:25px"><i class="fa fa-file-excel-o"></i> Xuất Excel </button>*@
+
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Thông tin công việc</legend>
+        <table id="table-report-job" class="table table-bordered table-hover  ">
+            <thead class="thead-light">
+                <tr>
+                    <td class="col-md-3">Công việc</td>
+                    <td class="col-md-3">Nội dung</td>
+                    <td>Người phụ trách</td>
+                    <td>Bắt đầu</td>
+                    <td>Kết thúc</td>
+                    <td>Kết thúc thực tế</td>
+                    <td>Trạng thái</td>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </fieldset>
+</div>
+
+
+<div class="modal fade" id="popup-checklist-job" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-80  ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" pcancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin công việc</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-1">
+                        <input class="form-control " id="checklist-job-id" type="hidden" />
+                        <label class="control-label">STT</label>
+                        <div class="form-control" style="background-color:#eee" id="checklist-job-index"></div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Tên bước công việc <span class="required-class">*</span></label>
+                        <input class="form-control" id="checklist-job-name" type="text" placeholder="Nhập tên bước công việc..." disabled />
+                    </div>
+                    <div class="form-group col-md-7">
+                        <label class="control-label">Nội dung bước công việc <span class="required-class">*</span></label>
+                        <textarea id="checklist-job-content" class="form-control" disabled></textarea>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label class="control-label">Người Phụ Trách <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select id="checklist-job-employee" disabled></select>
+                            @* <i re_jemploy class="fa fa-refresh clickable red" title="Làm mới danh sách"></i>*@
+                            @* <a href="/nhan-vien" target="_blank" title="Thêm nhân viên"><i class="fa fa-plus-circle clickable blue" style="margin-left:5px"></i></a>*@
+                        </div>
+                    </div>
+                    <div class="col-md-8 form-group">
+                        <label class="control-label">Người liên quan</label>
+                        <select id="checklist-job-related-employee" multiple disabled> </select>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Ngày Bắt đầu <span class="required-class">*</span></label> <br />
+                        <input id="checklist-job-start" type="text" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Ngày KT Dự Kiến<span class="required-class">*</span></label> <br />
+                        <input id="checklist-job-end" type="text" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label class="control-label">Ngày Nhắc Việc </label><br />
+                        <input id="checklist-job-reminder" type="text" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Số Lượng (YC)<span class="red bold">*</span></label> <br />
+                        <input disabled class="form-control number center" type="number" min="1" max="99999" value="0" id="checklist-job-quantities" onkeyup=" ChangeCurrency('quantity')" onkeypress="return isNumberKey(event)" style="max-width:100px !important" />
+                        <span style="margin-left:5px" id="span-pro-unit"></span>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Ghi chú</label>
+                        <textarea id="checklist-job-note" class="form-control" disabled></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+
+
+                    <div class="row" style="margin-left:45px; margin-right:45px">
+                        <div class="window-module js-attachments-section u-clearfix">
+                            <div class="window-module-title window-module-title-no-divider">
+                                <span class="fa fa-paperclip"></span>
+                                <h3 class="u-inline-block">Các tập tin đính kèm</h3>
+                            </div>
+                            <div class="u-gutter">
+                                <div class="u-clearfix js-attachment-list"></div>
+                                <p class="js-show-fewer-attachments hide"><a class="quiet-button js-view-some-attachments" href="#">Ẩn bớt tập tin đính kèm.</a></p>
+                                <p class="js-show-more-attachments hide"><a class="quiet-button js-view-all-attachments" href="#">Hiện tất cả tập tin đính kèm (-3 ẩn)</a></p>
+                                @* <p><a class="quiet-button js-attach" href="#" data-toggle="modal" data-target="#modal_attach">Thêm tập tin đính kèm...</a></p>*@
+                                <p>
+                                    <a class="quiet-button js-attach" id="p-btn-file-upload" href="#">Thêm tập tin đính kèm...</a>
+                                    <form id="p-form-upload" name="p-form-upload" enctype="multipart/form-data" method="post">
+                                        <input type="file" id="p-file-upload" name="p-file-upload" filelist newurl="" style="display:none" />
+                                    </form>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="window-module">
+                            <div class="window-module-title window-module-title-no-divider">
+                                <i class="window-module-title-icon icon-lg fa fa-align-center"></i>
+                                <h3>Hoạt động</h3><span class="editing-members js-editing-members hide"></span>
+                            </div>
+                            <div class="js-list-actions" id="actionList">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" checklist-job-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Checklist/report-job.js"></script>
+<script>
+    var job = new GPRO.ReportJob();
+    job.Init();
+
+    function _GetJob(id) {
+        job.GetById(id);
+    }
+</script>

@@ -1,5 +1,6 @@
 ﻿using GPRO.Core.Mvc;
 using GPROCommon.Models;
+using GPROCommon.Repository;
 using GPROSanXuat_Checklist.App_Global;
 using GPROSanXuat_Checklist.Business;
 using GPROSanXuat_Checklist.Business.Model;
@@ -53,6 +54,8 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
+
+        
 
         [HttpPost]
         public JsonResult GetById(int Id, bool isFull)
@@ -230,6 +233,53 @@ namespace GPROSanXuat_Checklist.Controllers
                 Response.End();
             }
         }
-         
+
+        public ActionResult GanttChart()
+        {
+            return View();
+        }
+        [HttpPost]
+        public JsonResult GetSelects()
+        {
+            try
+            {
+                if (isAuthenticate)
+                {
+                    var objs = BLLChecklist.Instance.GetSelectItem(AppGlobal.ConnectionstringSanXuatChecklist);
+                    JsonDataResult.Records = JsonConvert.SerializeObject(objs);
+                    JsonDataResult.Result = "OK";
+                }
+            }
+            catch (Exception ex)
+            {
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Get List ObjectType", Message = "Lỗi: " + ex.Message });
+            }
+            return Json(JsonDataResult);
+        }
+
+        [HttpPost]
+        public JsonResult GetForGanttById(int Id )
+        {
+            try
+            {
+                if (isAuthenticate)
+                {
+
+                    var obj = BLLChecklist.Instance.GetForGanttChart(AppGlobal.ConnectionstringSanXuatChecklist, Id, 0,  StatusRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon, "CheckList"), UserRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon));
+                    obj = ChecklistMaper.Instance.MapInfoFromGPROCommon(obj);
+
+                    JsonDataResult.Records = JsonConvert.SerializeObject(obj);
+                    JsonDataResult.Result = "OK";
+                }
+            }
+            catch (Exception ex)
+            {
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Get List ObjectType", Message = "Lỗi: " + ex.Message });
+            }
+            return Json(JsonDataResult);
+        }
+
     }
 }

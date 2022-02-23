@@ -130,7 +130,10 @@ namespace GPROSanXuat_Checklist.Business
                             Price = x.Price,
                             ProductId = x.ProductId,
                             //ProductName = x.Product.Name,
-                            //ProductUnit = x.Product.Unit.Name
+                            //ProductUnit = x.Product.Unit.Name,
+                            StartDate = x.StartDate,
+                            EndDate = x.EndDate,
+                            DeliveryDate = x.DeliveryDate
                         })
                         .ToList();
                     obj.Total = details.Sum(x => x.Quantities * x.Price);
@@ -259,6 +262,9 @@ namespace GPROSanXuat_Checklist.Business
                                                 else
                                                 {
                                                     // có update thong tin moi
+                                                    item.StartDate = found.StartDate;
+                                                    item.EndDate = found.EndDate;
+                                                    item.DeliveryDate = found.DeliveryDate;
                                                     item.Quantities = found.Quantities;
                                                     item.Price = found.Price;
                                                     item.UpdatedUser = model.ActionUser;

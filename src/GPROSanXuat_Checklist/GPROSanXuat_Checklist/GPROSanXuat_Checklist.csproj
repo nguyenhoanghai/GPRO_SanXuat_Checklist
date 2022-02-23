@@ -218,6 +218,7 @@
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\POController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductivityReportController.cs" />
     <Compile Include="Controllers\ReceiptionController.cs" />
     <Compile Include="Controllers\ReceiptionDetailController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -262,6 +263,16 @@
     <Content Include="Content\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\font-awesome-4.7.0\HELP-US-OUT.txt" />
+    <Content Include="Content\Gantt_Chart\analytics.js" />
+    <Content Include="Content\Gantt_Chart\api.js" />
+    <Content Include="Content\Gantt_Chart\dhtmlxgantt.css" />
+    <Content Include="Content\Gantt_Chart\dhtmlxgantt.js" />
+    <Content Include="Content\Gantt_Chart\dhtmlxgantt_broadway.css" />
+    <Content Include="Content\Gantt_Chart\dhtmlxgantt_fullscreen.js" />
+    <Content Include="Content\Gantt_Chart\dhtmlxgantt_grouping.js" />
+    <Content Include="Content\Gantt_Chart\dhtmlxgantt_tooltip.js" />
+    <Content Include="Content\Gantt_Chart\gantt_customize.css" />
+    <Content Include="Content\Gantt_Chart\locale_vi.js" />
     <Content Include="Content\Img\1.png" />
     <Content Include="Content\Img\2.png" />
     <Content Include="Content\Img\404.jpg" />
@@ -1769,6 +1780,8 @@
     <Content Include="Scripts\IED\checkList-user\CL_View.js" />
     <Content Include="Scripts\IED\Checklist\checklist-admin-info.js" />
     <Content Include="Scripts\IED\Checklist\checklist-index.js" />
+    <Content Include="Scripts\IED\Checklist\Gantt.js" />
+    <Content Include="Scripts\IED\Checklist\report-job.js" />
     <Content Include="Scripts\IED\Common.js" />
     <Content Include="Scripts\IED\Common.min.js" />
     <Content Include="Scripts\IED\Customer\customer-report.js" />
@@ -1796,6 +1809,11 @@
     <Content Include="Scripts\IED\PO\po-index.js" />
     <Content Include="Scripts\IED\ProductionFile\ProductFileCreate.js" />
     <Content Include="Scripts\IED\ProductionFile\ProductionFile.js" />
+    <Content Include="Scripts\IED\productivity-report\report-complete-daily.js" />
+    <Content Include="Scripts\IED\productivity-report\report-cutting-daily.js" />
+    <Content Include="Scripts\IED\productivity-report\report-productivity-daily.js" />
+    <Content Include="Scripts\IED\productivity-report\report-productivity-in-day.js" />
+    <Content Include="Scripts\IED\productivity-report\report-btp.js" />
     <Content Include="Scripts\IED\Product\product-index.js" />
     <Content Include="Scripts\IED\Receiption\Receiption_Create.js" />
     <Content Include="Scripts\IED\Receiption\Receiption_Index.js" />
@@ -1828,6 +1846,8 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\masonry.pkgd.min.js" />
+    <Content Include="Scripts\MCDatepicker\mc-calendar.min.js" />
+    <Content Include="Scripts\MCDatepicker\readme.txt" />
     <Content Include="Scripts\modernizr-2.5.3.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment.min.js" />
@@ -1959,6 +1979,13 @@
     <Content Include="Views\Floor\Index.cshtml" />
     <Content Include="Views\Assignment\Index.cshtml" />
     <Content Include="Views\LenhSX\Index.cshtml" />
+    <Content Include="Views\ProductivityReport\ReportCutting.cshtml" />
+    <Content Include="Views\ProductivityReport\ReportBTP.cshtml" />
+    <Content Include="Views\ProductivityReport\ReportProductityInDay.cshtml" />
+    <Content Include="Views\ProductivityReport\ProductityDaily.cshtml" />
+    <Content Include="Views\ProductivityReport\ReportComplete.cshtml" />
+    <Content Include="Views\ChecklistJob\ReportJobs.cshtml" />
+    <Content Include="Views\Checklist\GanttChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

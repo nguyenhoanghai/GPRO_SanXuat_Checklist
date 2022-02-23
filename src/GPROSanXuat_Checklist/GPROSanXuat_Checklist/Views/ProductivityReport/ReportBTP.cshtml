@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Theo dõi BTP";
+}
+<style>
+    #table-report-btp td {
+        text-align: center;
+        font-weight: 400;
+        color: black
+    }
+
+    #table-report-btp thead td,
+    #table-report-btp tbody td:first-child,
+    #table-report-btp tbody tr:last-child td {
+        font-weight: 700;
+        color: blue;
+        background: #efefef;
+        text-align: center;
+    }
+</style>
+
+<div class="container-fluid">
+    <fieldset>
+        <legend>Lọc thông tin</legend>
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Phân xưởng<span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="report-btp-workshop"></select>
+                <i re_line class="fa fa-refresh clickable red"></i>
+                <a href="/phan-xuong" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Lầu <span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="report-btp-floor"></select>
+                <i re_line class="fa fa-refresh clickable red"></i>
+                <a href="/floor" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div> 
+
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Từ ngày <span class="required-class">*</span></label>
+            <input class="form-control" id="report-btp-from" type="text" />
+        </div>
+
+        <div class="col-md-2 form-group ">
+            <label class="control-label">đến <span class="required-class">*</span></label>
+            <input class="form-control" id="report-btp-to" type="text" />
+        </div>
+        <button type="button" id="btn-report-btp-view" class="btn btn-primary" style="margin-top:30px"><i class="fa fa-search-minus"></i> Tìm kiếm </button>
+        <button type="button" id="btn-report-btp-excel" class="btn btn-danger" style="margin-top:30px"><i class="fa fa-file-excel-o"></i> Xuất Excel </button>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Thông tin năng xuất</legend>
+        <table id="table-report-btp" class="table table-bordered table-hover  ">
+            <thead class="thead-light"></thead>
+            <tbody></tbody>
+        </table>
+    </fieldset>
+</div>
+  
+<script src="~/Scripts/IED/productivity-report/report-btp.js"></script>

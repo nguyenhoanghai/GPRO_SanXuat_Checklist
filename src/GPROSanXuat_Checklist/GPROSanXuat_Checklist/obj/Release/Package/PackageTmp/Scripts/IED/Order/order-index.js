@@ -76,7 +76,7 @@ GPRO.Order = function () {
             $('#order-exchange').val(opt.attr('note'));
         });
 
-        $('[re_customer]').click(() => { GetCustomerSelect('order-customer');})
+        $('[re_customer]').click(() => { GetCustomerSelect('order-customer'); })
     }
 
     InitTable = () => {
@@ -90,11 +90,11 @@ GPRO.Order = function () {
             actions: {
                 listAction: Global.UrlAction.Gets,
                 createAction: Global.Element.Popup,
-               // searchAction: Global.Element.Search,
+                // searchAction: Global.Element.Search,
             },
             messages: {
                 addNewRecord: 'Thêm mới',
-               // searchRecord: 'Tìm kiếm',
+                // searchRecord: 'Tìm kiếm',
                 selectShow: 'Ẩn hiện cột'
             },
             fields: {
@@ -318,7 +318,7 @@ GPRO.Order = function () {
         $('#order-delivery-date').val('');
         $('#order-status').val(0);
         $('#order-po-select').val(0);
-   
+
         $('#order-note').val('');
         Global.Data.Childs.length = 0;
         Global.Data.approve = false;
@@ -349,7 +349,10 @@ GPRO.Order = function () {
                                     ProductName: item.ProductName,
                                     Quantities: item.Quantities,
                                     Price: item.Price,
-                                    Total: item.Price * item.Quantities
+                                    Total: item.Price * item.Quantities,
+                                    StartDate: item.StartDate,
+                                    EndDate: item.EndDate,
+                                    DeliveryDate: item.DeliveryDate
                                 });
                             });
                             if (data.Data.StatusId != 9)
@@ -458,7 +461,10 @@ GPRO.Order = function () {
             ProductName: '',
             Quantities: 0,
             Price: 0,
-            Total: 0
+            Total: 0,
+            StartDate: undefined,
+            EndDate: undefined,
+            DeliveryDate: undefined
         });
     }
 
@@ -588,6 +594,84 @@ GPRO.Order = function () {
                     display: function (data) {
                         var txt = '<span class="red bold">' + ParseStringToCurrency(data.record.Total) + '</span>';
                         return txt;
+                    }
+                },
+                StartDate: {
+                    title: 'Ngày bắt đầu(DK)',
+                    width: '5%',
+                    display: function (data) {
+                        if (Global.Data.disabledDetail) {
+                            if (data.record.StartDate)
+                                return (moment(data.record.StartDate).format('DD/MM/YYYY'));
+                            return '';
+                        }
+                        else {
+                            var div = $(`<div> <div>`);
+                            var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
+                            var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
+
+                            input2.change(function () {
+                                input1.val(moment(input2.val()).format('DD/MM/YYYY'));
+                                data.record.StartDate = moment(input2.val());
+                            });
+                            if (data.record.StartDate)
+                                input1.val(moment(data.record.StartDate).format('DD/MM/YYYY'));
+                            div.append(input1);
+                            div.append(input2);
+                            return div;
+                        }
+                    }
+                },
+                EndDate: {
+                    title: 'Ngày kết thúc(DK)',
+                    width: '5%',
+                    display: function (data) {
+                        if (Global.Data.disabledDetail) {
+                            if (data.record.EndDate)
+                                return (moment(data.record.EndDate).format('DD/MM/YYYY'));
+                            return '';
+                        }
+                        else {
+                            var div = $(`<div> <div>`);
+                            var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
+                            var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
+
+                            input2.change(function () {
+                                input1.val(moment(input2.val()).format('DD/MM/YYYY'));
+                                data.record.EndDate = moment(input2.val());
+                            });
+                            if (data.record.EndDate)
+                                input1.val(moment(data.record.EndDate).format('DD/MM/YYYY'));
+                            div.append(input1);
+                            div.append(input2);
+                            return div;
+                        }
+                    }
+                },
+                DeliveryDate: {
+                    title: 'Ngày giao hàng(DK)',
+                    width: '5%',
+                    display: function (data) {
+                        if (Global.Data.disabledDetail) {
+                            if (data.record.DeliveryDate)
+                                return (moment(data.record.DeliveryDate).format('DD/MM/YYYY'));
+                            return '';
+                        }
+                        else {
+                            var div = $(`<div> <div>`);
+                            var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
+                            var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
+
+                            input2.change(function () {
+                                input1.val(moment(input2.val()).format('DD/MM/YYYY'));
+                                data.record.DeliveryDate = moment(input2.val());
+                            });
+                            if (data.record.DeliveryDate)
+                                input1.val(moment(data.record.DeliveryDate).format('DD/MM/YYYY'));
+                            div.append(input1);
+                            div.append(input2);
+                            return div;
+                        }
                     }
                 },
                 Delete: {
@@ -743,7 +827,10 @@ GPRO.Order = function () {
                                 ProductName: item.ProductName,
                                 Quantities: item.Quantities,
                                 Price: item.Price,
-                                Total: item.Price * item.Quantities
+                                Total: item.Price * item.Quantities,
+                                StartDate: item.StartDate,
+                                EndDate: item.EndDate,
+                                DeliveryDate: item.DeliveryDate
                             });
                         });
 

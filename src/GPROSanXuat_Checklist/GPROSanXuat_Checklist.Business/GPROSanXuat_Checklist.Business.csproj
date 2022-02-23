@@ -82,8 +82,8 @@
     <Compile Include="BLLTemplateChecklistJob.cs" />
     <Compile Include="BLLTemplateChecklistJobStep.cs" />
     <Compile Include="BLLTemplateFile.cs" />
-    <Compile Include="Enum\eObjectType.cs" />
-    <Compile Include="Enum\eTemplateFileType.cs" />
+    <Compile Include="obj\Enum\eObjectType.cs" />
+    <Compile Include="obj\Enum\eTemplateFileType.cs" />
     <Compile Include="Model\AppConfigModel.cs" />
     <Compile Include="Model\AttachmentModel.cs" />
     <Compile Include="Model\BigAlertModel.cs" />

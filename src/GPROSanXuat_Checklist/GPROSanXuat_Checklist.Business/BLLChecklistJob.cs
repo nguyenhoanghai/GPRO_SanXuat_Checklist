@@ -499,7 +499,7 @@ namespace GPROSanXuat_Checklist.Business
                                 }
                             }
 
-                            eObj = users.FirstOrDefault(x => x.Id == job.EmployeeId);
+                            eObj = users.FirstOrDefault(x => x.Value == job.EmployeeId);
                             if (eObj != null)
                             {
                                 job.EmployName = eObj.Name + " (" + eObj.Data1 + ")";
@@ -566,6 +566,7 @@ namespace GPROSanXuat_Checklist.Business
                             db.Checklist_Job_Alert.Add(alert);
 
                             job.StatusId = statusId;
+                            job.RealEndDate = now;
                             job.UpdatedDate = now;
                             job.UpdatedUser = actionUser;
                             db.SaveChanges();
@@ -641,7 +642,7 @@ namespace GPROSanXuat_Checklist.Business
             return str;
         }
 
-        public Checklist_Job GetJobById(string strConnection,int Id )
+        public Checklist_Job GetJobById(string strConnection, int Id)
         {
             using (db = new SanXuatCheckListEntities(strConnection))
             {
@@ -867,7 +868,207 @@ namespace GPROSanXuat_Checklist.Business
             }
         }
 
+
+        public List<Checklist_JobModel> ReportJobs(string strConnection, int filterType, int currentUserId, List<ModelSelectItem> statuss, List<ModelSelectItem> users)
+        {
+            try
+            {
+                using (db = new SanXuatCheckListEntities(strConnection))
+                {
+                    var _jobs = db.Checklist_Job.Where(x => !x.IsDeleted);
+                    switch (filterType)
+                    {
+                        case 1: //tre han
+                            _jobs = _jobs.Where(x => x.RealEndDate > x.EndDate);
+                            break;
+                        case 2: //dung han
+                            _jobs = _jobs.Where(x => x.RealEndDate == x.EndDate);
+                            break;
+                        case 3: //truoc han
+                            _jobs = _jobs.Where(x => x.RealEndDate < x.EndDate);
+                            break;
+                    }
+
+
+                    var jobs = _jobs.Select(x => new Checklist_JobModel()
+                    {
+                        Id = x.Id,
+                        ParentId = x.ParentId,
+                        FakeId = x.FakeId,
+                        ChecklistJobStepId = x.ChecklistJobStepId,
+                         JobStepName = x.Checklist_JobStep.Name,
+                         ProjectName = x.Checklist_JobStep.Checklist.Name,
+                        JobIndex = x.JobIndex,
+                        Name = x.Name,
+                        JobContent = x.JobContent,
+                        EmployeeId = x.EmployeeId,
+                        //Employee = x.Employee,
+                        EmployeeName = "",// (x.EmployeeId.HasValue ? string.Format("{0} {1}", x.Employee.FirstName, x.Employee.LastName) : ""),
+                        RelatedEmployees = x.RelatedEmployees,
+                        StartDate = x.StartDate,
+                        EndDate = x.EndDate,
+                        RealEndDate = x.RealEndDate,
+                        ReminderDate = x.ReminderDate,
+                        Quantities = x.Quantities,
+                        RealQuantities = x.RealQuantities,
+                        StatusId = x.StatusId,
+                        StatusName = "",// x.Status.Name,
+                        Note = x.Note,
+                        UpdatedDate = x.UpdatedDate
+                    })
+                  .ToList();
+                    if (jobs.Count > 0)
+                    {
+                        foreach (var item in jobs)
+                        {
+                            #region comment
+                            var comments = new List<CommentModel>();
+                            comments.AddRange(db.Checklist_Job_Comment.Where(x => !x.IsDeleted && x.JobId == item.Id).Select(x => new CommentModel()
+                            {
+                                Id = x.Id,
+                                JobId = x.JobId,
+                                Comment = x.Comment,
+                                CType = 1,
+                                IsErrorLog = false,
+                                Type = x.Type,
+                                CreatedUser = x.CreatedUser,
+                                CreatedDate = x.CreatedDate
+                            }).ToList());
+                            item.CommentCount = comments.Count;
+
+                            comments.AddRange(db.Checklist_Job_ActionLog.Where(x => x.JobId == item.Id).Select(x => new CommentModel()
+                            {
+                                Id = x.Id,
+                                JobId = x.JobId,
+                                Comment = x.ActionInfo,
+                                CType = 2,
+                                Type = 1,
+                                IsErrorLog = false,
+                                CreatedUser = x.CreatedUser,
+                                CreatedDate = x.CreatedDate
+                            }).ToList());
+
+                            var jErrs = db.Checklist_Job_Error.Where(x => !x.IsDeleted && x.JobId == item.Id);
+                            if (jErrs != null && jErrs.Count() > 0)
+                            {
+                                ModelSelectItem user = null;
+                                foreach (var _item in jErrs)
+                                {
+                                    user = _item.UserProcessId.HasValue ? users.FirstOrDefault(x => x.Id == _item.UserProcessId) : null;
+                                    var model = new CommentModel();
+                                    model.Id = item.Id;
+                                    model.JobId = item.JobId;
+                                    model.Comment = "Mã lỗi : <span class='blue'>" + _item.Code + "</span><br/>Nội dung : <span class='blue'>" + _item.ErrorMessage + "</span><br/>Thời điểm phát sinh : <span class='blue'>" + _item.TimeError.ToString("dd/MM/yyyy HH:mm") + "</span><br/>Người xử lý : <span class='blue'>" + (user != null ? (user.Name) : "đang chờ...") + "</span><br/>Hướng giải quyết : <span class='blue'>" + (!string.IsNullOrEmpty(_item.Solution) ? _item.Solution : "đang chờ...") + "</span><br/>Thời gian kết thúc DK : <span class='blue'>" + (_item.TimeFinish_DK != null ? _item.TimeFinish_DK.Value.ToString("dd/MM/yyyy HH:mm") : "đang chờ...") + "</span>";
+                                    switch (_item.Status)
+                                    {
+                                        case 0: model.Comment += "<br/>Trạng thái xử lý lỗi : <span class='blue'>Đang chờ xử lý</span>\""; break;
+                                        case 1: model.Comment += "<br/>Trạng thái xử lý lỗi : <span class='blue'>Hoàn thành</span>\"<br/>Thời gian kết thúc TT : <span class='blue'>" + (_item.TimeFinish_TT != null ? _item.TimeFinish_DK.Value.ToString("dd/MM/yyyy HH:mm") : "đang chờ...") + "</span><br/>Cảnh báo : <span class='blue'>" + (!string.IsNullOrEmpty(_item.Warning) ? _item.Warning : string.Empty) + "</span>"; break;
+                                        case 2: model.Comment += "<br/>Trạng thái xử lý lỗi : <span class='blue'>Không hoàn thành</span>\"<br/>Lý do không hoàn thành : <span class='blue'>" + (!string.IsNullOrEmpty(_item.ReasonNotFinish) ? _item.ReasonNotFinish : string.Empty) + "</span>"; break;
+                                    }
+                                    model.UserProcessId = _item.UserProcessId ?? 0;
+                                    model.CType = 1;
+                                    model.JobErrId = item.Id;
+                                    model.IsErrorLog = true;
+                                    model.CreatedUser = item.CreatedUser;
+                                    model.CreatedDate = item.CreatedDate;
+                                    model.Status = _item.Status;
+                                    comments.Add(model);
+                                }
+                            }
+
+                            #endregion
+
+                            #region    attach
+                            var attach = db.Checklist_Job_Attachment.Where(x => !x.IsDeleted && x.JobId == item.Id).Select(x => new AttachmentModel()
+                            {
+                                Id = x.Id,
+                                Url = x.Url,
+                                Name = x.Name,
+                                JobId = x.JobId,
+                                CreatedDate = x.CreatedDate,
+                                CreatedUser = x.CreatedUser
+                            });
+                            #endregion
+
+                            #region
+                            if (users != null && users.Count > 0)
+                            {
+                                ModelSelectItem eObj;
+                                /*
+                                if (comments.Count > 0)
+                                {
+                                    foreach (var cObj in comments.OrderByDescending(x => x.CreatedDate))
+                                    {
+                                        eObj = users.FirstOrDefault(x => x.Id == cObj.CreatedUser);
+                                        if (eObj != null)
+                                        {
+                                            cObj.UserName = eObj.Name;
+                                            cObj.Icon = (!string.IsNullOrEmpty(eObj.Code) ? eObj.Code : "/Content/Img/no-image.png");
+                                        }
+                                        else
+                                        {
+                                            cObj.UserName = string.Empty;
+                                            cObj.Icon = "/Content/Img/no-image.png";
+                                        }
+                                        job.Comments.Add(cObj);
+                                    }
+                                }
+
+                                if (attach.Count() > 0)
+                                {
+                                    foreach (var att in attach.OrderByDescending(x => x.CreatedDate))
+                                    {
+                                        eObj = users.FirstOrDefault(x => x.Id == att.CreatedUser);
+                                        if (eObj != null)
+                                            att.UserName = eObj.Name;
+                                        else
+                                            att.UserName = string.Empty;
+
+                                        job.Attachs.Add(att);
+                                    }
+                                }
+                                */
+                                eObj = users.FirstOrDefault(x => x.Value == item.EmployeeId);
+                                if (eObj != null)
+                                {
+                                    item.EmployName = eObj.Name + " (" + eObj.Data1 + ")";
+                                    item.EmployIcon = (!string.IsNullOrEmpty(eObj.Code) ? eObj.Code : "/Content/Img/no-image.png");
+                                }
+                                else
+                                {
+                                    item.EmployName = string.Empty;
+                                    item.CurrentUserIcon = "/Content/Img/no-image.png";
+                                }
+
+                                eObj = users.FirstOrDefault(x => x.Id == currentUserId);
+                                item.CurrentUserId = currentUserId;
+                                if (eObj != null)
+                                {
+                                    item.CurrentUserName = eObj.Name + " (" + eObj.Data1 + ")";
+                                    item.CurrentUserIcon = (!string.IsNullOrEmpty(eObj.Code) ? eObj.Code : "/Content/Img/no-image.png");
+                                }
+                                else
+                                {
+                                    item.CurrentUserName = string.Empty;
+                                    item.CurrentUserIcon = "/Content/Img/no-image.png";
+                                }
+                            }
+                            #endregion
+
+                            if (statuss.Count > 0)
+                            {
+                                var eObj = statuss.FirstOrDefault(x => x.Value == item.StatusId);
+                                item.StatusName = eObj != null ? eObj.Name : "";
+                            }
+                        }
+                    }
+                    return jobs;
+                }
+            }
+            catch (Exception)
+            { }
+            return new List<Checklist_JobModel>();
+        }
+
     }
-
-
 }

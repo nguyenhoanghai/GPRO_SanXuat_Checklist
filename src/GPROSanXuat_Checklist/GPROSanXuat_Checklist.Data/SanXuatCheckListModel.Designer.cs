@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'E:\Hai_GPRO\Source App GPRO\Webs\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\SanXuatCheckListModel.edmx'. 
+﻿// T4 code generation is enabled for model 'E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\SanXuatCheckListModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

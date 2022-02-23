@@ -308,7 +308,10 @@ GPRO.PO = function () {
                                     ProductName: item.ProductName,
                                     Quantities: item.Quantities,
                                     Price: item.Price,
-                                    Total: item.Price * item.Quantities
+                                    Total: item.Price * item.Quantities,
+                                    StartDate: item.StartDate,
+                                    EndDate: item.EndDate,
+                                    DeliveryDate: item.DeliveryDate
                                 });
                             });
                             if (data.Data.StatusId != 9)
@@ -413,7 +416,10 @@ GPRO.PO = function () {
             ProductName: '',
             Quantities: 0,
             Price: 0,
-            Total: 0
+            Total: 0,
+            StartDate: undefined,
+            EndDate: undefined,
+            DeliveryDate: undefined
         });
     }
 
@@ -545,6 +551,63 @@ GPRO.PO = function () {
                         return txt;
                     }
                 },
+                StartDate: {
+                    title: 'Ngày bắt đầu(DK)',
+                    width: '5%',
+                    display: function (data) {
+                        var div = $(`<div> <div>`);
+                        var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
+                        var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
+
+                        input2.change(function () {
+                            input1.val(moment(input2.val()).format('DD/MM/YYYY'));
+                            data.record.StartDate = moment(input2.val());
+                        });
+                        if (data.record.StartDate)
+                            input1.val(moment(data.record.StartDate).format('DD/MM/YYYY'));
+                        div.append(input1);
+                        div.append(input2);
+                        return div;
+                    }
+                },
+                EndDate: {
+                    title: 'Ngày kết thúc(DK)',
+                    width: '5%',
+                    display: function (data) {
+                        var div = $(`<div> <div>`);
+                        var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
+                        var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
+
+                        input2.change(function () {
+                            input1.val(moment(input2.val()).format('DD/MM/YYYY'));
+                            data.record.EndDate = moment(input2.val());
+                        });
+                        if (data.record.EndDate)
+                            input1.val(moment(data.record.EndDate).format('DD/MM/YYYY'));
+                        div.append(input1);
+                        div.append(input2);
+                        return div;
+                    }
+                },
+                DeliveryDate: {
+                    title: 'Ngày giao hàng(DK)',
+                    width: '5%',
+                    display: function (data) {
+                        var div = $(`<div> <div>`);
+                        var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
+                        var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
+                        
+                        input2.change(function () {
+                            input1.val(moment(input2.val()).format('DD/MM/YYYY'));
+                            data.record.DeliveryDate = moment(input2.val());
+                        });
+                        if (data.record.DeliveryDate)
+                            input1.val(moment(data.record.DeliveryDate).format('DD/MM/YYYY'));
+                        div.append(input1);
+                        div.append(input2);
+                        return div;
+                    }
+                },
                 Delete: {
                     title: '',
                     width: "3%",
@@ -588,6 +651,14 @@ GPRO.PO = function () {
         $('#jtable-detail-po #selectHideShowColumn').remove();
         $('#jtable-detail-po .jtable-column-header').removeAttr('style')
         $('#' + Global.Element.JtableDetail).jtable('load');
+
+        //$(`input[type="date"]`).on("change", function () {
+        //    this.setAttribute(
+        //        "data-date",
+        //        moment(this.value, "YYYY-MM-DD")
+        //            .format(this.getAttribute("data-date-format"))
+        //    )
+        //}).trigger("change")
     }
 
     function GetProducts() {

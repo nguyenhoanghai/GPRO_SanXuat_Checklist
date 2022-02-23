@@ -4,12 +4,8 @@ using GPROCommon.Models;
 using GPROCommon.Repository;
 using GPROSanXuat_Checklist.App_Global;
 using GPROSanXuat_Checklist.Business;
-using GPROSanXuat_Checklist.Business.Enum;
 using GPROSanXuat_Checklist.Business.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace GPROSanXuat_Checklist.Controllers
@@ -23,7 +19,7 @@ namespace GPROSanXuat_Checklist.Controllers
             {
                 if (isAuthenticate)
                 {
-                    var objs = BLLChecklistJob.Instance.Gets(AppGlobal.ConnectionstringSanXuatChecklist, parentId, StatusRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon,""), UserRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon));
+                    var objs = BLLChecklistJob.Instance.Gets(AppGlobal.ConnectionstringSanXuatChecklist, parentId, StatusRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon, ""), UserRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon));
                     JsonDataResult.Records = objs;
                     JsonDataResult.Result = "OK";
                 }
@@ -37,7 +33,7 @@ namespace GPROSanXuat_Checklist.Controllers
 
         public JsonResult AdminUpdate(Checklist_JobModel model)
         {
-            ResponseBase responseResult; 
+            ResponseBase responseResult;
             try
             {
                 if (isAuthenticate)
@@ -80,5 +76,25 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
+
+        public ActionResult ReportJobs()
+        {
+            return View();
+        }
+
+        public JsonResult GetReports(int filter)
+        {
+            try
+            {
+                var objs = BLLChecklistJob.Instance.ReportJobs(AppGlobal.ConnectionstringSanXuatChecklist, filter, UserContext.UserID, StatusRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon, "CheckList"), UserRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon));
+                JsonDataResult.Result = "OK";
+                JsonDataResult.Records = objs;
+            }
+            catch (Exception ex)
+            {
+            }
+            return Json(JsonDataResult);
+        }
+
     }
 }

@@ -60,6 +60,7 @@ namespace GPROSanXuat_Checklist.Business.Model
         public int CheckListId { get; set; }
 
         public int JobId { get; set; }
+        public int JobFakeId { get; set; }
         public int ReferEmployeeId { get; set; }
         public string ReferEmployeeName { get; set; }
         public Checklist_JobModel()

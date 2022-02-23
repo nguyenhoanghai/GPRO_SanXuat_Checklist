@@ -45,7 +45,7 @@ namespace GPROSanXuat_Checklist.Data
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
         public virtual ICollection<Checklist_JobStep> Checklist_JobStep { get; set; }
-        public virtual PO_SellDetail PO_SellDetail { get; set; }
         public virtual Template_Checklist Template_Checklist { get; set; }
+        public virtual PO_SellDetail PO_SellDetail { get; set; }
     }
 }

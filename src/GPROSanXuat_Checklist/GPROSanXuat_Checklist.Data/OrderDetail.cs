@@ -19,6 +19,9 @@ namespace GPROSanXuat_Checklist.Data
         public int ProductId { get; set; }
         public int Quantities { get; set; }
         public double Price { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public Nullable<System.DateTime> DeliveryDate { get; set; }
         public bool IsDeleted { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedUser { get; set; }

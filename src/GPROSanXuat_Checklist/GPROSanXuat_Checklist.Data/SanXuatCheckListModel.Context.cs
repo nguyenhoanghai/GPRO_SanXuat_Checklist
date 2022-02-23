@@ -43,10 +43,8 @@ namespace GPROSanXuat_Checklist.Data
         public DbSet<LotSupply> LotSupplies { get; set; }
         public DbSet<MaterialNorm> MaterialNorms { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<P_Config> P_Config { get; set; }
         public DbSet<PO_Sell> PO_Sell { get; set; }
-        public DbSet<PO_SellDetail> PO_SellDetail { get; set; }
         public DbSet<ProductionBatch> ProductionBatches { get; set; }
         public DbSet<ProductionFile> ProductionFiles { get; set; }
         public DbSet<ProFileControl> ProFileControls { get; set; }
@@ -60,5 +58,7 @@ namespace GPROSanXuat_Checklist.Data
         public DbSet<TemplateFile> TemplateFiles { get; set; }
         public DbSet<TemplateFileType> TemplateFileTypes { get; set; }
         public DbSet<W_Config> W_Config { get; set; }
+        public DbSet<PO_SellDetail> PO_SellDetail { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
     }
 }

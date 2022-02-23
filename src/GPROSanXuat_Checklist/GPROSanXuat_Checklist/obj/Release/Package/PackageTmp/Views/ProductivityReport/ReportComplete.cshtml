@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewBag.Title = "Sản lượng hoàn thành";
+}
+
+<style>
+    #table-report-complete td {
+        text-align: center;
+        font-weight: 400;
+        color: black
+    }
+
+    #table-report-complete thead td,
+    #table-report-complete tbody td:first-child,
+    #table-report-complete tbody tr:last-child td {
+        font-weight: 700;
+        color: blue;
+        background: #efefef;
+        text-align: center;
+    }
+</style>
+
+<div class="container-fluid">
+    <fieldset>
+        <legend>Lọc thông tin</legend>
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Phân xưởng<span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="report-complete-workshop"></select>
+                <i re_line class="fa fa-refresh clickable red"></i>
+                <a href="/phan-xuong" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Lầu <span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="report-complete-floor"></select>
+                <i re_line class="fa fa-refresh clickable red"></i>
+                <a href="/floor" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Từ ngày <span class="required-class">*</span></label>
+            <input class="form-control" id="report-complete-from" type="text" />
+        </div>
+
+        <div class="col-md-2 form-group ">
+            <label class="control-label">đến <span class="required-class">*</span></label>
+            <input class="form-control" id="report-complete-to" type="text" />
+        </div>
+        <div class="col-md-4 form-group ">
+            <button type="button" id="btn-report-complete-view" class="btn btn-primary" style="margin-top:30px"><i class="fa fa-search-minus"></i> Tìm kiếm </button>
+            <button type="button" id="btn-report-complete-excel" class="btn btn-danger" style="margin-top:30px"><i class="fa fa-file-excel-o"></i> Xuất Excel </button>
+
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Thông tin năng xuất</legend>
+        <table id="table-report-complete" class="table table-bordered table-hover  ">
+            <thead class="thead-light"></thead>
+            <tbody></tbody>
+        </table>
+    </fieldset>
+</div>
+
+<script src="~/Scripts/IED/productivity-report/report-complete-daily.js"></script>
