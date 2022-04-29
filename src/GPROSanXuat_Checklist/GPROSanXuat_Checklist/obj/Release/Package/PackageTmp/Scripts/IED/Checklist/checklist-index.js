@@ -36,6 +36,7 @@ GPRO.Checklist = function () {
             PopupProduct: 'popup-checklist-product',
 
             PopupChecklist: 'popup-checklist',
+            
         },
         Data: {
             IsInsert: true,
@@ -64,7 +65,7 @@ GPRO.Checklist = function () {
 
     this.Export = (id) => {
         window.location.href = '/checklist/ExportExcel?Id=' + id;
-    }
+    } 
 
     this.Delete = (id) => {
         GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
@@ -77,7 +78,7 @@ GPRO.Checklist = function () {
         GetUsers();
         InitTablePO();
         InitTableProduct();
-        InitPopup();
+        InitPopup(); 
         InitPopupPO();
         InitPopupProduct();
         GetChecklistTemplateSelect('checklist-template-select');
@@ -640,5 +641,8 @@ GPRO.Checklist = function () {
             }
         });
     }
+
+
+   
 
 } 

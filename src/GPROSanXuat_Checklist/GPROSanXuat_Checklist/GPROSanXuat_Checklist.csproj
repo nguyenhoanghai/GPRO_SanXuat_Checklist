@@ -202,7 +202,9 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DeliveryController.cs" />
     <Compile Include="Controllers\DeliveryDetailController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\EmployeeSkillController.cs" />
     <Compile Include="Controllers\EquipmentController.cs" />
     <Compile Include="Controllers\EquipmentGroupController.cs" />
     <Compile Include="Controllers\EquipmentTypeController.cs" />
@@ -211,12 +213,15 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LenhSXController.cs" />
     <Compile Include="Controllers\LineController.cs" />
+    <Compile Include="Controllers\LinePartController.cs" />
     <Compile Include="Controllers\LotSuppliesController.cs" />
     <Compile Include="Controllers\MaterialController.cs" />
     <Compile Include="Controllers\MaterialTypeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\POController.cs" />
+    <Compile Include="Controllers\PositionController.cs" />
+    <Compile Include="Controllers\PositionTypeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductivityReportController.cs" />
     <Compile Include="Controllers\ReceiptionController.cs" />
@@ -224,6 +229,9 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
+    <Compile Include="Controllers\SkillController.cs" />
+    <Compile Include="Controllers\SkillGroupController.cs" />
+    <Compile Include="Controllers\skilllevelController.cs" />
     <Compile Include="Controllers\SQLConnectController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\StatusTypeController.cs" />
@@ -273,6 +281,7 @@
     <Content Include="Content\Gantt_Chart\dhtmlxgantt_tooltip.js" />
     <Content Include="Content\Gantt_Chart\gantt_customize.css" />
     <Content Include="Content\Gantt_Chart\locale_vi.js" />
+    <Content Include="Content\IED\productivity-daily-sh.css" />
     <Content Include="Content\Img\1.png" />
     <Content Include="Content\Img\2.png" />
     <Content Include="Content\Img\404.jpg" />
@@ -1788,7 +1797,9 @@
     <Content Include="Scripts\IED\Customer\customer.js" />
     <Content Include="Scripts\IED\Delivery\delivery-index.js" />
     <Content Include="Scripts\IED\Delivery\Delivery_Create.js" />
+    <Content Include="Scripts\IED\Department\department-index.js" />
     <Content Include="Scripts\IED\EGroup\EG_Index.js" />
+    <Content Include="Scripts\IED\employee-skill\employee-skill-index.js" />
     <Content Include="Scripts\IED\Employee\Employ_Index.js" />
     <Content Include="Scripts\IED\Equipment\E_Index.js" />
     <Content Include="Scripts\IED\EType\ET_Index.js" />
@@ -1796,6 +1807,7 @@
     <Content Include="Scripts\IED\Home.min.js" />
     <Content Include="Scripts\IED\IED_StandCommon.js" />
     <Content Include="Scripts\IED\IED_StandCommon.min.js" />
+    <Content Include="Scripts\IED\line-part\line-part-index.js" />
     <Content Include="Scripts\IED\Line\Line.js" />
     <Content Include="Scripts\IED\LotSupplies\lot-supplies-index.js" />
     <Content Include="Scripts\IED\LotSupplies\R_Inventory.js" />
@@ -1806,12 +1818,14 @@
     <Content Include="Scripts\IED\MType\MT_Index.js" />
     <Content Include="Scripts\IED\Order\order-index.js" />
     <Content Include="Scripts\IED\Lenh\lenh-index.js" />
+    <Content Include="Scripts\IED\Position\position-index.js" />
     <Content Include="Scripts\IED\PO\po-index.js" />
     <Content Include="Scripts\IED\ProductionFile\ProductFileCreate.js" />
     <Content Include="Scripts\IED\ProductionFile\ProductionFile.js" />
     <Content Include="Scripts\IED\productivity-report\report-complete-daily.js" />
     <Content Include="Scripts\IED\productivity-report\report-cutting-daily.js" />
     <Content Include="Scripts\IED\productivity-report\report-productivity-daily.js" />
+    <Content Include="Scripts\IED\productivity-report\report-productivity-in-day-2.js" />
     <Content Include="Scripts\IED\productivity-report\report-productivity-in-day.js" />
     <Content Include="Scripts\IED\productivity-report\report-btp.js" />
     <Content Include="Scripts\IED\Product\product-index.js" />
@@ -1821,6 +1835,7 @@
     <Content Include="Scripts\IED\Role\R_Create.js" />
     <Content Include="Scripts\IED\Role\R_Index.js" />
     <Content Include="Scripts\IED\Size\size-index.js" />
+    <Content Include="Scripts\IED\Skill\skill-index.js" />
     <Content Include="Scripts\IED\Status\status-type-index.js" />
     <Content Include="Scripts\IED\TemplateChecklist\template-checklist-edit.js" />
     <Content Include="Scripts\IED\TemplateChecklist\template-checklist.js" />
@@ -1834,6 +1849,7 @@
     <Content Include="Scripts\IED\Floor\floor-index.js" />
     <Content Include="Scripts\IED\Workshop\wk_Index.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="ReportTemplates\SH_Template.xlsx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1986,10 +2002,18 @@
     <Content Include="Views\ProductivityReport\ReportComplete.cshtml" />
     <Content Include="Views\ChecklistJob\ReportJobs.cshtml" />
     <Content Include="Views\Checklist\GanttChart.cshtml" />
+    <Content Include="Views\ProductivityReport\ProductivityDaily_SH.cshtml" />
+    <Content Include="Views\Position\Index.cshtml" />
+    <Content Include="Views\Skill\Index.cshtml" />
+    <Content Include="Views\Department\Index.cshtml" />
+    <Content Include="Views\LinePart\Index.cshtml" />
+    <Content Include="Views\EmployeeSkill\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\ApproveChecklist\" />
+    <Folder Include="Views\SkillGroup\" />
+    <Folder Include="Views\skilllevel\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -277,6 +277,7 @@ namespace GPROSanXuat_Checklist.Business
                                             checklistJob.JobContent = jobItem.JobContent;
                                             checklistJob.FakeId = jobItem.Id;
                                             checklistJob.ParentId = jobItem.ParentId;
+                                            checklistJob.HasViewProductivity = jobItem.HasViewProductivity;
                                             checklistJob.Checklist_JobStep = checklist_JobStep;
                                             checklistJob.StatusId = 1;
                                             checklistJob.CreatedUser = model.ActionUser;
@@ -499,7 +500,7 @@ namespace GPROSanXuat_Checklist.Business
                         if (jobSteps.Count > 0)
                         {
                             Checklist_JobStepModel jStepObj = null;
-                             int stepFakeId = 10 ;
+                            int stepFakeId = 10;
                             foreach (var jsteps in jobSteps)
                             {
                                 jStepObj = new Checklist_JobStepModel()
@@ -521,7 +522,7 @@ namespace GPROSanXuat_Checklist.Business
                                     //StatusName = jsteps.Status.Name,
                                     Note = jsteps.Note,
                                     UpdatedDate = jsteps.UpdatedDate
-                                }; 
+                                };
 
                                 ModelSelectItem found = null;
                                 found = statuss.FirstOrDefault(x => x.Value == jStepObj.StatusId);
@@ -536,34 +537,34 @@ namespace GPROSanXuat_Checklist.Business
                                 var allJobs = db.Checklist_Job
                                     .Where(x => !x.IsDeleted && x.ChecklistJobStepId == jsteps.Id)
                                     .Select(x => new Checklist_JobModel()
-                                     {
-                                         Id = x.Id,
-                                         ParentId = x.ParentId,
-                                         FakeId = x.FakeId,
-                                         ChecklistJobStepId = x.ChecklistJobStepId,
-                                         JobIndex = x.JobIndex,
-                                         Name = x.Name,
-                                         JobContent = x.JobContent,
-                                         EmployeeId = x.EmployeeId,
-                                         //Employee = x.Employee,
-                                         EmployeeName = "",// (x.EmployeeId.HasValue ? string.Format("{0} {1}", x.Employee.FirstName, x.Employee.LastName) : ""),
-                                         RelatedEmployees = x.RelatedEmployees,
-                                         StartDate = x.StartDate,
-                                         EndDate = x.EndDate,
-                                         RealEndDate = x.RealEndDate,
-                                         ReminderDate = x.ReminderDate,
-                                         Quantities = x.Quantities,
-                                         RealQuantities = x.RealQuantities,
-                                         StatusId = x.StatusId,
-                                         StatusName = "",//x.Status.Name,
-                                         Note = x.Note,
-                                         UpdatedDate = x.UpdatedDate
-                                     }).ToList();
+                                    {
+                                        Id = x.Id,
+                                        ParentId = x.ParentId,
+                                        FakeId = x.FakeId,
+                                        ChecklistJobStepId = x.ChecklistJobStepId,
+                                        JobIndex = x.JobIndex,
+                                        Name = x.Name,
+                                        JobContent = x.JobContent,
+                                        EmployeeId = x.EmployeeId,
+                                        //Employee = x.Employee,
+                                        EmployeeName = "",// (x.EmployeeId.HasValue ? string.Format("{0} {1}", x.Employee.FirstName, x.Employee.LastName) : ""),
+                                        RelatedEmployees = x.RelatedEmployees,
+                                        StartDate = x.StartDate,
+                                        EndDate = x.EndDate,
+                                        RealEndDate = x.RealEndDate,
+                                        ReminderDate = x.ReminderDate,
+                                        Quantities = x.Quantities,
+                                        RealQuantities = x.RealQuantities,
+                                        StatusId = x.StatusId,
+                                        StatusName = "",//x.Status.Name,
+                                        Note = x.Note,
+                                        UpdatedDate = x.UpdatedDate
+                                    }).ToList();
 
                                 if (allJobs.Count > 0)
                                 {
                                     for (int i = 0; i < allJobs.Count; i++)
-                                    { 
+                                    {
                                         if (allJobs[i].EmployeeId.HasValue)
                                         {
                                             found = users.FirstOrDefault(x => x.Value == allJobs[i].EmployeeId);
@@ -586,7 +587,7 @@ namespace GPROSanXuat_Checklist.Business
                                         item.SubItems = getSubItem(item, allJobs);
                                     }
                                 }
-                                 
+
                                 model.JobSteps.Add(jStepObj);
                                 stepFakeId++;
                             }
@@ -612,6 +613,22 @@ namespace GPROSanXuat_Checklist.Business
                 }
             }
             return item.SubItems;
+        }
+
+        public List<int> getLenhProductIds(string strConnection, int checklistId)
+        {
+            List<int> lenhProductIds = new List<int>();
+            using (db = new SanXuatCheckListEntities(strConnection))
+            {
+                var clist = db.Checklists.FirstOrDefault(x => !x.IsDeleted && x.Id == checklistId);
+                if (clist != null && clist.PODetailId.HasValue)
+                {
+                    lenhProductIds.AddRange(db.Lenh_Products
+                        .Where(x => !x.IsDeleted && x.PODetailId.HasValue && x.PODetailId.Value == clist.PODetailId.Value)
+                        .Select(x => x.Id).ToList());
+                }
+            }
+            return lenhProductIds;
         }
     }
 }

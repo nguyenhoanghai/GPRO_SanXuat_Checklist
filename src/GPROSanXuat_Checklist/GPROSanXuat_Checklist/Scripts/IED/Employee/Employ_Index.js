@@ -31,7 +31,11 @@ GPRO.EmployeeList = function () {
         },
         Data: {
             ModelEmployee: {},
-            IsInsert: true
+            IsInsert: true,
+            floorId: null,
+            lineId: null,
+            linePartId: null,
+            positionId: null
         }
     }
     this.GetGlobal = function () {
@@ -44,13 +48,13 @@ GPRO.EmployeeList = function () {
         ReloadList();
         InitPopup();
         $('[re-e-user]').click();
+        $('#e-type').change();
+        GetWorkshopSelect('e-workshop');
+        GetDepartmentSelect('e-department');
     }
 
     var RegisterEvent = function () {
-        $("#eGender").kendoMobileSwitch({
-            onLabel: "Nam",
-            offLabel: "Nữ"
-        });
+        $("#eGender").bootstrapToggle();
 
         $("#EBirthday").kendoDatePicker({
             format: "dd/MM/yyyy",
@@ -70,6 +74,84 @@ GPRO.EmployeeList = function () {
 
         $('[re-e-user]').click(function () {
             GetUserSelect('e-user');
+        });
+
+        $('#e-type').change(() => {
+            if ($('#e-type').val() == '0') {
+                $('[vp]').removeClass('hide');
+                $('[sx]').addClass('hide');
+            }
+            else {
+                $('[sx]').removeClass('hide');
+                $('[vp]').addClass('hide');
+            }
+            GetPositionSelect('e-position', $('#e-type').val() == '0' ? 'Officer' : 'Worker');
+        });
+
+        $('[re-department]').click(function () {
+            GetDepartmentSelect('e-department');
+        });
+
+        $('[re-position]').click(function () {
+            GetPositionSelect('e-position', $('#e-type').val() == '0' ? 'Officer' : 'Worker');
+        });
+
+        $('[re-workshop]').click(function () {
+            GetWorkshopSelect('e-workshop');
+        });
+
+        $('[re-floor]').click(function () {
+            if ($('#e-workshop').val() != '0' || $('#e-workshop').val() != 0)
+                GetFloorSelect('e-floor', $('#e-workshop').val());
+        });
+
+        $('[re-line]').click(function () {
+            if ($('#e-floor').val() != '0' || $('#e-floor').val() != 0)
+                GetLineSelect('e-line', $('#e-floor').val());
+        });
+
+        $('[re-line-part]').click(function () {
+            if ($('#e-line').val() != '0' || $('#e-line').val() != 0)
+                GetLinePartSelect('e-line-part', $('#e-line').val());
+        });
+
+        $('#e-workshop').change(() => {
+            if ($('#e-workshop').val() != '0' || $('#e-workshop').val() != 0)
+                GetFloorSelect('e-floor', $('#e-workshop').val());
+        })
+
+        $('#e-floor').change(() => {
+            if (Global.Data.floorId) {
+                $('#e-floor').val(Global.Data.floorId);
+                Global.Data.floorId = null;
+            }
+
+            if ($('#e-floor').val() != '0' || $('#e-floor').val() != 0)
+                GetLineSelect('e-line', $('#e-floor').val());
+        });
+
+        $('#e-line').change(() => {
+            if (Global.Data.lineId) {
+                $('#e-line').val(Global.Data.lineId);
+                Global.Data.lineId = null;
+            }
+
+            if ($('#e-line').val() != '0' || $('#e-line').val() != 0)
+                GetLinePartSelect('e-line-part', $('#e-line').val());
+        });
+
+        $('#e-line-part').change(() => {
+            if (Global.Data.linePartId) {
+                $('#e-line-part').val(Global.Data.linePartId);
+                Global.Data.linePartId = null;
+            } 
+        });
+
+        $('#e-position').change(() => {
+            if (Global.Data.positionId) {
+                $('#e-position').val(Global.Data.positionId);
+                Global.Data.positionId = null;
+            }
         });
     }
 
@@ -174,8 +256,7 @@ GPRO.EmployeeList = function () {
                             datepicker.value(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
                             datepicker.trigger("change");
 
-                            var switchInstance = $("#eGender").data("kendoMobileSwitch");
-                            switchInstance.check(data.record.Gender);
+                            $("#eGender").prop("checked", data.record.Gender).change();
 
                             $('#e-id').val(data.record.Id);
                             $('#e-user').val((data.record.UserId ? data.record.UserId : 0));
@@ -184,9 +265,36 @@ GPRO.EmployeeList = function () {
                             $('#elast').val(data.record.LastName);
                             $('#e-email').val(data.record.Email);
                             $('#e-phone').val(data.record.Mobile);
+                            
                             if (data.record.Image)
                                 $('.img-avatar').attr('src', data.record.Image);
+                            else
+                                $('.img-avatar').attr('src', '/Content/Img/no-image.png');
+
+                            if (data.record.LinePartId) {
+                                $('#e-type').val(1).change();
+                                $('#e-workshop').val(data.record.WorkshopId).change();
+                                $('#e-floor').val(data.record.FloorId);
+                                $('#e-line').val(data.record.LineId);
+                                $('#e-line-part').val(data.record.LinePartId);
+                                $('#e-department').val(0);
+                                Global.Data.floorId = data.record.FloorId;
+                                Global.Data.lineId = data.record.LineId;
+                                Global.Data.linePartId = data.record.LinePartId;
+                            }
+                            else {
+                                $('#e-type').val(0).change();
+                                $('#e-workshop').val(0);
+                                $('#e-floor').val(0);
+                                $('#e-line').val(0);
+                                $('#e-line-part').val(0);
+                                $('#e-department').val(data.record.DepartmentId);
+                                Global.Data.floorId = null;
+                                Global.Data.lineId = null;
+                                Global.Data.linePartId = null;
+                            }
                             Global.Data.IsInsert = false;
+                            Global.Data.positionId = (data.record.PositionId);
                         });
                         return text;
                     }
@@ -265,8 +373,7 @@ GPRO.EmployeeList = function () {
         datepicker.value(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
         datepicker.trigger("change");
 
-        var switchInstance = $("#eGender").data("kendoMobileSwitch");
-        switchInstance.check(true);
+        $("#eGender").prop("checked", false).change();
 
         $('#e-id').val(0);
         $('#e-user').val(0);
@@ -303,12 +410,15 @@ GPRO.EmployeeList = function () {
             UserId: $('#e-user').val(),
             FirstName: $('#efirst').val(),
             LastName: $('#elast').val(),
-            Gender: $("#eGender").data("kendoMobileSwitch").check(),
+            Gender: $("#eGender").prop("checked"),
             Birthday: $("#EBirthday").data("kendoDatePicker").value(),
             Mobile: $('#e-phone').val(),
             Code: $('#ecode').val(),
             Email: $('#e-email').val(),
-            Picture: $('#e-file-upload').attr('newurl')
+            Picture: $('#e-file-upload').attr('newurl'),
+            DepartmentId: $('#e-type').val() == '0' ? $('#e-department').val() : null,
+            LinePartId: $('#e-type').val() == '1' ? $('#e-line-part').val() : null,
+            PositionId: $('#e-position').val(),
         };
 
         $.ajax({

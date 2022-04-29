@@ -47,10 +47,7 @@ GPRO.EmployeeList = function () {
     }
 
     var RegisterEvent = function () {
-        $("#eGender").kendoMobileSwitch({
-            onLabel: "Nam",
-            offLabel: "Nữ"
-        });
+        $("#eGender").bootstrapToggle( );
 
         $("#EBirthday").kendoDatePicker({
             format: "dd/MM/yyyy",
@@ -174,8 +171,7 @@ GPRO.EmployeeList = function () {
                             datepicker.value(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
                             datepicker.trigger("change");
 
-                            var switchInstance = $("#eGender").data("kendoMobileSwitch");
-                            switchInstance.check(data.record.Gender);
+                           $("#eGender").prop("checked",data.record.Gender).change(); 
 
                             $('#e-id').val(data.record.Id);
                             $('#e-user').val((data.record.UserId ? data.record.UserId : 0));
@@ -265,8 +261,7 @@ GPRO.EmployeeList = function () {
         datepicker.value(new Date(date.getFullYear(), date.getMonth(), date.getDate()));
         datepicker.trigger("change");
 
-        var switchInstance = $("#eGender").data("kendoMobileSwitch");
-        switchInstance.check(true);
+         $("#eGender").prop("checked", false).change(); 
 
         $('#e-id').val(0);
         $('#e-user').val(0);
@@ -303,7 +298,7 @@ GPRO.EmployeeList = function () {
             UserId: $('#e-user').val(),
             FirstName: $('#efirst').val(),
             LastName: $('#elast').val(),
-            Gender: $("#eGender").data("kendoMobileSwitch").check(),
+            Gender: $("#eGender").prop("checked"),
             Birthday: $("#EBirthday").data("kendoDatePicker").value(),
             Mobile: $('#e-phone').val(),
             Code: $('#ecode').val(),

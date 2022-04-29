@@ -30,12 +30,16 @@ GPRO.ChecklistAdminInfo = function () {
             SaveAttach: '/CheckListuser/SaveAttach',
             DeleteAttach: '/CheckListuser/DeleteAttach',
             UpdateStatus: '/ChecklistJob/donejob',
+
+            GetReportNS: '/ChecklistJob/GetReportNangXuat',
+            ExportReportNS: '/ChecklistJob/Export_ReportNangXuat'
         },
         Element: {
             PopupJobStep: 'popup-checklist-job-step',
 
             PopupTableJob: 'popup-checklist-table-job',
-            PopupJob: 'popup-checklist-job'
+            PopupJob: 'popup-checklist-job',
+            PopupReportNX: 'popup-checklist-reportNX'
         },
         Data: {
             Id: 0,
@@ -101,6 +105,14 @@ GPRO.ChecklistAdminInfo = function () {
                 UpFile(this.files[0].name);
             }
         });
+
+        $('[checklist-job-report-nx]').click(() => {
+            getReportNX();
+        });
+
+        $('[btn-export]').click(() => {
+            window.location.href = Global.UrlAction.ExportReportNS + `?clId=${Global.Data.Id}  `;
+        })
     }
 
     function UpFile(fileName) {
@@ -164,7 +176,7 @@ GPRO.ChecklistAdminInfo = function () {
                                     <td> </td>
                                     <td> </td>
                                     <td> </td>
-                                    <td>${getText(obj.CustomerName)   }</td >
+                                    <td>${getText(obj.CustomerName)}</td >
                                     <td>${getText(obj.ProductName)}</td>
                                     <td>${obj.Productivity}</td>
                                     <td>${obj.ProductionDays}</td>
@@ -343,7 +355,7 @@ GPRO.ChecklistAdminInfo = function () {
                             //'multiselect exists - destroying and recreating'
                             $('#checklist-job-step-related-employee,#checklist-job-related-employee').data('kendoMultiSelect').destroy();
                             $('#checklist-job-step-related-employee,#checklist-job-related-employee').unwrap('.k-multiselect').show().empty();
-                            $(".k-multiselect-wrap").remove(); 
+                            $(".k-multiselect-wrap").remove();
                         }
 
                         $('#checklist-job-step-employee,#checklist-job-employee').empty().append(option2);
@@ -351,9 +363,9 @@ GPRO.ChecklistAdminInfo = function () {
                         $('#checklist-job-step-related-employee,#checklist-job-related-employee').empty().append(option2);
                         $('#checklist-job-step-related-employee,#checklist-job-related-employee').kendoMultiSelect();
                         //.data("kendoMultiSelect");
-                       // var multiselect = $('#checklist-job-step-related-employee,#checklist-job-related-employee').data("kendoMultiSelect");
+                        // var multiselect = $('#checklist-job-step-related-employee,#checklist-job-related-employee').data("kendoMultiSelect");
 
-                       // multiselect.refresh();
+                        // multiselect.refresh();
 
                     }
                     else
@@ -531,6 +543,7 @@ GPRO.ChecklistAdminInfo = function () {
         $("#" + Global.Element.PopupJob + ' button[checklist-job-cancel]').click(function () {
             $("#" + Global.Element.PopupJob).modal("hide");
             $("#" + Global.Element.PopupTableJob).modal("show");
+            $('[checklist-job-report-nx]').addClass('hide');
             // ResetJobForm();
         });
 
@@ -592,55 +605,6 @@ GPRO.ChecklistAdminInfo = function () {
     }
 
     BindJob = (id) => {
-        //var found = Global.Data.Jobs.filter(x => x.Id == id)[0];
-        //if (found) {
-        //    $('#checklist-job-id').val(found.Id);
-        //    $('#checklist-job-content').val(found.JobContent);
-        //    $("#checklist-job-name").val(found.Name);
-        //    $("#checklist-job-index").html(found.JobIndex);
-
-        //    $("#checklist-job-employee").val(found.EmployeeId);
-        //    $("#checklist-job-quantities").val(found.Quantities);
-        //    $("#checklist-job-note").val(found.Note);
-
-        //    if (found.RelatedEmployees)
-        //        $('#checklist-job-related-employee').data("kendoMultiSelect").value(JSON.parse('[' + found.RelatedEmployees + ']'));
-        //    else
-        //        $('#checklist-job-related-employee').data("kendoMultiSelect").value("");
-
-        //    var startDateInput = $("#checklist-job-start").data("kendoDateTimePicker");
-        //    var endDateInput = $("#checklist-job-end").data("kendoDateTimePicker");
-        //    var reminderInput = $("#checklist-job-reminder").data("kendoDateTimePicker");
-        //    var _startDate = undefined;
-        //    var _endDate = undefined;
-        //    var _reminderDate = undefined;
-        //    if (found.StartDate) {
-        //        _startDate = new Date(moment(found.StartDate));
-        //        startDateInput.value(kendo.toString(_startDate, 'dd/MM/yyyy hh:mm tt'));
-        //        endDateInput.min(kendo.toString(_startDate, 'dd/MM/yyyy hh:mm tt'));
-        //        reminderInput.min(kendo.toString(_startDate, 'dd/MM/yyyy hh:mm tt'));
-        //    }
-
-        //    if (found.EndDate) {
-        //        _endDate = new Date(moment(found.EndDate));
-        //        endDateInput.value(kendo.toString(_endDate, 'dd/MM/yyyy hh:mm tt'));
-        //        startDateInput.max(kendo.toString(_endDate, 'dd/MM/yyyy hh:mm tt'));
-        //        reminderInput.max(kendo.toString(_endDate, 'dd/MM/yyyy hh:mm tt'));
-        //    }
-
-        //    if (found.ReminderDate) {
-        //        _reminderDate = new Date(moment(found.ReminderDate));
-        //        reminderInput.value(kendo.toString(_reminderDate, 'dd/MM/yyyy hh:mm tt'));
-        //    }
-        //    startDateInput.trigger("change");
-        //    endDateInput.trigger("change");
-        //    reminderInput.trigger("change");
-        //    $("#" + Global.Element.PopupJob).modal("show");
-        //}
-        //else {
-        //    alert('Không tìm thấy thông tin');
-        //}
-
         GetJobDetail(id);
     }
 
@@ -695,6 +659,9 @@ GPRO.ChecklistAdminInfo = function () {
                 GlobalCommon.CallbackProcess(data, function () {
                     if (data.Result == "OK") {
                         $('#checklist-job-id').val(data.Data.Id);
+                        if (data.Data.HasViewProductivity)
+                            $('[checklist-job-report-nx]').removeClass('hide');
+
                         $('#checklist-job-content').val(data.Data.JobContent);
                         $("#checklist-job-name").val(data.Data.Name);
                         $("#checklist-job-index").html(data.Data.JobIndex);
@@ -875,5 +842,358 @@ GPRO.ChecklistAdminInfo = function () {
         });
     }
     //#endregion
+
+
+    InitPopupReportNX = () => {
+        $("#" + Global.Element.PopupReportNX).modal({ keyboard: false, show: false });
+
+        $('#' + Global.Element.PopupReportNX).on('shown.bs.modal', function () {
+            $('div.divParent').attr('currentPoppup', Global.Element.PopupReportNX.toUpperCase());
+        });
+
+        $("#" + Global.Element.PopupReportNX + ' button[checklist-save]').click(function () {
+            //  SaveChecklist();
+        });
+    }
+
+    function getReportNX() {
+
+        $.ajax({
+            url: Global.UrlAction.GetReportNS,
+            type: 'POST',
+            data: JSON.stringify({ 'clId': Global.Data.Id }),
+            contentType: 'application/json charset=utf-8',
+            beforeSend: function () { $('#loading').show(); },
+            success: function (data) {
+                $('#loading').hide();
+                console.log(data.Records);
+                console.log(data.Data);
+                var lines = JSON.parse(data.Records);
+                var _body = $(`.table-ngay tbody `);
+                _body.empty();
+                if (lines && lines.length > 0) {
+                    var head = $(`.table-ngay  thead`);
+                    head.empty();
+                    var tr = $(`<tr>
+                                <td rowspan="2">Chuyển</td>
+                                <td rowspan="2">Số CN</td>
+                                <td rowspan="2">Khách hàng</td>
+                                <td rowspan="2">Mã hàng</td>
+                                <td rowspan="2">Đơn giá CM (USD)</td>
+                                <td colspan="2" rowspan="2">Chỉ tiêu</td>
+                                <td colspan="3">Sản lượng</td>
+                                <td colspan="${lines[0].workingTimes.length + 1}">Sản lượng theo giờ</td>
+                            </tr>`);
+                    head.append(tr);
+                    tr = $(`<tr></tr>`);
+                    tr.append('<td>Đã thực hiện</td> ');
+                    tr.append(' <td>Lũy kế</td> ');
+                    tr.append('<td>Sản lượng còn lại</td> ');
+
+                    lines[0].workingTimes.map(item => {
+                        tr.append(`<td>${item.Name}</td>`);
+                    })
+                    tr.append('<td>Tổng</td> ');
+                    head.append(tr);
+
+                    if (lines && lines.length > 0) {
+                        lines.map(item => {
+                            tr = $(`<tr class="row-color">
+                                        <td rowspan="22">${item.LineName}</td>
+                                        <td rowspan="22">${item.CurrentLabors}</td>
+                                        <td rowspan="22">${item.CustName}</td>
+                                        <td rowspan="22">${item.CommoName}</td>
+                                        <td rowspan="22">${item.PriceCM}</td>
+                                        <td rowspan="3" class="col-tim">Cắt (PCS)</td>
+                                        <td class="col-tim">Cắt</td>
+                                        <td>${(item.lkCat - item.Cat) > 0 ? (item.lkCat - item.Cat) : item.Cat}</td>
+                                        <td>${ item.lkCat}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkCat)}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-sum', 19)}                                        
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>
+                                        <td class="col-tim">Đồng bộ</td>
+                                        <td>${(item.lkDongBo - item.DongBo) > 0 ? (item.lkDongBo - item.DongBo) : item.DongBo}</td>
+                                        <td>${ item.lkDongBo}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkDongBo)}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-sum', 20)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>
+                                        <td class="col-tim">BTP tồn</td>
+                                        <td></td>
+                                        <td>${ item.lkDongBo - (item.LK_BTP - item.LK_BTP_G)}</td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 21)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+
+                            tr = $(`<tr>
+                                        <td rowspan="3" class="col-tim">Bán thành phẩm</td>
+                                        <td class="col-tim">cấp trong ngày</td>
+                                         <td>${((item.LK_BTP - item.LK_BTP_G) - (item.BTP_Day - item.BTP_Day_G))}</td>
+                                        <td>${(item.LK_BTP - item.LK_BTP_G)}</td>
+                                        <td>${(item.SanLuongKeHoach - (item.LK_BTP - item.LK_BTP_G))}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-sum', 0)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>
+                                        <td class="col-tim">Tồn trên chuyền</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 1)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>
+                                        <td class="col-tim">Vốn trên chuyền</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 2)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>
+                                        <td rowspan="5" class="col-tim">Sản lượng (PCS)</td>
+                                        <td class="col-tim">kế hoạch</td>
+                                        <td class="col-green">${item.SanLuongKeHoach}</td>
+                                        <td> </td>
+                                        <td> </td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 3)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>
+                                        <td class="col-tim">Thực hiện</td>
+                                        <td class="col-sum">${ (item.LuyKeBTPThoatChuyen - (item.TC_Day - item.TC_Day_G))}</td>
+                                        <td>${item.LuyKeBTPThoatChuyen}</td>
+                                        <td>${item.SanLuongKeHoach - item.LuyKeBTPThoatChuyen}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-sum', 4)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim">chênh lệch</td>
+                                        <td class="col-yellow">${ (item.SanLuongKeHoach - (item.LuyKeBTPThoatChuyen - (item.TC_Day - item.TC_Day_G)))}</td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-yellow', 5)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            var lktruocHomNay = item.LuyKeBTPThoatChuyen - (item.TC_Day - item.TC_Day_G);
+                            var tile = 0;
+                            if (lktruocHomNay > 0)
+                                tile = ((lktruocHomNay / item.SanLuongKeHoach) * 100).toFixed(1);
+                            tr = $(`<tr> 
+                                        <td class="col-tim">Tỉ lệ % TH/KH</td>
+                                        <td >${tile}%</td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 6)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim">Hiệu xuất</td>
+                                        <td > </td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 7)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim" rowspan="6">KCS (PCS)</td>
+                                        <td class="col-tim">Kiểm đạt</td>
+                                        <td class="col-sum">${(item.LuyKeTH - (item.TH_Day - item.TH_Day_G))}</td>
+                                        <td>${item.LuyKeTH}</td>
+                                        <td>${  (item.SanLuongKeHoach - item.LuyKeTH)}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-sum', 8)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim">Không đạt (lỗi)</td>
+                                        <td > </td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-yellow', 9)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                       <td class="col-tim">LK chưa kiểm</td>
+                                        <td class="col-sum">${ (item.LuyKeBTPThoatChuyen - (item.TC_Day - item.TC_Day_G)) - (item.LuyKeTH - (item.TH_Day - item.TH_Day_G))}</td>
+                                        <td></td>
+                                        <td>${(item.SanLuongKeHoach - (item.LuyKeBTPThoatChuyen - (item.TC_Day - item.TC_Day_G)))}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 10)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim">Tỉ lệ % KĐ/TH</td>
+                                        <td >${(((item.LuyKeTH - (item.TH_Day - item.TH_Day_G)) > 0 && (item.LuyKeBTPThoatChuyen - (item.TC_Day - item.TC_Day_G)) > 0) ? (((item.LuyKeTH - (item.TH_Day - item.TH_Day_G)) / (item.LuyKeBTPThoatChuyen - (item.TC_Day - item.TC_Day_G))) * 100).toFixed(1) : 0)}%</td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 11)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim">Tỉ lệ % KĐ/KH</td>
+                                        <td >${((item.LuyKeTH - (item.TH_Day - item.TH_Day_G)) > 0 ? ((((item.LuyKeTH - (item.TH_Day - item.TH_Day_G)) / item.SanLuongKeHoach) * 100)).toFixed(1) : 0)}% </td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 12)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim">Hiệu xuất</td>
+                                        <td > </td>
+                                        <td></td>
+                                        <td></td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 13)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr> 
+                                        <td class="col-tim" rowspan="3">Hoàn thành (PCS)</td>
+                                        <td class="col-tim">Ủi</td> 
+                                        <td class="col-sum">${(item.lkUi - item.Ui) > 0 ? (item.lkUi - item.Ui) : item.Ui}</td>
+                                        <td>${ item.lkUi}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkUi)}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 14)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>  
+                                        <td class="col-tim">Giao hoàn thành</td> 
+                                        <td class="col-sum">${(item.lkHoanThanh - item.HoanThanh) > 0 ? (item.lkHoanThanh - item.HoanThanh) : item.HoanThanh}</td>
+                                        <td>${ item.lkHoanThanh}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkHoanThanh)}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 15)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>  
+                                        <td class="col-tim">Đóng thùng</td> 
+                                        <td class="col-sum">${(item.lkDongThung - item.DongThung) > 0 ? (item.lkDongThung - item.DongThung) : item.DongThung}</td>
+                                        <td>${ item.lkDongThung}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkDongThung)}</td>
+                                        ${getWorkingTimes(item.workingTimes, item, '', 16)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>  
+                                        <td class="col-sum" colspan="2">Doanh thu (USD)</td>
+                                        <td class="col-green"></td>
+                                        <td class="col-green"></td>
+                                        <td class="col-green"></td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-green', 17)}  
+                                    </tr>`);
+                            _body.append(tr);
+
+                            tr = $(`<tr>  
+                                        <td class="col-sum" colspan="2">Thu nhập BQ</td>
+                                        <td class="col-green"> </td>
+                                        <td class="col-green"></td>
+                                        <td class="col-green"></td>
+                                        ${getWorkingTimes(item.workingTimes, item, 'col-green', 18)}  
+                                    </tr>`);
+                            _body.append(tr);
+                        })
+                    }
+                }
+                else {
+                    _body.append(`<tr class="row-color"> <td colspan="21">Không có dữ liệu</td>  </tr>`);
+                }
+            }
+        });
+    }
+
+
+    getWorkingTimes = (times, line, cls, type) => {
+        var tds = '';
+        var TCtoNow = 0;
+        var KCSToNow = 0;
+        if (times && times.length > 0) {
+            times.map((item, y) => {
+                TCtoNow += item.TC;
+                KCSToNow += item.KCS;
+                // var workTimeToNow = (item.TimeEnd - item.TimeStart).TotalMinutes * (y + 1);
+                var strDate = moment().format('YYYY/MM/DD');
+                var diffInMinutes = moment(strDate + ' ' + item.TimeEnd).diff(moment(strDate + ' ' + item.TimeStart), 'minutes')
+                var workTimeToNow = diffInMinutes * (y + 1);
+                if (moment().isAfter(moment(strDate + ' ' + item.TimeStart))) {
+                    switch (type) {
+                        case 0: tds += `<td class='${cls}'>${item.BTP}</td>`; break;
+                        case 1: tds += `<td class='${cls}'>${item.BTPInLine}</td>`; break;
+                        case 2: tds += `<td class='${cls}'>${item.Lean}</td>`; break;
+                        case 3: tds += `<td class='${cls}'>${item.NormsHour}</td>`; break;
+                        case 4: tds += `<td class='${cls}'>${item.TC}</td>`; break;
+                        case 5:
+                            var vl = item.TC - item.NormsHour;
+                            tds += `<td class='${cls}'>${vl}</td>`; break;
+                        case 6: tds += `<td class='${cls}'>${(item.TC > 0 && item.NormsHour > 0 ? ((item.TC / item.NormsHour) * 100).toFixed(1) : 0)}%</td>`; break;
+                        case 7:
+                            var hieusuat = ((TCtoNow * ((line.ProductionTime * 100) / line.HieuSuatNgay)) / (line.CurrentLabors * (workTimeToNow * 60)));
+                            if (!hieusuat)
+                                hieusuat = 0;
+                            tds += `<td class='${cls}'>${hieusuat.toFixed(1)}</td>`; break;
+                        case 8: tds += `<td class='${cls}'>${item.KCS}</td>`; break;
+                        case 9: tds += `<td class='${cls}'>${item.Error}</td>`; break;
+                        case 10: tds += `<td class='${cls}'>${TCtoNow - KCSToNow}</td>`; break;
+                        case 11: tds += `<td class='${cls}'>${((item.TC > 0 && item.KCS > 0) ? (((item.KCS / item.TC) * 100)).toFixed(1) : 0)}%</td>`; break;
+                        case 12: tds += `<td class='${cls}'>${((item.KCS > 0 && item.NormsHour > 0) ? (((item.KCS / item.NormsHour) * 100)).toFixed(1) : 0)}%</td>`; break;
+                        case 13:
+                            var hieusuat = ((KCSToNow * ((line.ProductionTime * 100) / line.HieuSuatNgay)) / (line.CurrentLabors * (workTimeToNow * 60)));
+                            if (!hieusuat)
+                                hieusuat = 0;
+                            tds += `<td class='${cls}'>${(hieusuat * 100).toFixed(1)}%</td>`; break;
+                        case 14: tds += `<td class='${cls}'>${item.Ui}</td>`; break;
+                        case 15: tds += `<td class='${cls}'>${item.HoanThanh}</td>`; break;
+                        case 16: tds += `<td class='${cls}'>${item.DongThung}</td>`; break;
+                        case 18: tds += `<td class='${cls}'>${Math.ceil((item.KCS * line.Price) / line.CurrentLabors)}</td>`; break;
+                        case 19: tds += `<td class='${cls}'>${item.Cat}</td>`; break;
+                        case 20: tds += `<td class='${cls}'>${item.DongBo}</td>`; break;
+                        default: tds += `<td class='${cls}'></td>`; break;
+                    }
+                }
+                else
+                    tds += `<td class='${cls}'>-</td>`;
+            });
+            switch (type) {
+                case 0: tds += `<td class='${cls}'>${line.BTP_Day - line.BTP_Day_G}</td>`; break;
+                case 3: tds += `<td class='${cls}'>${line.NormsDay}</td>`; break;
+                case 4: tds += `<td class='${cls}'>${line.TC_Day - line.TC_Day_G}</td>`; break;
+                case 5:
+                    var vl = (line.TC_Day - line.TC_Day_G) - line.NormsDay;
+                    tds += `<td class='${cls}'>${vl}</td>`; break;
+                case 6: tds += `<td class='${cls}'>${((line.TC_Day - line.TC_Day_G) > 0 && line.NormsDay > 0 ? (((line.TC_Day - line.TC_Day_G) / line.NormsDay) * 100).toFixed(1) : 0)}%</td>`; break;
+                case 8: tds += `<td class='${cls}'>${line.TH_Day - line.TH_Day_G}</td>`; break;
+                case 8: tds += `<td class='${cls}'>${line.Err_Day - line.Err_Day_G}</td>`; break;
+                case 11: tds += `<td class='${cls}'>${(((line.TC_Day - line.TC_Day_G) > 0 && (line.TH_Day - line.TH_Day_G) > 0) ? ((((line.TH_Day - line.TH_Day_G) / (line.TC_Day - line.TC_Day_G)) * 100)).toFixed(1) : 0)}%</td>`; break;
+                case 12: tds += `<td class='${cls}'>${((line.TH_Day - line.TH_Day_G) > 0 && line.NormsDay > 0 ? ((((line.TH_Day - line.TH_Day_G) / line.NormsDay) * 100)).toFixed(1) : 0)}%</td>`; break;
+
+                case 14: tds += `<td class='${cls}'>${line.Ui}</td>`; break;
+                case 15: tds += `<td class='${cls}'>${line.HoanThanh}</td>`; break;
+                case 16: tds += `<td class='${cls}'>${line.DongThung}</td>`; break;
+                case 18: tds += `<td class='${cls}'>${Math.ceil(((line.TH_Day - line.TH_Day_G) * line.Price) / line.CurrentLabors)}</td>`; break;
+                case 19: tds += `<td class='${cls}'>${line.Cat}</td>`; break;
+                case 20: tds += `<td class='${cls}'>${line.DongBo}</td>`; break;
+                default: tds += `<td class='${cls}'></td>`; break;
+            }
+        }
+        return tds;
+    }
 }
 

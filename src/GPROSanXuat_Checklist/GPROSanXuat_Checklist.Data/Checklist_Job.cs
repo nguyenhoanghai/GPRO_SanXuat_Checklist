@@ -41,6 +41,7 @@ namespace GPROSanXuat_Checklist.Data
         public double Quantities { get; set; }
         public double RealQuantities { get; set; }
         public int StatusId { get; set; }
+        public bool HasViewProductivity { get; set; }
         public string Note { get; set; }
         public bool IsDeleted { get; set; }
         public int CreatedUser { get; set; }

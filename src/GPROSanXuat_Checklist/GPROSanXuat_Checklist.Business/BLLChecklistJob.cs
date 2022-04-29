@@ -179,7 +179,8 @@ namespace GPROSanXuat_Checklist.Business
                              StatusId = x.StatusId,
                              StatusName = "",//x.Status.Name,
                              Note = x.Note,
-                             UpdatedDate = x.UpdatedDate
+                             UpdatedDate = x.UpdatedDate,
+                             HasViewProductivity= x.HasViewProductivity
                          }).ToList();
                     if (allJobs.Count > 0)
                     {
@@ -253,7 +254,8 @@ namespace GPROSanXuat_Checklist.Business
                         ChecklistJobStepId = x.ChecklistJobStepId,
                         Note = x.Note,
                         Quantities = x.Quantities,
-                        RealQuantities = x.RealQuantities
+                        RealQuantities = x.RealQuantities,
+                        HasViewProductivity = x.HasViewProductivity
                         #endregion
                     }).OrderBy(x => x.JobIndex).ToList());
                 else
@@ -275,7 +277,8 @@ namespace GPROSanXuat_Checklist.Business
                         ChecklistJobStepId = x.ChecklistJobStepId,
                         Note = x.Note,
                         Quantities = x.Quantities,
-                        RealQuantities = x.RealQuantities
+                        RealQuantities = x.RealQuantities,
+                        HasViewProductivity = x.HasViewProductivity
                         #endregion
                     }).OrderBy(x => x.JobIndex).ToList());
 
@@ -298,7 +301,8 @@ namespace GPROSanXuat_Checklist.Business
                             ChecklistJobStepId = x.ChecklistJobStepId,
                             Note = x.Note,
                             Quantities = x.Quantities,
-                            RealQuantities = x.RealQuantities
+                            RealQuantities = x.RealQuantities,
+                            HasViewProductivity = x.HasViewProductivity
                             #endregion
                         })
                         .OrderBy(x => x.JobIndex).ToList();
@@ -388,7 +392,8 @@ namespace GPROSanXuat_Checklist.Business
                            StatusId = x.StatusId,
                            StatusName = "",// x.Status.Name,
                            Note = x.Note,
-                           UpdatedDate = x.UpdatedDate
+                           UpdatedDate = x.UpdatedDate,
+                           HasViewProductivity = x.HasViewProductivity
                        })
                    .FirstOrDefault();
                     if (job != null)
@@ -914,7 +919,8 @@ namespace GPROSanXuat_Checklist.Business
                         StatusId = x.StatusId,
                         StatusName = "",// x.Status.Name,
                         Note = x.Note,
-                        UpdatedDate = x.UpdatedDate
+                        UpdatedDate = x.UpdatedDate,
+                        HasViewProductivity = x.HasViewProductivity
                     })
                   .ToList();
                     if (jobs.Count > 0)

@@ -51,11 +51,12 @@ GPRO.Lenh = function () {
             custId: 0,
             Img: '',
             LenhProducts: [],
+            LenhProducts_: [],
             LenhMaterials: [],
             Products: [],
             Materials: [],
             approve: false,
-
+            parentId: 0
         }
     }
     this.GetGlobal = function () {
@@ -119,7 +120,7 @@ GPRO.Lenh = function () {
             pageSize: 1000,
             pageSizeChange: true,
             sorting: true,
-            selectShow: true,
+            selectShow: false,
             actions: {
                 listAction: Global.UrlAction.Gets,
                 createAction: Global.Element.Popup,
@@ -128,7 +129,16 @@ GPRO.Lenh = function () {
             messages: {
                 addNewRecord: 'Thêm mới',
                 // searchRecord: 'Tìm kiếm',
-                selectShow: 'Ẩn hiện cột'
+               // selectShow: 'Ẩn hiện cột'
+            },
+            datas: {
+                jtableId: Global.Element.Jtable
+            },
+            rowInserted: function (event, data) {
+                if (data.record.Id == Global.Data.parentId) {
+                    var $a = $('#' + Global.Element.Jtable).jtable('getRowByKey', data.record.Id);
+                    $($a.children().find('.aaa')).click();
+                }
             },
             fields: {
                 Id: {
@@ -189,73 +199,156 @@ GPRO.Lenh = function () {
                         return txt;
                     }
                 },
-                edit: {
+                actions: {
                     title: '',
                     width: '1%',
                     sorting: false,
-                    display: function (data) {
-                        var text = $('<i data-toggle="modal" data-target="#' + Global.Element.Popup + '" title="Chỉnh sửa thông tin" class="fa fa-pencil-square-o clickable blue"  ></i>');
-                        text.click(function () {
-                            $('#lenh-id').val(data.record.Id);
-                            $('#lenh-code').val(data.record.Code);
-                            $('#lenh-employee').val(data.record.EmployeeId);
-                            $('#lenh-note').val(data.record.Note);
+                    display: function (parent) {
+                        var div = $('<div class="tb-actions-col"></div>');
+                        var btnEdit = $('<i data-toggle="modal" data-target="#' + Global.Element.Popup + '" title="Chỉnh sửa thông tin" class="fa fa-pencil-square-o clickable blue"  ></i>');
+                        btnEdit.click(function () {
+                            $('#lenh-id').val(parent.record.Id);
+                            $('#lenh-code').val(parent.record.Code);
+                            $('#lenh-employee').val(parent.record.EmployeeId);
+                            $('#lenh-note').val(parent.record.Note);
 
-                            $('#lenh-startdate').data("kendoDatePicker").value(new Date(moment(data.record.StartDate)));
-                            $('#lenh-date').data("kendoDatePicker").value(new Date(moment(data.record.CreatedDate)));
+                            $('#lenh-startdate').data("kendoDatePicker").value(new Date(moment(parent.record.StartDate)));
+                            $('#lenh-date').data("kendoDatePicker").value(new Date(moment(parent.record.CreatedDate)));
 
                             Global.Data.IsInsert = false;
-                            if (data.record.StatusId != 7) {
+                            if (parent.record.StatusId != 7) {
                                 Global.Data.approve = true;
                                 $('#lenh-code,#lenh-employee,#lenh-note,#lenh-startdate,#lenh-date,[lenh-save],[lenh-save-draft],#btn-checklist-po,#btn-checklist-product').prop('disabled', true);
                             }
                             Global.Data.LenhMaterials.length = 0;
                             Global.Data.LenhProducts.length = 0;
-                            if (data.record.Products) {
-                                data.record.Products.map((x, i) => {
+                            if (parent.record.Products) {
+                                parent.record.Products.map((x, i) => {
                                     x.Index = i + 1;
                                     Global.Data.LenhProducts.push(x);
                                 });
                                 ReloadTableProduct();
                             }
 
-                            if (data.record.Materials) {
-                                data.record.Materials.map((x, i) => {
+                            if (parent.record.Materials) {
+                                parent.record.Materials.map((x, i) => {
                                     x.Index = i + 1;
                                     Global.Data.LenhMaterials.push(x);
                                 });
-                                if (data.record.StatusId == 7)
+                                if (parent.record.StatusId == 7)
                                     addEmptyMaterial();
                                 ReloadTableMaterial();
                             }
 
                         });
-                        return text;
-                    }
-                },
-                Delete: {
-                    title: '',
-                    width: "3%",
-                    sorting: false,
-                    display: function (data) {
-                        if (data.record.StatusId == 9) {
-                            var btn = $(`<i data-toggle="modal" data-target="#${Global.Element.PopupView}" title="Chỉnh sửa thông tin" class="fa fa-file-word-o red"></i>`);
-                            btn.click(() => {
-                                GetById(data.record.Id, true);
-                            })
-                            return btn;
-                        }
-                        else {
-                            var text = $('<button title="Xóa" class="jtable-command-button jtable-delete-command-button"><span>Xóa</span></button>');
-                            text.click(function () {
-                                GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
-                                    Delete(data.record.Id);
-                                }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Thông báo');
+                        div.append(btnEdit);
+
+                        if (parent.record.StatusId == 9) {
+                            Global.Data.LenhProducts_.length = 0;
+                            if (parent.record.Products) {
+                                parent.record.Products.map((x, i) => {
+                                    x.Index = i + 1;
+                                    Global.Data.LenhProducts_.push(x);
+                                });
+                            }
+
+                            var $img = $('<i class="fa fa-list-ol clickable text-success aaa" title="Click Xem Danh Sách Chi Tiết ' + parent.record.Code + '"></i>');
+                            $img.click(function () {
+                                Global.Data.parentId = parent.record.Id;
+                                $('#' + Global.Element.Jtable).jtable('openChildTable',
+                                    $img.closest('tr'),
+                                    {
+                                        title: '<span class="red">Chi tiết lệnh : ' + parent.record.Code + '</span>',
+                                        paging: true,
+                                        pageSize: 10,
+                                        pageSizeChange: true,
+                                        sorting: true,
+                                        selectShow: false,
+                                        actions: {
+                                            listAction: Global.Data.LenhProducts_,
+                                            //  createAction: Global.Element.PopupReceiptionDetail,
+                                        },
+                                        messages: {
+                                            //  addNewRecord: 'Thêm Chi Tiết',
+                                            // searchRecord: 'Tìm kiếm',
+                                            // selectShow: 'Ẩn hiện cột'
+                                        },
+                                        fields: {
+                                            ReceiptionId: {
+                                                type: 'hidden',
+                                                defaultValue: parent.record.Id
+                                            },
+                                            Id: {
+                                                key: true,
+                                                create: false,
+                                                edit: false,
+                                                list: false
+                                            },
+                                            Index: {
+                                                title: "STT",
+                                                width: "3%"
+                                            },
+                                            POCode:
+                                            {
+                                                title: "Mã PO",
+                                                width: "10%"
+                                            },
+                                            ProductName: {
+                                                title: "Sản phẩm",
+                                                width: "45%"
+                                            },
+                                            //Quantity: {
+                                            //    title: "Số lượng PO còn lại",
+                                            //    width: "7%",
+                                            //    display: function (data) {
+                                            //        return `${ParseStringToCurrency(data.record.Quantity)} <span class="bold red">${data.record.UnitName}</span>`;
+                                            //    }
+                                            //},
+                                            Quantities_PC: {
+                                                title: "Số lượng phân bổ",
+                                                width: "5%",
+                                                display: function (data) {
+                                                    return `<span>${ParseStringToCurrency(data.record.Quantities_PC)}</span>`;
+                                                }
+                                            },
+
+                                            Edit: {
+                                                title: '',
+                                                width: '1%',
+                                                sorting: false,
+                                                display: function (data) {
+                                                    var text = $('<i data-toggle="modal" data-target="#' + Global.Element.PopupReceiptionDetail + '" title="Chỉnh sửa thông tin" class="fa fa_tb fa-pencil-square-o clickable blue"  ></i>');
+                                                    text.click(function () {
+
+                                                    });
+                                                    return text;
+                                                }
+                                            }
+                                        }
+                                    }, function (data) { //opened handler
+                                        data.childTable.jtable('load');
+                                    });
                             });
-                            return text;
+                            //div.append($img);
+
+                            var btnExport = $(`<i data-toggle="modal" data-target="#${Global.Element.PopupView}" title="Chỉnh sửa thông tin" class="fa fa-file-word-o text-success"></i>`);
+                            btnExport.click(() => {
+                                GetById(parent.record.Id, true);
+                            });
+                            div.append(btnExport);
                         }
+
+                        var btnDelete = $('<i title="Xóa" class="fa fa-trash-o red"></i>');
+                        btnDelete.click(function () {
+                            GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
+                                Delete(parent.record.Id);
+                            }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Thông báo');
+                        });
+                        div.append(btnDelete);
+
+                        return div;
                     }
-                }
+                } 
             }
         });
     }
@@ -391,7 +484,7 @@ GPRO.Lenh = function () {
             Products: Global.Data.LenhProducts,
             Materials: Global.Data.LenhMaterials,
             EmployeeId: $('#lenh-employee').val(),
-            StatusId: getStatusId(status) 
+            StatusId: getStatusId(status)
         };
         $.ajax({
             url: Global.UrlAction.Save,
@@ -836,7 +929,7 @@ GPRO.Lenh = function () {
     }
     //#endregion
 
-    
+
     //#region PO
     InitPopupPO = () => {
         $("#" + Global.Element.PopupPO).modal({
@@ -851,9 +944,9 @@ GPRO.Lenh = function () {
 
         $("#" + Global.Element.PopupPO + ' button[popup-checklist-po-cancel]').click(function () {
             $("#checklist-keyword-po").val('');
-           // $('div.divParent').attr('currentPoppup', '');
+            // $('div.divParent').attr('currentPoppup', '');
             $("#" + Global.Element.PopupPO).modal("hide");
-            $('#' + Global.Element.Popup).modal('show'); 
+            $('#' + Global.Element.Popup).modal('show');
         });
 
         $('#btn-checklist-po').click(() => {
@@ -994,11 +1087,11 @@ GPRO.Lenh = function () {
         });
 
         $("#" + Global.Element.PopupProduct + ' button[popup-checklist-product-cancel]').click(function () {
-             $("#checklist-keyword-product").val('');
-           // $('div.divParent').attr('currentPoppup', '');
+            $("#checklist-keyword-product").val('');
+            // $('div.divParent').attr('currentPoppup', '');
             $("#" + Global.Element.PopupProduct).modal("hide");
             $('#' + Global.Element.Popup).modal('show');
-           // $('div.divParent').attr('currentPoppup', Global.Element.PopupChecklist.toUpperCase());
+            // $('div.divParent').attr('currentPoppup', Global.Element.PopupChecklist.toUpperCase());
         });
 
         $('#btn-checklist-product').click(() => {

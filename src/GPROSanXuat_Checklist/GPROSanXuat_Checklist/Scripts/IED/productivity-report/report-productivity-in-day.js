@@ -20,8 +20,8 @@ GPRO.namespace('ReportInDay');
 GPRO.ReportInDay = function () {
     var Global = {
         UrlAction: {
-            Gets: '/ProductivityReport/GetProductityInDay',
-            Export: '/ProductivityReport/export_ProductityInDay'
+            Gets: '/ProductivityReport/GetProductityInDay',   
+            Export: '/ProductivityReport/export_ProductityInDay',            
         },
         Element: {
         },
@@ -52,12 +52,13 @@ GPRO.ReportInDay = function () {
 
 
         $('#btn-report-inday-view').click(function () {
-            Gets();
+            Gets(); 
         });
 
-        $('#btn-report-inday-excel').click(function () { 
+        $('#btn-report-inday-excel').click(function () {
             if ($('#report-inday-floor').val() != undefined)
-                window.location.href = Global.UrlAction.Export + `?floorId=${$('#report-inday-floor').val()}&type=${$('#report-inday-type').val()} `;
+              window.location.href = Global.UrlAction.Export + `?floorId=${$('#report-inday-floor').val()}&type=${$('#report-inday-type').val()} `;
+             
         });
     }
 
@@ -119,7 +120,7 @@ GPRO.ReportInDay = function () {
                 }
             });
     }
-
+     
 }
 
 $(document).ready(function () {

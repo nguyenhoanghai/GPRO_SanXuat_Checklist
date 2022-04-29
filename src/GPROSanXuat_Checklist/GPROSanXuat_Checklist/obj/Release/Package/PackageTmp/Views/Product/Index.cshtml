@@ -69,6 +69,22 @@
                             <input type="checkbox" id="proIsPrivate" data-width="130" data-toggle="toggle" data-on="Chung" data-off="Nội bộ" />
                         </div>
                     </div>
+                    <div class="form-group col-md-3"> 
+                        <label class="control-label">Thời gian CT (giây)<span class="required-class">*</span></label>
+                        <input class="form-control" value="0" id="p-pro-time" onkeypress="return isNumberKey(event)" type="text"  />
+                    </div>
+                    <div class="form-group col-md-3"> 
+                        <label class="control-label">Đơn giá  <span class="required-class">*</span></label>
+                        <input class="form-control" value="0" id="p-price" onkeypress="return isNumberKey(event)" type="text"  />
+                    </div>
+                    <div class="form-group col-md-3"> 
+                        <label class="control-label">Đơn giá cắt <span class="required-class">*</span></label>
+                        <input class="form-control" value="0" id="p-price-cut" onkeypress="return isNumberKey(event)" type="text" />
+                    </div>
+                    <div class="form-group col-md-3"> 
+                        <label class="control-label">Đơn giá CM <span class="required-class">*</span></label>
+                        <input class="form-control" value="0" id="p-price-cm" onkeypress="return isNumberKey(event)" type="text"  />
+                    </div>
                     <div class="form-group col-md-12">
                         <label class="control-label">Mô tả</label><br />
                         <textarea id="pdes" class="form-control"></textarea>

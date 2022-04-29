@@ -54,6 +54,7 @@
           <Property Name="Quantities" Type="float" Nullable="false" />
           <Property Name="RealQuantities" Type="float" Nullable="false" />
           <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="HasViewProductivity" Type="bit" Nullable="false" />
           <Property Name="Note" Type="nvarchar(max)" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedUser" Type="int" Nullable="false" />
@@ -577,6 +578,7 @@
           <Property Name="JobIndex" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="JobContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="HasViewProductivity" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="CreatedUser" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
@@ -1136,7 +1138,6 @@
       <Schema Namespace="SanXuatCheckListModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SanXuatCheckListEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Checklists" EntityType="SanXuatCheckListModel.Checklist" />
-          <EntitySet Name="Checklist_Job" EntityType="SanXuatCheckListModel.Checklist_Job" />
           <EntitySet Name="Checklist_Job_ActionLog" EntityType="SanXuatCheckListModel.Checklist_Job_ActionLog" />
           <EntitySet Name="Checklist_Job_Alert" EntityType="SanXuatCheckListModel.Checklist_Job_Alert" />
           <EntitySet Name="Checklist_Job_Attachment" EntityType="SanXuatCheckListModel.Checklist_Job_Attachment" />
@@ -1162,7 +1163,6 @@
           <EntitySet Name="ReceiptionDetails" EntityType="SanXuatCheckListModel.ReceiptionDetail" />
           <EntitySet Name="SConfigs" EntityType="SanXuatCheckListModel.SConfig" />
           <EntitySet Name="Template_Checklist" EntityType="SanXuatCheckListModel.Template_Checklist" />
-          <EntitySet Name="Template_CL_Job" EntityType="SanXuatCheckListModel.Template_CL_Job" />
           <EntitySet Name="Template_CL_JobStep" EntityType="SanXuatCheckListModel.Template_CL_JobStep" />
           <EntitySet Name="TemplateControls" EntityType="SanXuatCheckListModel.TemplateControl" />
           <EntitySet Name="TemplateFiles" EntityType="SanXuatCheckListModel.TemplateFile" />
@@ -1175,38 +1175,6 @@
           <AssociationSet Name="FK_Checklist_Template_Checklist" Association="SanXuatCheckListModel.FK_Checklist_Template_Checklist">
             <End Role="Template_Checklist" EntitySet="Template_Checklist" />
             <End Role="Checklist" EntitySet="Checklists" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_ActionLog_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_ActionLog_Checklist_Job">
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-            <End Role="Checklist_Job_ActionLog" EntitySet="Checklist_Job_ActionLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_Alert_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Alert_Checklist_Job">
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-            <End Role="Checklist_Job_Alert" EntitySet="Checklist_Job_Alert" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_Attachment_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Attachment_Checklist_Job">
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-            <End Role="Checklist_Job_Attachment" EntitySet="Checklist_Job_Attachment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_Checklist_JobStep" Association="SanXuatCheckListModel.FK_Checklist_Job_Checklist_JobStep">
-            <End Role="Checklist_JobStep" EntitySet="Checklist_JobStep" />
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_Comment_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Comment_Checklist_Job">
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-            <End Role="Checklist_Job_Comment" EntitySet="Checklist_Job_Comment" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_EmployeeReference_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_EmployeeReference_Checklist_Job">
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-            <End Role="Checklist_Job_EmployeeReference" EntitySet="Checklist_Job_EmployeeReference" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_Error_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Error_Checklist_Job">
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-            <End Role="Checklist_Job_Error" EntitySet="Checklist_Job_Error" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Checklist_Job_NotifyLog_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_NotifyLog_Checklist_Job">
-            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
-            <End Role="Checklist_Job_NotifyLog" EntitySet="Checklist_Job_NotifyLog" />
           </AssociationSet>
           <AssociationSet Name="FK_W_DeliveryDetail_W_Delivery" Association="SanXuatCheckListModel.FK_W_DeliveryDetail_W_Delivery">
             <End Role="Delivery" EntitySet="Deliveries" />
@@ -1248,10 +1216,6 @@
             <End Role="Template_Checklist" EntitySet="Template_Checklist" />
             <End Role="Template_CL_JobStep" EntitySet="Template_CL_JobStep" />
           </AssociationSet>
-          <AssociationSet Name="FK_Template_CL_Job_Template_CL_JobStep" Association="SanXuatCheckListModel.FK_Template_CL_Job_Template_CL_JobStep">
-            <End Role="Template_CL_JobStep" EntitySet="Template_CL_JobStep" />
-            <End Role="Template_CL_Job" EntitySet="Template_CL_Job" />
-          </AssociationSet>
           <AssociationSet Name="FK_P_TemplateControl_P_TemplateFile" Association="SanXuatCheckListModel.FK_P_TemplateControl_P_TemplateFile">
             <End Role="TemplateFile" EntitySet="TemplateFiles" />
             <End Role="TemplateControl" EntitySet="TemplateControls" />
@@ -1277,6 +1241,44 @@
           <AssociationSet Name="FK_OrderDetail_Order" Association="SanXuatCheckListModel.FK_OrderDetail_Order">
             <End Role="Order" EntitySet="Orders" />
             <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <EntitySet Name="Checklist_Job" EntityType="SanXuatCheckListModel.Checklist_Job" />
+          <EntitySet Name="Template_CL_Job" EntityType="SanXuatCheckListModel.Template_CL_Job" />
+          <AssociationSet Name="FK_Checklist_Job_ActionLog_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_ActionLog_Checklist_Job">
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+            <End Role="Checklist_Job_ActionLog" EntitySet="Checklist_Job_ActionLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Checklist_Job_Alert_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Alert_Checklist_Job">
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+            <End Role="Checklist_Job_Alert" EntitySet="Checklist_Job_Alert" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Checklist_Job_Attachment_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Attachment_Checklist_Job">
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+            <End Role="Checklist_Job_Attachment" EntitySet="Checklist_Job_Attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Checklist_Job_Checklist_JobStep" Association="SanXuatCheckListModel.FK_Checklist_Job_Checklist_JobStep">
+            <End Role="Checklist_JobStep" EntitySet="Checklist_JobStep" />
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Checklist_Job_Comment_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Comment_Checklist_Job">
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+            <End Role="Checklist_Job_Comment" EntitySet="Checklist_Job_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Checklist_Job_EmployeeReference_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_EmployeeReference_Checklist_Job">
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+            <End Role="Checklist_Job_EmployeeReference" EntitySet="Checklist_Job_EmployeeReference" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Checklist_Job_Error_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_Error_Checklist_Job">
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+            <End Role="Checklist_Job_Error" EntitySet="Checklist_Job_Error" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Checklist_Job_NotifyLog_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_NotifyLog_Checklist_Job">
+            <End Role="Checklist_Job" EntitySet="Checklist_Job" />
+            <End Role="Checklist_Job_NotifyLog" EntitySet="Checklist_Job_NotifyLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Template_CL_Job_Template_CL_JobStep" Association="SanXuatCheckListModel.FK_Template_CL_Job_Template_CL_JobStep">
+            <End Role="Template_CL_JobStep" EntitySet="Template_CL_JobStep" />
+            <End Role="Template_CL_Job" EntitySet="Template_CL_Job" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Checklist">
@@ -1310,43 +1312,6 @@
           <NavigationProperty Name="Checklist_JobStep" Relationship="SanXuatCheckListModel.FK_Checklist_JobStep_Checklist" FromRole="Checklist" ToRole="Checklist_JobStep" />
           <NavigationProperty Name="Template_Checklist" Relationship="SanXuatCheckListModel.FK_Checklist_Template_Checklist" FromRole="Checklist" ToRole="Template_Checklist" />
           <NavigationProperty Name="PO_SellDetail" Relationship="SanXuatCheckListModel.FK_Checklist_PO_Sell" FromRole="Checklist" ToRole="PO_SellDetail" />
-        </EntityType>
-        <EntityType Name="Checklist_Job">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FakeId" Type="Int32" Nullable="false" />
-          <Property Name="ChecklistJobStepId" Type="Int32" Nullable="false" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="JobIndex" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="JobContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EmployeeId" Type="Int32" />
-          <Property Name="RelatedEmployees" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="StartDate" Type="DateTime" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="RealEndDate" Type="DateTime" Precision="3" />
-          <Property Name="ReminderDate" Type="DateTime" Precision="3" />
-          <Property Name="Quantities" Type="Double" Nullable="false" />
-          <Property Name="RealQuantities" Type="Double" Nullable="false" />
-          <Property Name="StatusId" Type="Int32" Nullable="false" />
-          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedUser" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedUser" Type="Int32" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <Property Name="DeletedUser" Type="Int32" />
-          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Checklist_Job_ActionLog" Relationship="SanXuatCheckListModel.FK_Checklist_Job_ActionLog_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_ActionLog" />
-          <NavigationProperty Name="Checklist_Job_Alert" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Alert_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Alert" />
-          <NavigationProperty Name="Checklist_Job_Attachment" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Attachment_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Attachment" />
-          <NavigationProperty Name="Checklist_JobStep" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Checklist_JobStep" FromRole="Checklist_Job" ToRole="Checklist_JobStep" />
-          <NavigationProperty Name="Checklist_Job_Comment" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Comment_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Comment" />
-          <NavigationProperty Name="Checklist_Job_EmployeeReference" Relationship="SanXuatCheckListModel.FK_Checklist_Job_EmployeeReference_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_EmployeeReference" />
-          <NavigationProperty Name="Checklist_Job_Error" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Error_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Error" />
-          <NavigationProperty Name="Checklist_Job_NotifyLog" Relationship="SanXuatCheckListModel.FK_Checklist_Job_NotifyLog_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_NotifyLog" />
         </EntityType>
         <EntityType Name="Checklist_Job_ActionLog">
           <Key>
@@ -1840,25 +1805,6 @@
           <NavigationProperty Name="Checklists" Relationship="SanXuatCheckListModel.FK_Checklist_Template_Checklist" FromRole="Template_Checklist" ToRole="Checklist" />
           <NavigationProperty Name="Template_CL_JobStep" Relationship="SanXuatCheckListModel.FK_Template_CL_JobStep_Template_Checklist" FromRole="Template_Checklist" ToRole="Template_CL_JobStep" />
         </EntityType>
-        <EntityType Name="Template_CL_Job">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Template_JobStepId" Type="Int32" Nullable="false" />
-          <Property Name="ParentId" Type="Int32" />
-          <Property Name="JobIndex" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="JobContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="CreatedUser" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="UpdatedUser" Type="Int32" />
-          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-          <Property Name="DeletedUser" Type="Int32" />
-          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Template_CL_JobStep" Relationship="SanXuatCheckListModel.FK_Template_CL_Job_Template_CL_JobStep" FromRole="Template_CL_Job" ToRole="Template_CL_JobStep" />
-        </EntityType>
         <EntityType Name="Template_CL_JobStep">
           <Key>
             <PropertyRef Name="Id" />
@@ -1963,102 +1909,6 @@
             </Principal>
             <Dependent Role="Checklist">
               <PropertyRef Name="TemplateId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_ActionLog_Checklist_Job">
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job_ActionLog" Role="Checklist_Job_ActionLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_Job">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job_ActionLog">
-              <PropertyRef Name="JobId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_Alert_Checklist_Job">
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job_Alert" Role="Checklist_Job_Alert" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_Job">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job_Alert">
-              <PropertyRef Name="JobId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_Attachment_Checklist_Job">
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job_Attachment" Role="Checklist_Job_Attachment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_Job">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job_Attachment">
-              <PropertyRef Name="JobId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_Checklist_JobStep">
-          <End Type="SanXuatCheckListModel.Checklist_JobStep" Role="Checklist_JobStep" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_JobStep">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job">
-              <PropertyRef Name="ChecklistJobStepId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_Comment_Checklist_Job">
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job_Comment" Role="Checklist_Job_Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_Job">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job_Comment">
-              <PropertyRef Name="JobId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_EmployeeReference_Checklist_Job">
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job_EmployeeReference" Role="Checklist_Job_EmployeeReference" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_Job">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job_EmployeeReference">
-              <PropertyRef Name="JobId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_Error_Checklist_Job">
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job_Error" Role="Checklist_Job_Error" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_Job">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job_Error">
-              <PropertyRef Name="JobId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Checklist_Job_NotifyLog_Checklist_Job">
-          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Checklist_Job_NotifyLog" Role="Checklist_Job_NotifyLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checklist_Job">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Checklist_Job_NotifyLog">
-              <PropertyRef Name="JobId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2182,18 +2032,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Template_CL_Job_Template_CL_JobStep">
-          <End Type="SanXuatCheckListModel.Template_CL_JobStep" Role="Template_CL_JobStep" Multiplicity="1" />
-          <End Type="SanXuatCheckListModel.Template_CL_Job" Role="Template_CL_Job" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Template_CL_JobStep">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Template_CL_Job">
-              <PropertyRef Name="Template_JobStepId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_P_TemplateControl_P_TemplateFile">
           <End Type="SanXuatCheckListModel.TemplateFile" Role="TemplateFile" Multiplicity="1" />
           <End Type="SanXuatCheckListModel.TemplateControl" Role="TemplateControl" Multiplicity="*" />
@@ -2313,6 +2151,172 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Checklist_Job">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FakeId" Type="Int32" Nullable="false" />
+          <Property Name="ChecklistJobStepId" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="JobIndex" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="JobContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="RelatedEmployees" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="RealEndDate" Type="DateTime" Precision="3" />
+          <Property Name="ReminderDate" Type="DateTime" Precision="3" />
+          <Property Name="Quantities" Type="Double" Nullable="false" />
+          <Property Name="RealQuantities" Type="Double" Nullable="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="HasViewProductivity" Type="Boolean" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedUser" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedUser" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="DeletedUser" Type="Int32" />
+          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Checklist_Job_ActionLog" Relationship="SanXuatCheckListModel.FK_Checklist_Job_ActionLog_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_ActionLog" />
+          <NavigationProperty Name="Checklist_Job_Alert" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Alert_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Alert" />
+          <NavigationProperty Name="Checklist_Job_Attachment" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Attachment_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Attachment" />
+          <NavigationProperty Name="Checklist_JobStep" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Checklist_JobStep" FromRole="Checklist_Job" ToRole="Checklist_JobStep" />
+          <NavigationProperty Name="Checklist_Job_Comment" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Comment_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Comment" />
+          <NavigationProperty Name="Checklist_Job_EmployeeReference" Relationship="SanXuatCheckListModel.FK_Checklist_Job_EmployeeReference_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_EmployeeReference" />
+          <NavigationProperty Name="Checklist_Job_Error" Relationship="SanXuatCheckListModel.FK_Checklist_Job_Error_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_Error" />
+          <NavigationProperty Name="Checklist_Job_NotifyLog" Relationship="SanXuatCheckListModel.FK_Checklist_Job_NotifyLog_Checklist_Job" FromRole="Checklist_Job" ToRole="Checklist_Job_NotifyLog" />
+        </EntityType>
+        <EntityType Name="Template_CL_Job">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Template_JobStepId" Type="Int32" Nullable="false" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="JobIndex" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="JobContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HasViewProductivity" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedUser" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedUser" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="DeletedUser" Type="Int32" />
+          <Property Name="DeletedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Template_CL_JobStep" Relationship="SanXuatCheckListModel.FK_Template_CL_Job_Template_CL_JobStep" FromRole="Template_CL_Job" ToRole="Template_CL_JobStep" />
+        </EntityType>
+        <Association Name="FK_Checklist_Job_ActionLog_Checklist_Job">
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job_ActionLog" Role="Checklist_Job_ActionLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job_ActionLog">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Checklist_Job_Alert_Checklist_Job">
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job_Alert" Role="Checklist_Job_Alert" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job_Alert">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Checklist_Job_Attachment_Checklist_Job">
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job_Attachment" Role="Checklist_Job_Attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job_Attachment">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Checklist_Job_Checklist_JobStep">
+          <End Type="SanXuatCheckListModel.Checklist_JobStep" Role="Checklist_JobStep" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_JobStep">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job">
+              <PropertyRef Name="ChecklistJobStepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Checklist_Job_Comment_Checklist_Job">
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job_Comment" Role="Checklist_Job_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job_Comment">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Checklist_Job_EmployeeReference_Checklist_Job">
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job_EmployeeReference" Role="Checklist_Job_EmployeeReference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job_EmployeeReference">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Checklist_Job_Error_Checklist_Job">
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job_Error" Role="Checklist_Job_Error" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job_Error">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Checklist_Job_NotifyLog_Checklist_Job">
+          <End Type="SanXuatCheckListModel.Checklist_Job" Role="Checklist_Job" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Checklist_Job_NotifyLog" Role="Checklist_Job_NotifyLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checklist_Job">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Checklist_Job_NotifyLog">
+              <PropertyRef Name="JobId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Template_CL_Job_Template_CL_JobStep">
+          <End Type="SanXuatCheckListModel.Template_CL_JobStep" Role="Template_CL_JobStep" Multiplicity="1" />
+          <End Type="SanXuatCheckListModel.Template_CL_Job" Role="Template_CL_Job" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Template_CL_JobStep">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Template_CL_Job">
+              <PropertyRef Name="Template_JobStepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2345,36 +2349,6 @@
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="TemplateId" ColumnName="TemplateId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Checklist_Job">
-            <EntityTypeMapping TypeName="SanXuatCheckListModel.Checklist_Job">
-              <MappingFragment StoreEntitySet="Checklist_Job">
-                <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
-                <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="Note" ColumnName="Note" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="RealQuantities" ColumnName="RealQuantities" />
-                <ScalarProperty Name="Quantities" ColumnName="Quantities" />
-                <ScalarProperty Name="ReminderDate" ColumnName="ReminderDate" />
-                <ScalarProperty Name="RealEndDate" ColumnName="RealEndDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="RelatedEmployees" ColumnName="RelatedEmployees" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="JobContent" ColumnName="JobContent" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="ChecklistJobStepId" ColumnName="ChecklistJobStepId" />
-                <ScalarProperty Name="FakeId" ColumnName="FakeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2865,25 +2839,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Template_CL_Job">
-            <EntityTypeMapping TypeName="SanXuatCheckListModel.Template_CL_Job">
-              <MappingFragment StoreEntitySet="Template_CL_Job">
-                <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
-                <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
-                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-                <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="JobContent" ColumnName="JobContent" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
-                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-                <ScalarProperty Name="Template_JobStepId" ColumnName="Template_JobStepId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Template_CL_JobStep">
             <EntityTypeMapping TypeName="SanXuatCheckListModel.Template_CL_JobStep">
               <MappingFragment StoreEntitySet="Template_CL_JobStep">
@@ -3006,6 +2961,57 @@
                 <ScalarProperty Name="Quantities" ColumnName="Quantities" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Checklist_Job">
+            <EntityTypeMapping TypeName="SanXuatCheckListModel.Checklist_Job">
+              <MappingFragment StoreEntitySet="Checklist_Job">
+                <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+                <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="HasViewProductivity" ColumnName="HasViewProductivity" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="RealQuantities" ColumnName="RealQuantities" />
+                <ScalarProperty Name="Quantities" ColumnName="Quantities" />
+                <ScalarProperty Name="ReminderDate" ColumnName="ReminderDate" />
+                <ScalarProperty Name="RealEndDate" ColumnName="RealEndDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="RelatedEmployees" ColumnName="RelatedEmployees" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="JobContent" ColumnName="JobContent" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="ChecklistJobStepId" ColumnName="ChecklistJobStepId" />
+                <ScalarProperty Name="FakeId" ColumnName="FakeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Template_CL_Job">
+            <EntityTypeMapping TypeName="SanXuatCheckListModel.Template_CL_Job">
+              <MappingFragment StoreEntitySet="Template_CL_Job">
+                <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+                <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="HasViewProductivity" ColumnName="HasViewProductivity" />
+                <ScalarProperty Name="JobContent" ColumnName="JobContent" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Template_JobStepId" ColumnName="Template_JobStepId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

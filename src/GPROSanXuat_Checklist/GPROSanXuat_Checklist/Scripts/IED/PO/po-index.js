@@ -459,7 +459,7 @@ GPRO.PO = function () {
                             var code = txt.val().trim();
                             if (Global.Data.Products.length > 0 && code != '') {
                                 var flag = false;
-                                var found = Global.Data.Childs.filter(x => x.ProductName.trim() == code)[0];
+                                var found = Global.Data.Childs.filter(x => x.ProductName &&  x.ProductName.trim() == code)[0];
                                 if (found) {
                                     GlobalCommon.ShowMessageDialog('Sản phẩm này đã tồn tại trong danh sách. Vui lòng kiểm tra lại.', function () {
                                         txt.val(data.record.ProductName);

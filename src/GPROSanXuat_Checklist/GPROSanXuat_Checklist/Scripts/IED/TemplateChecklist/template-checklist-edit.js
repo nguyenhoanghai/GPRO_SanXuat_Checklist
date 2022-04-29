@@ -96,6 +96,7 @@ GPRO.TemplateChecklistEdit = function () {
             $("#template-checklist-job-name").val(found.Name);
             $("#template-checklist-job-index").val(found.JobIndex);
             $("#" + Global.Element.PopupJob).modal("show");
+            $("#template-checklist-job-view-report").bootstrapToggle(found.HasViewProductivity?'on':'off')
         }
         else {
             alert('Không tìm thấy thông tin');
@@ -119,7 +120,12 @@ GPRO.TemplateChecklistEdit = function () {
     }
 
     var RegisterEvent = function () {
+        //$("#template-checklist-job-view-report").kendoMobileSwitch({
+        //    onLabel: "Có",
+        //    offLabel: "Không"
+        //});
 
+        $("#template-checklist-job-view-report").bootstrapToggle();
     }
 
     BindJobStep = (id) => {
@@ -320,6 +326,7 @@ GPRO.TemplateChecklistEdit = function () {
     }
 
     SaveJob = () => {
+        $("#template-checklist-job-view-report").bootstrapToggle()
         var obj = {
             Template_JobStepId: Global.Data.JobStepId,
             ParentId: Global.Data.ParentJobId,
@@ -327,6 +334,7 @@ GPRO.TemplateChecklistEdit = function () {
             JobIndex: $('#template-checklist-job-index').val(),
             Name: $('#template-checklist-job-name').val(),
             JobContent: $('#template-checklist-job-content').val(),
+            HasViewProductivity: $("#template-checklist-job-view-report").prop('checked') ,
         }
 
         $.ajax({
@@ -429,10 +437,12 @@ GPRO.TemplateChecklistEdit = function () {
         $('#template-checklist-job-content').val('');
         $("#template-checklist-job-name").val('');
         $("#template-checklist-job-index").val('');
+        $("#template-checklist-job-view-report").prop("checked", false).change();  
     }
 
     DrawSubItems = (html, items, dotted) => {
         $.each(items, (i, item) => {
+            Global.Data.Jobs.push(item);
             html += ` 
                                     <div class="div-item">${(dotted + '<i class="fa fa-caret-right"></i>')} ${item.Name} <div class="div-item-action"><i class="fa fa-plus" onClick="JobAction(${item.Id},1)"></i> <i class="fa fa-edit"  onClick="JobAction(${item.Id},2)"></i> <i class="fa fa-trash"  onClick="JobAction(${item.Id},3)"></i></div></div>
                                     `;

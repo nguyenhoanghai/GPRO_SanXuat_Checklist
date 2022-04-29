@@ -31,36 +31,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Checklist_Job">
-      <EntityTypeMapping TypeName="SanXuatCheckListModel.Checklist_Job">
-        <MappingFragment StoreEntitySet="Checklist_Job">
-          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
-          <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
-          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-          <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
-          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-          <ScalarProperty Name="Note" ColumnName="Note" />
-          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-          <ScalarProperty Name="RealQuantities" ColumnName="RealQuantities" />
-          <ScalarProperty Name="Quantities" ColumnName="Quantities" />
-          <ScalarProperty Name="ReminderDate" ColumnName="ReminderDate" />
-          <ScalarProperty Name="RealEndDate" ColumnName="RealEndDate" />
-          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-          <ScalarProperty Name="RelatedEmployees" ColumnName="RelatedEmployees" />
-          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-          <ScalarProperty Name="JobContent" ColumnName="JobContent" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
-          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-          <ScalarProperty Name="ChecklistJobStepId" ColumnName="ChecklistJobStepId" />
-          <ScalarProperty Name="FakeId" ColumnName="FakeId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Checklist_Job_ActionLog">
       <EntityTypeMapping TypeName="SanXuatCheckListModel.Checklist_Job_ActionLog">
         <MappingFragment StoreEntitySet="Checklist_Job_ActionLog">
@@ -547,25 +517,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Template_CL_Job">
-      <EntityTypeMapping TypeName="SanXuatCheckListModel.Template_CL_Job">
-        <MappingFragment StoreEntitySet="Template_CL_Job">
-          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
-          <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
-          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
-          <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
-          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-          <ScalarProperty Name="JobContent" ColumnName="JobContent" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
-          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
-          <ScalarProperty Name="Template_JobStepId" ColumnName="Template_JobStepId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Template_CL_JobStep">
       <EntityTypeMapping TypeName="SanXuatCheckListModel.Template_CL_JobStep">
         <MappingFragment StoreEntitySet="Template_CL_JobStep">
@@ -688,6 +639,57 @@
           <ScalarProperty Name="Quantities" ColumnName="Quantities" />
           <ScalarProperty Name="ProductId" ColumnName="ProductId" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Checklist_Job">
+      <EntityTypeMapping TypeName="SanXuatCheckListModel.Checklist_Job">
+        <MappingFragment StoreEntitySet="Checklist_Job">
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="HasViewProductivity" ColumnName="HasViewProductivity" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="RealQuantities" ColumnName="RealQuantities" />
+          <ScalarProperty Name="Quantities" ColumnName="Quantities" />
+          <ScalarProperty Name="ReminderDate" ColumnName="ReminderDate" />
+          <ScalarProperty Name="RealEndDate" ColumnName="RealEndDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="RelatedEmployees" ColumnName="RelatedEmployees" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+          <ScalarProperty Name="JobContent" ColumnName="JobContent" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="ChecklistJobStepId" ColumnName="ChecklistJobStepId" />
+          <ScalarProperty Name="FakeId" ColumnName="FakeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Template_CL_Job">
+      <EntityTypeMapping TypeName="SanXuatCheckListModel.Template_CL_Job">
+        <MappingFragment StoreEntitySet="Template_CL_Job">
+          <ScalarProperty Name="DeletedDate" ColumnName="DeletedDate" />
+          <ScalarProperty Name="DeletedUser" ColumnName="DeletedUser" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="UpdatedUser" ColumnName="UpdatedUser" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedUser" ColumnName="CreatedUser" />
+          <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+          <ScalarProperty Name="HasViewProductivity" ColumnName="HasViewProductivity" />
+          <ScalarProperty Name="JobContent" ColumnName="JobContent" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="JobIndex" ColumnName="JobIndex" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="Template_JobStepId" ColumnName="Template_JobStepId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

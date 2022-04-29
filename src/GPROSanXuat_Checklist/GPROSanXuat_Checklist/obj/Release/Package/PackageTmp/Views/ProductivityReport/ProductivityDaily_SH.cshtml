@@ -1,0 +1,423 @@
+﻿
+@{
+    ViewBag.Title = "Theo dõi năng xuất ngày 2";
+}
+<link href="~/Content/IED/productivity-daily-sh.css" rel="stylesheet" />
+ 
+<div class="container-fluid">
+    <fieldset>
+        <legend>Lọc thông tin</legend>
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Phân xưởng<span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="report-inday-workshop"></select>
+                <i re_line class="fa fa-refresh clickable red"></i>
+                <a href="/phan-xuong" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+        <div class="col-md-2 form-group ">
+            <label class="control-label">Lầu <span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="report-inday-floor"></select>
+                <i re_line class="fa fa-refresh clickable red"></i>
+                <a href="/floor" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+        <button type="button" id="btn-report-inday-view" class="btn btn-primary" style="margin-top:30px"><i class="fa fa-search-minus"></i> Tìm kiếm </button>
+        <button type="button" id="btn-report-inday-excel" class="btn btn-danger" style="margin-top:30px"><i class="fa fa-file-excel-o"></i> Xuất Excel </button>
+    </fieldset>
+
+    <fieldset>
+        <legend>Thông tin năng xuất</legend>
+
+        <table class="table table-bordered table-hover table-ngay ">
+            <thead>
+                <tr>
+                    <td rowspan="2">Chuyển</td>
+                    <td rowspan="2">Số CN</td>
+                    <td rowspan="2">Khách hàng</td>
+                    <td rowspan="2">Mã hàng</td>
+                    <td rowspan="2">Đơn giá CM (USD)</td>
+                    <td colspan="2" rowspan="2">Chỉ tiêu</td>
+                    <td colspan="3">Sản lượng</td>
+                    <td colspan="11">Sản lượng theo giờ</td>
+                </tr>
+                <tr>
+                    <td>Đã thực hiện</td>
+                    <td>Lũy kế</td>
+                    <td>Sản lượng còn lại</td>
+                    <td>Giờ 1</td>
+                    <td>Giờ 2</td>
+                    <td>Giờ 3</td>
+                    <td>Giờ 4</td>
+                    <td>Giờ 5</td>
+                    <td>Giờ 6</td>
+                    <td>Giờ 7</td>
+                    <td>Giờ 8</td>
+                    <td>Giờ 9</td>
+                    <td>Giờ 10</td>
+                    <td>Tổng ngày</td>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr class="row-color">
+                    <td rowspan="21">Chuyển 1</td>
+                    <td rowspan="21">10</td>
+                    <td rowspan="21">GPRO</td>
+                    <td rowspan="21">Đồng phục</td>
+                    <td rowspan="21">5</td>
+                    <td rowspan="3" class="col-tim">Bán thành phẩm</td>
+                    <td class="col-tim">cấp trong ngày</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td class="col-sum">11</td>
+                    <td class="col-sum">12</td>
+                    <td class="col-sum">13</td>
+                    <td class="col-sum">14</td>
+                    <td class="col-sum">15</td>
+                    <td class="col-sum">16</td>
+                    <td class="col-sum">17</td>
+                    <td class="col-sum">18</td>
+                    <td class="col-sum">19</td>
+                    <td class="col-sum">20</td>
+                    <td class="col-sum">200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Tồn trên chuyền</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Vốn trên chuyền</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="5" class="col-tim">Sản lượng (PCS)</td>
+                    <td class="col-tim">kế hoạch</td>
+                    <td class="col-green">1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td class="col-green">200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Thực hiện</td>
+                    <td class="col-sum">1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td class="col-sum">11</td>
+                    <td class="col-sum">12</td>
+                    <td class="col-sum">13</td>
+                    <td class="col-sum">14</td>
+                    <td class="col-sum">15</td>
+                    <td class="col-sum">16</td>
+                    <td class="col-sum">17</td>
+                    <td class="col-sum">18</td>
+                    <td class="col-sum">19</td>
+                    <td class="col-sum">20</td>
+                    <td class="col-sum">200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">chênh lệch</td>
+                    <td class="col-yellow">1000</td>
+                    <td class="col-yellow">5000</td>
+                    <td class="col-yellow">4000</td>
+                    <td class="col-yellow">11</td>
+                    <td class="col-yellow">12</td>
+                    <td class="col-yellow">13</td>
+                    <td class="col-yellow">14</td>
+                    <td class="col-yellow">15</td>
+                    <td class="col-yellow">16</td>
+                    <td class="col-yellow">17</td>
+                    <td class="col-yellow">18</td>
+                    <td class="col-yellow">19</td>
+                    <td class="col-yellow">20</td>
+                    <td class="col-yellow">200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Tỉ lệ % TH/KH</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Hiệu xuất</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+
+                <tr>
+                    <td class="col-tim" rowspan="6">KCS (PCS)</td>
+                    <td class="col-tim">Kiểm đạt</td>
+                    <td class="col-sum">1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td class="col-sum">11</td>
+                    <td class="col-sum">12</td>
+                    <td class="col-sum">13</td>
+                    <td class="col-sum">14</td>
+                    <td class="col-sum">15</td>
+                    <td class="col-sum">16</td>
+                    <td class="col-sum">17</td>
+                    <td class="col-sum">18</td>
+                    <td class="col-sum">19</td>
+                    <td class="col-sum">20</td>
+                    <td class="col-sum">200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Không đạt (lỗi)</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td class="col-yellow">11</td>
+                    <td class="col-yellow">12</td>
+                    <td class="col-yellow">13</td>
+                    <td class="col-yellow">14</td>
+                    <td class="col-yellow">15</td>
+                    <td class="col-yellow">16</td>
+                    <td class="col-yellow">17</td>
+                    <td class="col-yellow">18</td>
+                    <td class="col-yellow">19</td>
+                    <td class="col-yellow">20</td>
+                    <td class="col-yellow">200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">LK chưa kiểm</td>
+                    <td class="col-sum">1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Tỉ lệ % KĐ/TH</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Tỉ lệ % KĐ/KH</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Hiệu xuất</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+
+                <tr>
+                    <td class="col-tim" rowspan="4">Hoàn thành (PCS)</td>
+                    <td class="col-tim">Ủi</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Giao hoàn thành</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-tim">Đóng gói</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+
+                <tr>
+                    <td class="col-sum" colspan="2">Doanh thu (USD)</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-sum" colspan="2">Thu nhập BQ</td>
+                    <td>1000</td>
+                    <td>5000</td>
+                    <td>4000</td>
+                    <td>11</td>
+                    <td>12</td>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>200</td>
+                </tr>
+                <tr>
+                    <td class="col-sum" colspan="2">Giao hoàn thành</td>
+                    <td class="col-green">1000</td>
+                    <td class="col-green">5000</td>
+                    <td class="col-green">4000</td>
+                    <td class="col-green">11</td>
+                    <td class="col-green">12</td>
+                    <td class="col-green">13</td>
+                    <td class="col-green">14</td>
+                    <td class="col-green">15</td>
+                    <td class="col-green">16</td>
+                    <td class="col-green">17</td>
+                    <td class="col-green">18</td>
+                    <td class="col-green">19</td>
+                    <td class="col-green">20</td>
+                    <td class="col-green">200</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </fieldset>
+</div>
+
+<script src="~/Scripts/IED/productivity-report/report-productivity-in-day-2.js"></script>

@@ -83,6 +83,7 @@ namespace GPROSanXuat_Checklist.Business
                                 {
                                     obj.Name = model.Name;
                                     obj.JobContent = model.JobContent;
+                                    obj.HasViewProductivity = model.HasViewProductivity;
                                     obj.UpdatedUser = model.ActionUser;
                                     obj.UpdatedDate = DateTime.Now;
                                     db.SaveChanges();
@@ -172,6 +173,7 @@ namespace GPROSanXuat_Checklist.Business
                              Template_JobStepId = x.Template_JobStepId,
                              JobIndex = x.JobIndex,
                              JobContent = x.JobContent,
+                             HasViewProductivity = x.HasViewProductivity,
                              Name = x.Name
                          }).ToList();
                     if (allJobs.Count > 0)
@@ -224,7 +226,8 @@ namespace GPROSanXuat_Checklist.Business
                         Id = x.Id,
                         Name = x.Name,
                         JobContent = x.JobContent,
-                        JobIndex = x.JobIndex
+                        JobIndex = x.JobIndex,
+                        HasViewProductivity = x.HasViewProductivity
                     }).OrderBy(sorting).ToList(), pageNumber, pageSize);
                 }
             }

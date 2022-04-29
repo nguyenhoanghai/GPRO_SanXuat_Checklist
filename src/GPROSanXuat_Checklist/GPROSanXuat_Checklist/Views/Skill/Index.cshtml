@@ -1,0 +1,128 @@
+﻿
+@{
+    ViewBag.Title = "Nhóm kỹ năng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="skill-group-jtable" class="table-center"></div>
+
+<div class="modal   fade  " id="skill-group-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin nhóm kỹ năng</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <input class="form-control" id="skill-group-id" type="hidden" />
+                        <label class="control-label">Mã nhóm kỹ năng <span class="required-class">*</span></label>
+                        <input class="form-control" id="skill-group-code" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên nhóm kỹ năng <span class="required-class">*</span></label>
+                        <input class="form-control" id="skill-group-name" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Hệ số <span class="required-class">*</span></label>
+                        <input class="form-control" id="skill-group-coeff" type="text" onkeypress="return isNumberKey(event)" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="skill-group-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal   fade  " id="popup-skill" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog   ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin kỹ năng</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class=" form-group col-md-6">
+                        <input class="form-control" id="skill-id" type="hidden" />
+                        <label class="control-label">Nhóm kỹ năng <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="skill-group-select"></select>
+                            <i re-skill-group class="fa fa-refresh clickable red"></i>
+                        </div>
+                    </div>
+                    <div class=" form-group col-md-6">
+                        <label class="control-label">Loại kỹ năng <span class="required-class">*</span></label>
+                        <select class="form-control" id="skill-type">
+                            <option value="0">Khác</option>
+                            <option value="1">Thiết bị</option>
+                            <option value="2">Công đoạn</option>                            
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Tên kỹ năng <span class="required-class">*</span></label>
+                        <input class="form-control" id="skill-name" type="text" />
+                    </div>
+                    <div box-tb class="form-group col-md-6">
+                        <label class="control-label">Thiết bị <span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="skill-e-group"></select>
+                            <i re-e-group class="fa fa-refresh clickable red"></i>
+                            <a href="/nhom-thiet-bi" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div box-cd class="form-group col-md-6">
+                        <label class="control-label">Công đoạn<span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="skill-phase"></select>
+                            <i re-phase class="fa fa-refresh clickable red"></i>
+                            @*<a href="/nhom-thiet-bi" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="skill-note" class="form-control"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal   fade  " id="popup-skill-level" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog   ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin cấp độ kỹ năng</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div id="skill-level-jtable" class="table-center"></div>
+                </div>
+            </div>
+
+            @*<div class="modal-footer">
+                    <button type="button" cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                    <button type="button" save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+                </div>*@
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/IED/Skill/skill-index.js"></script>

@@ -1,0 +1,41 @@
+﻿ 
+.table-ngay thead td {
+    text-transform: uppercase;
+    font-weight: 600;
+    background: #b990ee
+}
+
+.table-ngay td {
+    text-align: center;
+    vertical-align: middle !important;
+    color: black;
+    border-color: #ccc !important;
+    border-collapse: collapse !important;
+    font-family: Tahoma
+}
+
+.table-ngay tbody .row-color td {
+    background: #efefef;
+}
+
+td.col-tim {
+    background: #b990ee !important;
+    font-weight: 600;
+}
+
+td.col-sum {
+    background: #f2daee !important;
+    color: red !important;
+    font-weight: 600;
+}
+
+td.col-green {
+    background: green !important;
+    color: white !important
+}
+
+td.col-yellow {
+    background: yellow !important;
+    color: red !important;
+    font-weight: 600;
+} 

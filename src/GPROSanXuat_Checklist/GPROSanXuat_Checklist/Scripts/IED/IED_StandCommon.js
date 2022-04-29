@@ -1,4 +1,5 @@
-﻿function GetCategoriesSelect(moduleId, controlId, value) {
+﻿ 
+function GetCategoriesSelect(moduleId, controlId, value) {
     if (moduleId != '0') {
         $.ajax({
             url: '/Category/GetSelect',
@@ -209,6 +210,93 @@ function GetLineSelect(controlName, floorId) {
                         if (data.Data.length > 0) {
                             $.each(data.Data, function (index, item) {
                                 str += ' <option labours = "' + item.Data + '" value="' + item.Value + '">' + item.Name + '</option>';
+                            });
+                        }
+                        $('#' + controlName).empty().append(str).change();
+                        $('[' + controlName + ']').empty().append(str).change();
+                        $('#' + controlName).trigger('liszt:updated');
+                    }
+                }
+            }, false, '', true, true, function () {
+                var msg = GlobalCommon.GetErrorMessage(data);
+                GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra.");
+            });
+        }
+    });
+}
+
+function GetLinePartSelect(controlName, lineId) {
+    $.ajax({
+        url: '/Linepart/GetSelectList',
+        type: 'POST',
+        data: JSON.stringify({ 'lineId': lineId }),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            GlobalCommon.CallbackProcess(data, function () {
+                if (data.Result == "OK") {
+                    if (data.Data.length > 0) {
+                        var str = '';
+                        if (data.Data.length > 0) {
+                            $.each(data.Data, function (index, item) {
+                                str += ' <option  value="' + item.Value + '">' + item.Name + '</option>';
+                            });
+                        }
+                        $('#' + controlName).empty().append(str).change();
+                        $('[' + controlName + ']').empty().append(str).change();
+                        $('#' + controlName).trigger('liszt:updated');
+                    }
+                }
+            }, false, '', true, true, function () {
+                var msg = GlobalCommon.GetErrorMessage(data);
+                GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra.");
+            });
+        }
+    });
+}
+
+function GetDepartmentSelect(controlName) {
+    $.ajax({
+        url: '/department/GetSelectList',
+        type: 'POST',
+        data: '',
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            GlobalCommon.CallbackProcess(data, function () {
+                if (data.Result == "OK") {
+                    if (data.Data.length > 0) {
+                        var str = '';
+                        if (data.Data.length > 0) {
+                            $.each(data.Data, function (index, item) {
+                                str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
+                            });
+                        }
+                        $('#' + controlName).empty().append(str).change();
+                        $('[' + controlName + ']').empty().append(str).change();
+                        $('#' + controlName).trigger('liszt:updated');
+                    }
+                }
+            }, false, '', true, true, function () {
+                var msg = GlobalCommon.GetErrorMessage(data);
+                GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra.");
+            });
+        }
+    });
+}
+
+function GetPositionSelect(controlName, code) {
+    $.ajax({
+        url: '/position/GetSelectList',
+        type: 'POST',
+        data: JSON.stringify({'typeCode':code}),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            GlobalCommon.CallbackProcess(data, function () {
+                if (data.Result == "OK") {
+                    if (data.Data.length > 0) {
+                        var str = '';
+                        if (data.Data.length > 0) {
+                            $.each(data.Data, function (index, item) {
+                                str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
                             });
                         }
                         $('#' + controlName).empty().append(str).change();
@@ -685,6 +773,107 @@ function GetStatusTypeSelect(controlId) {
         }
     });
 }
+
+function GetPositionTypeSelect(controlId) {
+    $.ajax({
+        url: '/positiontype/GetSelectList',
+        type: 'POST',
+        data: '',
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) { 
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
+                    });
+                }
+                $('#' + controlId).empty().append(str);
+                $('[' + controlId + ']').empty().append(str);
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetSkillGroupSelect(controlId) {
+    $.ajax({
+        url: '/skillgroup/GetSelectList',
+        type: 'POST',
+        data: '',
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
+                    });
+                }
+                $('#' + controlId).empty().append(str).change();
+                $('[' + controlId + ']').empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetSkillSelect(controlId, skillGroupId) {
+    $.ajax({
+        url: '/skill/GetSelectList',
+        type: 'POST',
+        data: JSON.stringify({ 'skillGroupId': skillGroupId}),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
+                    });
+                }
+                $('#' + controlId).empty().append(str).change();
+                $('[' + controlId + ']').empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetSkillLevelSelect(controlId, skillId) {
+    $.ajax({
+        url: '/skilllevel/GetSelectList',
+        type: 'POST',
+        data: JSON.stringify({ 'skillId': skillId }),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
+                    });
+                }
+                $('#' + controlId).empty().append(str).change();
+                $('[' + controlId + ']').empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
 
 function GetTemplateFileSelect(controlId) {
     $.ajax({

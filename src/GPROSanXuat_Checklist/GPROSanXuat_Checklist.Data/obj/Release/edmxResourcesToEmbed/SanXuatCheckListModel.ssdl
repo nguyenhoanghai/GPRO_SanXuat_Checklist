@@ -49,6 +49,7 @@
     <Property Name="Quantities" Type="float" Nullable="false" />
     <Property Name="RealQuantities" Type="float" Nullable="false" />
     <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="HasViewProductivity" Type="bit" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedUser" Type="int" Nullable="false" />
@@ -572,6 +573,7 @@
     <Property Name="JobIndex" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="250" Nullable="false" />
     <Property Name="JobContent" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="HasViewProductivity" Type="bit" Nullable="false" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedUser" Type="int" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />

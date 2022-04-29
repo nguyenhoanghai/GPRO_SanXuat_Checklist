@@ -6,7 +6,7 @@
 <div id="jtableEmployee" class="table-center"></div>
 
 <div class="modal   fade " id="popup_Employee" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog  ">
+    <div class="modal-dialog modal-80 ">
         <div class="modal-content">
             <div class="modal-header">
                 <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button"> × </button>
@@ -47,24 +47,79 @@
                             <label class="control-label">Ngày sinh <span class="required-class"> *</span></label> <br />
                             <input class="form-control" id="EBirthday" type="text" />
                         </div>
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-4 form-group" style="margin-bottom:10px !important">
                             <label class="control-label">Điện thoại  </label>
                             <input class="form-control" id="e-phone" type="text" />
                         </div>
-                        <div class="col-md-8" style="margin-top:10px">
-                            <label class=" control-label">TK hệ thống</label> 
+                        <div class="col-md-4" style="margin-top:10px !important">
+                            <label class=" control-label">TK hệ thống <span class="required-class"> *</span></label>
                             <div class="select-box">
                                 <select id="e-user"></select>
                                 <i re-e-user class="fa fa-refresh clickable red"></i>
                                 <a href="/User/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
                             </div>
                         </div>
-                        <div class="col-md-12 form-group">
+                        <div class="col-md-4" style="margin-top:10px" >
+                            <label class=" control-label">Loại nhân viên <span class="required-class"> *</span></label>
+                            <select id="e-type" class="form-control">
+                                <option value="0">Văn phòng</option>
+                                <option value="1">Sản xuất</option>
+                            </select>
+                        </div>
+                        <div vp class="col-md-4" style="margin-top:10px">
+                            <label class=" control-label">Phòng ban <span class="required-class"> *</span></label>
+                            <div class="select-box">
+                                <select id="e-department"></select>
+                                <i re-department class="fa fa-refresh clickable red"></i>
+                                <a href="/department/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div sx class="col-md-4" style="margin-top:10px">
+                            <label class=" control-label">Phân xưởng <span class="required-class"> *</span></label>
+                            <div class="select-box">
+                                <select id="e-workshop"></select>
+                                <i re-workshop class="fa fa-refresh clickable red"></i>
+                                <a href="/workshop/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div sx class="col-md-4" style="margin-top:10px">
+                            <label class=" control-label">Lầu <span class="required-class"> *</span></label>
+                            <div class="select-box">
+                                <select id="e-floor"></select>
+                                <i re-floor class="fa fa-refresh clickable red"></i>
+                                <a href="/floor/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div sx class="col-md-4" style="margin-top:10px">
+                            <label class=" control-label">Chuyền <span class="required-class"> *</span></label>
+                            <div class="select-box">
+                                <select id="e-line"></select>
+                                <i re-line class="fa fa-refresh clickable red"></i>
+                                <a href="/line/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div sx class="col-md-4" style="margin-top:10px">
+                            <label class=" control-label">Tổ <span class="required-class"> *</span></label>
+                            <div class="select-box">
+                                <select id="e-line-part"></select>
+                                <i re-line-part class="fa fa-refresh clickable red"></i>
+                                <a href="/linepart/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div   class="col-md-4" style="margin-top:10px">
+                            <label class=" control-label">Chức vụ <span class="required-class"> *</span></label>
+                            <div class="select-box">
+                                <select id="e-position"></select>
+                                <i re-position class="fa fa-refresh clickable red"></i>
+                                <a href="/position/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 " style="margin-top:10px">
                             <label class="control-label">Email  </label>
                             <input class="form-control" id="e-email" type="email" />
                         </div>
-                     
-                        
+
+
                     </div>
 
 

@@ -61,7 +61,7 @@ GPRO.Product = function () {
     }
 
     var RegisterEvent = function () {
-        $("#proIsPrivate").kendoMobileSwitch({
+        $("#proIsPrivate").bootstrapToggle({
             onLabel: "Nội bộ",
             offLabel: "Tất cả"
         });
@@ -86,11 +86,16 @@ GPRO.Product = function () {
 
     resetData = () => {
         $("#pid").val(0);
+        $("#p-pro-time").val(0);
+        $("#p-price").val(0);
+        $("#p-price-cut").val(0);
+        $("#p-price-cm").val(0);
         $("#pname").val('');
         $("#pdes").val('');
         $('.img-avatar').attr('src', '../Content/Img/no-image.png');
         $('#p-file-upload').attr('newurl', '');
         $('#p-file-upload').val('');
+         $("#proIsPrivate").prop("checked", false).change(); 
     }
 
     function SaveProduct() {
@@ -101,9 +106,13 @@ GPRO.Product = function () {
             Note: $("#pdes").val(),
             SizeId: $("#psize").val(),
             UnitId: $("#punit").val(),
-            IsPrivate: $("#proIsPrivate").data("kendoMobileSwitch").check(),
+            IsPrivate: $("#proIsPrivate").prop("checked"),
             CustomerId: $("#pcustomer").val(),
-            Image: $('#p-file-upload').attr('newurl')
+            Image: $('#p-file-upload').attr('newurl'),
+            ProductionTime: $("#p-pro-time").val(),
+            Price: $("#p-price").val(),
+            PriceCutting: $("#p-price-cut").val(),
+            PriceCM: $("#p-price-cm").val()
         }
         $.ajax({
             url: Global.UrlAction.SaveProduct,
@@ -143,10 +152,10 @@ GPRO.Product = function () {
             selectShow: true,
             actions: {
                 listAction: Global.UrlAction.GetListProduct,
-                createAction: Global.Element.PopupProduct, 
+                createAction: Global.Element.PopupProduct,
             },
             messages: {
-                addNewRecord: 'Thêm mới', 
+                addNewRecord: 'Thêm mới',
                 selectShow: 'Ẩn hiện cột'
             },
             searchInput: {
@@ -210,8 +219,16 @@ GPRO.Product = function () {
                             $("#pid").val(data.record.Id);
                             $("#pname").val(data.record.Name);
                             $("#pdes").val(data.record.Note);
+
+                            $("#p-pro-time").val(data.record.ProductionTime);
+                            $("#p-price").val(data.record.Price);
+                            $("#p-price-cut").val(data.record.PriceCutting);
+                            $("#p-price-cm").val(data.record.PriceCM);
+
                             if (data.record.Image)
                                 $('.img-avatar').attr('src', data.record.Image);
+
+                            $("#proIsPrivate").prop("checked", data.record.IsPrivate).change(); 
                             Global.Data.IsInsert = false;
                         });
                         return text;
@@ -237,8 +254,8 @@ GPRO.Product = function () {
     }
 
     function ReloadList() {
-        var keySearch = $('#pkeyword').val(); 
-        $('#' + Global.Element.JtableProduct).jtable('load', { 'keyword': keySearch  });
+        var keySearch = $('#pkeyword').val();
+        $('#' + Global.Element.JtableProduct).jtable('load', { 'keyword': keySearch });
     }
 
     function Delete(Id) {
@@ -300,6 +317,22 @@ GPRO.Product = function () {
         }
         else if ($('#psize').val().trim() == "") {
             GlobalCommon.ShowMessageDialog("Vui lòng chọn kích cỡ.", function () { }, "Lỗi Nhập liệu");
+            return false;
+        }
+        else if ($('#p-pro-time').val().trim() == "" || parseFloat($('#p-pro-time').val().trim()) <= 0) {
+            GlobalCommon.ShowMessageDialog("Vui nhập thời gian chế tạo (giây).", function () { }, "Lỗi Nhập liệu");
+            return false;
+        }
+        else if ($('#p-price').val().trim() == "" || parseFloat($('#p-price').val().trim()) <= 0) {
+            GlobalCommon.ShowMessageDialog("Vui lòng nhập đơn giá.", function () { }, "Lỗi Nhập liệu");
+            return false;
+        }
+        else if ($('#p-price-cut').val().trim() == "" || parseFloat($('#p-price-cut').val().trim()) <= 0) {
+            GlobalCommon.ShowMessageDialog("Vui lòng nhập đơn giá CM.", function () { }, "Lỗi Nhập liệu");
+            return false;
+        }
+        else if ($('#p-price-cm').val().trim() == "" || parseFloat($('#p-price-cm').val().trim()) <= 0) {
+            GlobalCommon.ShowMessageDialog("Vui lòng nhập đơn giá cắt.", function () { }, "Lỗi Nhập liệu");
             return false;
         }
         return true;

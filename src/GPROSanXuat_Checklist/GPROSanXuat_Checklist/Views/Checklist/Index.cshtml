@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="~/Content/CheckList_View.css" rel="stylesheet" />
+
 <style>
     .table-checklist {
         border: 1px solid #ccc;
@@ -16,6 +17,10 @@
             background-color: yellow;
             min-width: 100px
         }
+
+            .table-checklist thead th:last-child {
+                width: 110px
+            }
 
         .table-checklist tbody td {
             text-align: center;
@@ -190,7 +195,7 @@
                                     <input type="text" class="form-control text-center" onkeypress="return isNumberKey(event)" id="checklist-quantities" style="max-width:100px !important" /><span class="bold red" style="margin-left:5px; line-height:34px" id="span-pro-unit"></span>
                                 </div>
                             </div>
-                            
+
 
 
 
@@ -285,6 +290,7 @@
     </div>
 </div>
 
+ 
 <script src="~/Scripts/IED/Checklist/checklist-index.js"></script>
 <script>
     var obj = new GPRO.Checklist();
@@ -308,4 +314,6 @@
     function Export(Id) {
         obj.Export(Id);
     }
+     
+
 </script>

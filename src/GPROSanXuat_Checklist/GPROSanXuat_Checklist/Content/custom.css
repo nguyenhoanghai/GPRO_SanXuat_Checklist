@@ -6533,3 +6533,14 @@ legend {
     font-weight: 600;
     color: brown;
 }
+
+.table-action i {
+    margin-right: 5px;
+    cursor:pointer
+}
+    .table-action i.fa-trash-o {
+        color:red
+    }
+    .table-action i.fa-pencil-square-o{
+        color:blue
+    }

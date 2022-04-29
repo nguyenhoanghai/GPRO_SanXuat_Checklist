@@ -26,7 +26,6 @@ namespace GPROSanXuat_Checklist.Data
         }
     
         public DbSet<Checklist> Checklists { get; set; }
-        public DbSet<Checklist_Job> Checklist_Job { get; set; }
         public DbSet<Checklist_Job_ActionLog> Checklist_Job_ActionLog { get; set; }
         public DbSet<Checklist_Job_Alert> Checklist_Job_Alert { get; set; }
         public DbSet<Checklist_Job_Attachment> Checklist_Job_Attachment { get; set; }
@@ -52,7 +51,6 @@ namespace GPROSanXuat_Checklist.Data
         public DbSet<ReceiptionDetail> ReceiptionDetails { get; set; }
         public DbSet<SConfig> SConfigs { get; set; }
         public DbSet<Template_Checklist> Template_Checklist { get; set; }
-        public DbSet<Template_CL_Job> Template_CL_Job { get; set; }
         public DbSet<Template_CL_JobStep> Template_CL_JobStep { get; set; }
         public DbSet<TemplateControl> TemplateControls { get; set; }
         public DbSet<TemplateFile> TemplateFiles { get; set; }
@@ -60,5 +58,7 @@ namespace GPROSanXuat_Checklist.Data
         public DbSet<W_Config> W_Config { get; set; }
         public DbSet<PO_SellDetail> PO_SellDetail { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Checklist_Job> Checklist_Job { get; set; }
+        public DbSet<Template_CL_Job> Template_CL_Job { get; set; }
     }
 }

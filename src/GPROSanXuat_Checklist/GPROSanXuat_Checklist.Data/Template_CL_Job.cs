@@ -20,6 +20,7 @@ namespace GPROSanXuat_Checklist.Data
         public int JobIndex { get; set; }
         public string Name { get; set; }
         public string JobContent { get; set; }
+        public bool HasViewProductivity { get; set; }
         public bool IsDeleted { get; set; }
         public int CreatedUser { get; set; }
         public System.DateTime CreatedDate { get; set; }
