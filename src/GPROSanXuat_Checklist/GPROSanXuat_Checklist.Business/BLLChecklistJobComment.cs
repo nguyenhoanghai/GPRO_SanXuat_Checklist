@@ -66,7 +66,7 @@ namespace GPROSanXuat_Checklist.Business
                             ModelSelectItem us;
                             for (int i = 0; i < alertUsers.Count - 1; i++)
                             {
-                                us = users.FirstOrDefault(x => x.Data1.ToUpper().Trim().Equals(alertUsers[i].Trim().ToUpper()));
+                                us = users.FirstOrDefault(x => x.Data1 != null && x.Data1.ToUpper().Trim().Equals(alertUsers[i].Trim().ToUpper()));
                                 if (us != null)
                                     reciever += us.Id + ",";
                             }
@@ -93,7 +93,7 @@ namespace GPROSanXuat_Checklist.Business
                         rs.Errors.Add(new Error() { MemberName = "insert", Message = "Công việc này đã bị xóa hoặc không tồn tại. Vui lòng nhấn F5 để làm mới." });
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                 }
                 return rs;

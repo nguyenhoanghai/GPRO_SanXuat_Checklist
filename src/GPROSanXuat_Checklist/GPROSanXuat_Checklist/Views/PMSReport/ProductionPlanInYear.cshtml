@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Kế hoạch sản xuất";
+    string[] _monthNames = ("Jan,Feb,March,April,May,Jun,July,August,Sept,Oct,Nov,Dec").Split(',');
+}
+
+<link href="~/Scripts/IED/PMSReport/tien-do-sx.css" rel="stylesheet" />
+<link href="~/Scripts/IED/PMSReport/pro-plan-year.css" rel="stylesheet" />
+<div class="container report">
+    <div class="clearfix"></div>
+    <div class="title">Kế hoạch sản xuất trong năm @DateTime.Now.Year</div>
+    <ul class="chu-thich">
+        <li>Green : Đang sản xuất</li>
+        <li>Yellow : Chưa sản xuất</li>
+        <li>White : Trống</li>
+    </ul>
+    <div class="div-table" > 
+        <table class="table table-bordered table-data" id="pro-plan-year-jtable">
+            <thead>
+                <tr>
+                    <th>Chuyền</th>
+                    @{
+                        for (int i = 0; i < _monthNames.Length; i++)
+                        {
+                            <th>  @_monthNames[i]</th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Chuyền 1
+                    </td>
+                    @{
+                        for (int i = 1; i < 13; i++)
+                        {
+                            <td>sp @i</td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    <td>
+                        Chuyền 2
+                    </td>
+                    @{
+                        for (int i = 1; i < 13; i++)
+                        {
+                            <td>sp @i</td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    <td>
+                        Chuyền 3
+                    </td>
+                    @{
+                        for (int i = 1; i < 13; i++)
+                        {
+                            <td>sp @i</td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    <td>
+                        Chuyền 4
+                    </td>
+                    @{
+                        for (int i = 1; i < 13; i++)
+                        {
+                            <td>sp @i</td>
+                        }
+                    }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/PMSReport/pro-plan-year.js"></script>

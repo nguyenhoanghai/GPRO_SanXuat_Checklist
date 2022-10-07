@@ -35,7 +35,7 @@
 
 
 .form-group {
-    min-height: 58px !important;
+    min-height: 60px !important;
 }
 
 .chooseTMU {
@@ -6533,3 +6533,19 @@ legend {
     font-weight: 600;
     color: brown;
 }
+
+.table-action i {
+    margin-right: 5px;
+    cursor:pointer
+}
+    .table-action i.fa-trash-o {
+        color:red
+    }
+    .table-action i.fa-pencil-square-o{
+        color:blue
+    }
+
+    .jtable-action { 
+        padding: 0 5px;
+        cursor : pointer !important
+    }

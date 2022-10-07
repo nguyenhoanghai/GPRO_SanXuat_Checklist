@@ -76,11 +76,15 @@ namespace GPROSanXuat_Checklist.Business
                         }
                         if (result.IsSuccess)
                         {
+                            if (model.OrderDetailId == 0)
+                                model.OrderDetailId = null;
+
                             Receiption obj;
                             if (model.Id == 0)  // tao moi
                             {
                                 obj = new Receiption();
                                 Parse.CopyObject(model, ref obj);
+                                obj.StatusId = (int)eStatus.Draft;
                                 db.Receiptions.Add(obj);
                                 result.IsSuccess = true;
                             }
@@ -96,6 +100,13 @@ namespace GPROSanXuat_Checklist.Business
                                     }
                                     else
                                     {
+                                        var details = obj.ReceiptionDetails.Where(x => !x.IsDeleted);
+                                        if (model.StatusId == (int)eStatus.Submited && (details == null || details.Count() == 0))
+                                        {
+                                            result.IsSuccess = false;
+                                            result.Errors.Add(new Error() { MemberName = "Delete", Message = "Phiếu nhập Kho này chưa có thông tin vật tư cần nhập. Vui Lòng nhập thông tin vật tư cần nhập trước khi gửi yêu cầu duyệt phiếu." });
+                                            return result;
+                                        }
                                         obj.Name = model.Name;
                                         obj.Index = model.Index;
                                         obj.FromWarehouseId = model.FromWarehouseId;
@@ -108,16 +119,8 @@ namespace GPROSanXuat_Checklist.Business
                                         obj.DateOfAccounting = model.DateOfAccounting;
                                         obj.InputDate = model.InputDate;
                                         obj.StatusId = model.StatusId;
-                                        if (model.StatusId == (int)eStatus.Approved)
-                                        {
-                                            obj.ApprovedUser = model.UpdatedUser;
-                                            obj.ApprovedDate = model.UpdatedDate;
-                                        }
-                                        else
-                                        {
-                                            obj.ApprovedUser = null;
-                                            obj.ApprovedDate = null;
-                                        }
+                                        obj.OrderDetailId = model.OrderDetailId;
+                                       
                                         obj.Note = model.Note;
                                         obj.UpdatedDate = model.UpdatedDate;
                                         obj.UpdatedUser = model.UpdatedUser;
@@ -157,6 +160,37 @@ namespace GPROSanXuat_Checklist.Business
             }
         }
 
+        public ResponseBase Approve(string strConnection, int Id, int actionUserId, bool isOwner)
+        {
+            using (db = new SanXuatCheckListEntities(strConnection))
+            {
+                var rs = new ResponseBase();
+                try
+                {
+                    var obj = GetById(strConnection, Id);
+                    if (obj == null)
+                    {
+                        rs.IsSuccess = false;
+                        rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Phiếu Nhập Kho này không tồn tại hoặc đã bị xóa, Vui Lòng kiểm tra lại." });
+                        return rs;
+                    }
+                    obj.StatusId = (int)eStatus.Approved;
+                    obj.IsApproved = true;
+                    obj.ApprovedDate = DateTime.Now;
+                    obj.ApprovedUser = actionUserId;
+                    db.SaveChanges();
+                    rs.IsSuccess = true;
+                    return rs;
+                }
+                catch (Exception)
+                {
+                    rs.IsSuccess = false;
+                    rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Lỗi Exception" });
+                    return rs;
+                }
+            }
+        }
+
         public ResponseBase Delete(string strConnection, int Id, int actionUserId, bool isOwner)
         {
             using (db = new SanXuatCheckListEntities(strConnection))
@@ -165,39 +199,133 @@ namespace GPROSanXuat_Checklist.Business
                 try
                 {
                     var obj = GetById(strConnection, Id);
-                    if (obj != null)
-                    {
-                        if (!checkPermis(obj, actionUserId, isOwner))
-                        {
-                            rs.IsSuccess = false;
-                            rs.Errors.Add(new Error() { MemberName = "update", Message = "Bạn không phải là người tạo phiếu nhập kho này nên bạn không cập nhật được thông tin cho phiếu nhập kho này." });
-                        }
-                        else
-                        {
-                            var now = DateTime.Now;
-                            obj.IsDeleted = true;
-                            obj.DeletedDate = now;
-                            obj.DeletedUser = actionUserId;
-                            db.SaveChanges();
-                            rs.IsSuccess = true;
-                        }
-                    }
-                    else
+                    if (obj == null)
                     {
                         rs.IsSuccess = false;
                         rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Phiếu Nhập Kho này không tồn tại hoặc đã bị xóa, Vui Lòng kiểm tra lại." });
+                        return rs;
                     }
+                    if (!checkPermis(obj, actionUserId, isOwner))
+                    {
+                        rs.IsSuccess = false;
+                        rs.Errors.Add(new Error() { MemberName = "update", Message = "Bạn không phải là người tạo phiếu nhập kho này nên bạn không cập nhật được thông tin cho phiếu nhập kho này." });
+                        return rs;
+                    }
+                    obj.IsDeleted = true;
+                    obj.DeletedDate = DateTime.Now;
+                    obj.DeletedUser = actionUserId;
+                    db.SaveChanges();
+                    rs.IsSuccess = true;
+                    return rs;
                 }
                 catch (Exception)
                 {
                     rs.IsSuccess = false;
                     rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Lỗi Exception" });
+                    return rs;
                 }
-                return rs;
+                
             }
         }
 
-        public PagedList<ReceiptionModel> GetList(string strConnection, string keyWord, int startIndexRecord, int pageSize, string sorting)
+        public PagedList<ReceiptionModel> GetList(string strConnection, int orderDetailId, List<ModelSelectItem> products, int startIndexRecord, int pageSize, string sorting)
+        {
+            using (db = new SanXuatCheckListEntities(strConnection))
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(sorting))
+                        sorting = "CreatedDate DESC";
+
+                    IQueryable<Receiption> objs = db.Receiptions.Where(c => !c.IsDeleted && c.OrderDetailId.HasValue && c.OrderDetailId == orderDetailId &&c.IsApproved);
+                     
+                    var pageNumber = (startIndexRecord / pageSize) + 1;
+                    var pagelist = new PagedList<ReceiptionModel>(objs.OrderBy(sorting).Select(x => new ReceiptionModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Index = x.Index,
+                        FromWarehouseId = x.FromWarehouseId,
+                        //FromWareHouseName = x.WareHouse.Name,
+                        StoreWarehouseId = x.StoreWarehouseId,
+                        //StoreWareHouseName = x.WareHouse1.Name,
+                        FromCustomerId = x.FromCustomerId,
+                        //CustomerName = x.Customer.Name,
+                        RecieverId = x.RecieverId,
+                        MoneyTypeId = x.MoneyTypeId,
+                        //MoneyTypeName = x.Unit.Name,
+                        ExchangeRate = x.ExchangeRate,
+                        TransactionType = x.TransactionType,
+                        DateOfAccounting = x.DateOfAccounting,
+                        StatusId = x.StatusId,
+                        //StatusName = x.Status.Name,
+                        InputDate = x.InputDate,
+                        IsApproved = x.IsApproved,
+                        ApprovedUser = x.ApprovedUser,
+                        ApprovedDate = x.ApprovedDate,
+                        Note = x.Note,
+                        OrderDetailId = x.OrderDetailId,
+                        OrderId = x.OrderDetailId.HasValue ? x.OrderDetail.OrderId : 0,
+                        OrderCode = x.OrderDetailId.HasValue ? x.OrderDetail.Order.Code : "",
+                        ProductId = x.OrderDetailId.HasValue ? x.OrderDetail.ProductId : 0,
+                    }), pageNumber, pageSize);
+                    if (pagelist.Count > 0)
+                    {
+                        var ids = pagelist.Select(x => x.Id);
+                        var details = db.ReceiptionDetails.Where(x => !x.IsDeleted && ids.Contains(x.ReceiptionId)).Select(x => new ReceiptionDetailModel()
+                        {
+                            ReceiptionId = x.ReceiptionId,
+                            Quantity = x.LotSupply.Quantity,
+                            Price = x.LotSupply.Price
+                        });
+
+                        string rvalue = "";// BLLAppConfig.Instance.GetConfigByCode(strConnection, eConfigCode.Receiption);
+                        //var employees = BLLEmployee.Instance.GetSelectItem(strConnection);
+                        ModelSelectItem found;
+                        foreach (var item in pagelist)
+                        {
+                            item.Code = rvalue + item.Index;
+
+                            if (item.ProductId > 0 && products.Count > 0)
+                            {
+                                found = products.FirstOrDefault(x => x.Value == item.ProductId);
+                                if (found != null)
+                                    item.ProductName = found.Name;
+                            }
+
+                            switch (item.StatusId)
+                            {
+                                case (int)eStatus.Draft: item.StatusName = "Bản nháp"; break;
+                                case (int)eStatus.Submited: item.StatusName = "Chờ duyệt"; break;
+                                case (int)eStatus.Approved: item.StatusName = "Đã duyệt"; break;
+                            }
+
+                            //found = employees.FirstOrDefault(x => x.Value == item.RecieverId);
+                            //if (found != null)
+                            //    item.RecieverName = found.Name;
+
+                            //if (item.StatusId == (int)eStatus.Approved && item.ApprovedUser.HasValue)
+                            //{
+                            //    found = employees.FirstOrDefault(x => x.Value == item.ApprovedUser.Value);
+                            //    if (found != null)
+                            //        item.ApprovedUserName = found.Name;
+                            //}
+
+                            var dts = details.Where(x => x.ReceiptionId == item.Id);
+                            item.Total = (dts != null && dts.Count() > 0 ? Math.Round(dts.Sum(x => x.Price * x.Quantity), 2) : 0);
+                        }
+                    }
+                    return pagelist;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+
+        public PagedList<ReceiptionModel> GetList(string strConnection, string keyWord, List<ModelSelectItem> products, int startIndexRecord, int pageSize, string sorting)
         {
             using (db = new SanXuatCheckListEntities(strConnection))
             {
@@ -235,9 +363,14 @@ namespace GPROSanXuat_Checklist.Business
                         StatusId = x.StatusId,
                         //StatusName = x.Status.Name,
                         InputDate = x.InputDate,
+                        IsApproved = x.IsApproved,
                         ApprovedUser = x.ApprovedUser,
                         ApprovedDate = x.ApprovedDate,
                         Note = x.Note,
+                        OrderDetailId = x.OrderDetailId,
+                        OrderId = x.OrderDetailId.HasValue ? x.OrderDetail.OrderId : 0,
+                        OrderCode = x.OrderDetailId.HasValue ? x.OrderDetail.Order.Code : "",
+                        ProductId = x.OrderDetailId.HasValue ? x.OrderDetail.ProductId : 0,
                     }), pageNumber, pageSize);
                     if (pagelist.Count > 0)
                     {
@@ -251,10 +384,25 @@ namespace GPROSanXuat_Checklist.Business
 
                         string rvalue = "";// BLLAppConfig.Instance.GetConfigByCode(strConnection, eConfigCode.Receiption);
                         //var employees = BLLEmployee.Instance.GetSelectItem(strConnection);
-                        //ModelSelectItem found;
+                        ModelSelectItem found;
                         foreach (var item in pagelist)
                         {
                             item.Code = rvalue + item.Index;
+
+                            if (item.ProductId > 0 && products.Count > 0)
+                            {
+                                found = products.FirstOrDefault(x => x.Value == item.ProductId);
+                                if (found != null)
+                                    item.ProductName = found.Name;
+                            }
+
+                            switch (item.StatusId)
+                            {
+                                case (int)eStatus.Draft: item.StatusName = "Bản nháp"; break;
+                                case (int)eStatus.Submited: item.StatusName = "Chờ duyệt"; break;
+                                case (int)eStatus.Approved: item.StatusName = "Đã duyệt"; break;
+                            }
+
                             //found = employees.FirstOrDefault(x => x.Value == item.RecieverId);
                             //if (found != null)
                             //    item.RecieverName = found.Name;
@@ -279,7 +427,7 @@ namespace GPROSanXuat_Checklist.Business
             }
         }
 
-        public PagedList<ReceiptionModel> GetList(string strConnection, int custId, int startIndexRecord, int pageSize, string sorting)
+        public PagedList<ReceiptionModel> GetList(string strConnection, List<ModelSelectItem> products, int custId, int startIndexRecord, int pageSize, string sorting)
         {
             using (db = new SanXuatCheckListEntities(strConnection))
             {
@@ -314,9 +462,14 @@ namespace GPROSanXuat_Checklist.Business
                         StatusId = x.StatusId,
                         //StatusName = x.Status.Name,
                         InputDate = x.InputDate,
+                        IsApproved = x.IsApproved,
                         ApprovedUser = x.ApprovedUser,
                         ApprovedDate = x.ApprovedDate,
                         Note = x.Note,
+                        OrderDetailId = x.OrderDetailId,
+                        OrderId = x.OrderDetailId.HasValue ? x.OrderDetail.OrderId : 0,
+                        OrderCode = x.OrderDetailId.HasValue ? x.OrderDetail.Order.Code : "",
+                        ProductId = x.OrderDetailId.HasValue ? x.OrderDetail.ProductId : 0,
                     }), pageNumber, pageSize);
                     if (pagelist.Count > 0)
                     {
@@ -325,10 +478,25 @@ namespace GPROSanXuat_Checklist.Business
 
                         string rvalue = "";// BLLAppConfig.Instance.GetConfigByCode(strConnection, eConfigCode.Receiption);
                         //var employees = BLLEmployee.Instance.GetSelectItem(strConnection);
-                        //ModelSelectItem found;
+                        ModelSelectItem found;
                         foreach (var item in pagelist)
                         {
                             item.Code = rvalue + item.Index;
+
+                            if (item.ProductId > 0 && products.Count > 0)
+                            {
+                                found = products.FirstOrDefault(x => x.Value == item.ProductId);
+                                if (found != null)
+                                    item.ProductName = found.Name;
+                            }
+
+                            switch (item.StatusId)
+                            {
+                                case (int)eStatus.Draft: item.StatusName = "Bản nháp"; break;
+                                case (int)eStatus.Submited: item.StatusName = "Chờ duyệt"; break;
+                                case (int)eStatus.Approved: item.StatusName = "Đã duyệt"; break;
+                            }
+
                             //found = employees.FirstOrDefault(x => x.Value == item.RecieverId);
                             //if (found != null)
                             //    item.RecieverName = found.Name;
@@ -352,8 +520,7 @@ namespace GPROSanXuat_Checklist.Business
                 }
             }
         }
-
-
+         
         public List<ModelSelectItem> GetSelectList(string strConnection)
         {
             using (db = new SanXuatCheckListEntities(strConnection))

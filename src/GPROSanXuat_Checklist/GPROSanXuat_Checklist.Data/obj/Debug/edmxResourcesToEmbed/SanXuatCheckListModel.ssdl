@@ -201,6 +201,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="OrderDetailId" Type="int" />
     <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
     <Property Name="WarehouseId" Type="int" Nullable="false" />
     <Property Name="CustomerId" Type="int" Nullable="false" />
@@ -210,9 +211,10 @@
     <Property Name="TransactionType" Type="int" Nullable="false" />
     <Property Name="DateOfAccounting" Type="datetime" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
     <Property Name="ApprovedUser" Type="int" />
     <Property Name="ApprovedDate" Type="datetime" />
-    <Property Name="IsApproved" Type="bit" Nullable="false" />
     <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
     <Property Name="Deliverier" Type="int" Nullable="false" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
@@ -348,7 +350,10 @@
     <Property Name="MoneyUnitId" Type="int" Nullable="false" />
     <Property Name="Exchange" Type="float" Nullable="false" />
     <Property Name="DeliveryDate" Type="datetime" />
-    <Property Name="StatusId" Type="int" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
+    <Property Name="ApprovedUser" Type="int" />
+    <Property Name="ApprovedDate" Type="datetime" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedUser" Type="int" Nullable="false" />
@@ -400,6 +405,9 @@
     <Property Name="Exchange" Type="float" Nullable="false" />
     <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
     <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
+    <Property Name="ApprovedUser" Type="int" />
+    <Property Name="ApprovedDate" Type="datetime" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedUser" Type="int" Nullable="false" />
@@ -419,10 +427,10 @@
     <Property Name="Quantities_Lenh" Type="int" Nullable="false" />
     <Property Name="Quantities_PC" Type="int" Nullable="false" />
     <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Note" Type="nvarchar(max)" />
     <Property Name="StartDate" Type="datetime" />
     <Property Name="EndDate" Type="datetime" />
     <Property Name="DeliveryDate" Type="datetime" />
-    <Property Name="Note" Type="nvarchar(max)" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedUser" Type="int" Nullable="false" />
@@ -493,6 +501,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Index" Type="int" Nullable="false" />
+    <Property Name="OrderDetailId" Type="int" />
     <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
     <Property Name="FromWarehouseId" Type="int" />
     <Property Name="FromCustomerId" Type="int" />
@@ -505,6 +514,7 @@
     <Property Name="InputDate" Type="datetime" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" />
     <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
     <Property Name="ApprovedUser" Type="int" />
     <Property Name="ApprovedDate" Type="datetime" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />

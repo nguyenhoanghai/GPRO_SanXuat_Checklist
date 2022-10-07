@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "Báo cáo nhập kho theo theo mã hàng";
+}
+
+<div class="container report">
+    <div class="clearfix"></div>
+    <div id="material_selection" class="form-inline" style="margin-top:20px; margin-bottom:20px">
+        <div class="form-group" style="margin-right:5px; line-height:25px">
+            <label class="control-label" style="margin-right:5px; margin-top: 5px">Đơn hàng </label>
+        </div>
+        <div class="form-group" style="margin-right:5px;">
+            <select id="receiption-order" class="form-control" style="width:200px"></select>
+        </div>
+        <div class="form-group" style="margin-right:5px; margin-top:5px ; line-height:40px">
+            <i re_order class="fa fa-refresh clickable red"></i>
+            <a href="/order/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+        </div>
+        <div class="form-group" style="margin-right:5px; line-height:25px">
+            <label class="control-label" style="margin-right:5px; margin-top: 5px">Mã hàng </label>
+        </div>
+        <div class="form-group" style="margin-right:5px;">
+            <select id="receiption-order-detail" class="form-control" style="width:200px"></select>
+        </div>
+
+        <div class="form-group">
+            <button id="inventory_btnView" class="form-control btn-primary" style="width:107px; "><i class="fa fa-search"></i> Tìm kiếm</button>
+        </div>
+        <div class="form-group">
+            <button id="inventory_btnExportToExcel" class="form-control btn-danger" style="width:115px;  "><span><i class="fa fa-file-excel-o"></i></span>   Xuất Excel</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="receiption-jtable"></div>
+</div>
+
+<div id="receiption-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" receiption-cancel class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông Tin Phiếu Nhập Kho</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <input type="hidden" id="receiption-id" />
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Mã Phiếu Nhập Kho</label>
+                        <input type="text" id="receiption-index" class="form-control" disabled />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Tên Phiếu Nhập Kho</label><span style="color:red"> *</span>
+                        <input type="text" id="receiption-name" class="form-control" />
+                    </div> 
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Kho lưu</label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="receiption-warehouse" class="form-control"></select>
+                            <i re-receiption-warehouse class="fa fa-refresh clickable red"></i>
+                            <span><a href="/WareHouse/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Nhân viên kho</label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="receiption-employee" class="form-control"></select>
+                            <i re-receiption-employee class="fa fa-refresh clickable red"></i>
+                            @*   <a href="@AppGlobal.HRMUrl/Employee/Create/0" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Ngày Nhập Kho </label><span style="color:red"> *</span>
+                        <input type="text" class="form-control" id="receiption-inputdate" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Hình Thức Giao Dịch </label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="receiption-transactiontype" class="form-control">
+                                <option value="1">GD Trực Tiếp</option>
+                                <option value="2">GD Tại Sở Giao Dịch</option>
+                                <option value="3">Mua Bán Đối Lưu</option>
+                                <option value="4">Mua Bán Tái Xuất</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label  ">Nhà Cung Cấp </label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="receiption-customer" class="form-control"></select>
+                            <i re-receiption-customer class="fa fa-refresh clickable red"></i>
+                            <a href="/Customer/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Tiền Tệ - Tỷ Giá </label><span style="color:red"> *</span>
+                        <div class="select-box">
+                            <select id="receiption-moneytype" style="width: 90px"></select>
+                            <i re-receiption-moneytype class="fa fa-refresh clickable red"></i>
+                            @*  <a href="@AppGlobal.HostUrl/MoneyType/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+                            <i class="fa fa-arrow-right red"></i>
+                            <input type="text" id="receiption-exchangerate" onkeypress="return isNumberKey(event)" class="form-control" style="display:inline-block; width:90px; margin-top: -4px" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Ngày Hạch Toán </label><span style="color:red"> *</span>
+                        <input type="text" class="form-control" id="receiption-dateofaccounting" />
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class=" control-label">Ghi Chú</label>
+                        <textarea class="form-control" id="receiption-note"></textarea>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer"> 
+                <button type="button" receiption-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/Receiption/Receiption_export.js"></script>

@@ -22,7 +22,7 @@ GPRO.ReportInventory = function () {
     this.Init = function () {
         RegisterEvent();
         GetMaterialCombobox('inventory_material');
-        GetWareHouseCombobox('inventory_warehouse');
+       // GetWareHouseCombobox('inventory_warehouse');
     }
 
     var RegisterEvent = function () {
@@ -33,8 +33,8 @@ GPRO.ReportInventory = function () {
 
         $('#inventory_btnExportToExcel').click(function () {
             var mId = $('#inventory_material').data("kendoComboBox").value();
-            var whId = $('#inventory_warehouse').data("kendoComboBox").value();
-            window.location.href = `/LotSupplies/ExportToExcel_Inventory?mId=${mId}&whId=${whId}`;
+            //var whId = $('#inventory_warehouse').data("kendoComboBox").value();
+            window.location.href = `/LotSupplies/ExportToExcel_Inventory?objId=${mId}&groupByMaterial=1`;
         });
     }
     function groupBy(xs, f) {
@@ -42,18 +42,20 @@ GPRO.ReportInventory = function () {
     }
     function GetData() {
         var mId = $('#inventory_material').data("kendoComboBox").value();
-        var whId = $('#inventory_warehouse').data("kendoComboBox").value();
+        //var whId = $('#inventory_warehouse').data("kendoComboBox").value();
 
         $.ajax({
             url: '/LotSupplies/GetReportInventory',
             type: 'POST',
-            data: JSON.stringify({ 'mId': mId, 'whId': whId }),
+            data: JSON.stringify({ 'objId': mId, 'groupByMaterial': 1 }),
             contentType: 'application/json',
             beforeSend: function () { $('#loading').show(); },
             success: function (result) {
 
-                if (!result.Data.WarehouseName)
-                    GenerateGroupWithWarehouse(groupBy(result.Data.Details, (c) => c.StoreWarehouseId));
+                if ( result.Data.Details.length>0) 
+                    GenerateGroupWithWarehouse(groupBy(result.Data.Details, (c) => c.MaterialId));
+                else
+                    $('#inventory_table1 tbody').empty().html(`<tr><td colspan="11">Không có dữ liệu</td></tr>`);  
 
                 console.log(result.Data);
 
@@ -179,8 +181,8 @@ GPRO.ReportInventory = function () {
                             str += `
                                     <tr class="${ (j % 2 != 0 ? "row_2" : "")}">
                                         <td>${(j + 1)}</td>
-                                        <td rowspan="${item.length}">${(item[j].StoreWareHouseName != null ? item[j].StoreWareHouseName + " (" + item[j].StoreWareHouseCode + ")" : "")}</td>
-                                        <td >${item[j].MaterialName} ( ${item[j].MaterialCode} )</td> 
+                                        <td  >${(item[j].StoreWareHouseName != null ? item[j].StoreWareHouseName + " (" + item[j].StoreWareHouseCode + ")" : "")}</td>
+                                        <td rowspan="${item.length}">${item[j].MaterialName} ( ${item[j].MaterialCode} )</td>
                                         <td>${ (item[j].Name != null ? item[j].Name + " (" + item[j].Code + ")" : "")}</td>
                                         <td>${(item[j].InputDate != null ? ParseDateToString(new Date(parseJsonDateToDate(item[j].InputDate))) : "")}</td> 
                                         <td>${(item[j].Quantity != null ? ParseStringToCurrency(item[j].Quantity) : "")} <i class="fa fa-arrow-right red"></i> ${((item[j].Quantity != null && item[j].QuantityUsed != null) ? (ParseStringToCurrency(item[j].Quantity - item[j].QuantityUsed)) : "")} ${(item[j].UnitName != null ? item[j].UnitName : "")}</td> 
@@ -195,7 +197,7 @@ GPRO.ReportInventory = function () {
                             str += `
                                     <tr class="${ (j % 2 != 0 ? "row_2" : "")}">
                                         <td>${(j + 1)}</td>
-                                        <td >${item[j].MaterialName} ( ${item[j].MaterialCode} )</td> 
+                                        <td >${(item[j].StoreWareHouseName != null ? item[j].StoreWareHouseName + " (" + item[j].StoreWareHouseCode + ")" : "")}</td> 
                                         <td>${ (item[j].Name != null ? item[j].Name + " (" + item[j].Code + ")" : "")}</td>
                                         <td>${(item[j].InputDate != null ? ParseDateToString(new Date(parseJsonDateToDate(item[j].InputDate))) : "")}</td> 
                                         <td>${(item[j].Quantity != null ? ParseStringToCurrency(item[j].Quantity) : "")} <i class="fa fa-arrow-right red"></i> ${((item[j].Quantity != null && item[j].QuantityUsed != null) ? (ParseStringToCurrency(item[j].Quantity - item[j].QuantityUsed)) : "")} ${(item[j].UnitName != null ? item[j].UnitName : "")}</td> 

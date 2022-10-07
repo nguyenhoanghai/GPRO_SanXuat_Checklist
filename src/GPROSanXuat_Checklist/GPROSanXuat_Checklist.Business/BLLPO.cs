@@ -73,7 +73,11 @@ namespace GPROSanXuat_Checklist.Business
                         Note = x.Note,
                         StatusId = x.StatusId,
                         //StatusName = x.Status.Name
-                        //  Total = (x.Quantities * x.Price)
+                        //  Total = (x.Quantities * x.Price),
+                        IsApproved = x.IsApproved,
+                        ApprovedDate = x.ApprovedDate,
+                        ApprovedUser = x.ApprovedUser
+                        
                     }).ToList(), pageNumber, pageSize);
                     if (objs.Count > 0)
                     {
@@ -134,7 +138,7 @@ namespace GPROSanXuat_Checklist.Business
                         Quantities_PC = x.Quantities_PC,
                         Quantities_Lenh = x.Quantities_Lenh,
                         Price = x.Price,
-                        Note = x.PO_Sell.Note
+                        Note = x.PO_Sell.Note, 
                     }).ToList(), pageNumber, pageSize);
                     return objs;
                 }
@@ -193,8 +197,7 @@ namespace GPROSanXuat_Checklist.Business
                 throw ex;
             }
         }
-
-
+        
         public PO_SellModel Get(string strConnection, int poId)
         {
             try
@@ -216,7 +219,10 @@ namespace GPROSanXuat_Checklist.Business
                          Exchange = x.Exchange,
                          Note = x.Note,
                          StatusId = x.StatusId,
-                         //StatusName = x.Status.Name
+                         //StatusName = x.Status.Name,
+                         IsApproved = x.IsApproved,
+                         ApprovedDate = x.ApprovedDate,
+                         ApprovedUser = x.ApprovedUser
                      }).FirstOrDefault();
 
                     var details = db.PO_SellDetail
@@ -447,6 +453,37 @@ namespace GPROSanXuat_Checklist.Business
             }
         }
 
+        public ResponseBase Approve(string strConnection, int Id, int actionUserId )
+        {
+            using (db = new SanXuatCheckListEntities(strConnection))
+            {
+                var rs = new ResponseBase();
+                try
+                {
+                    var obj = db.PO_Sell.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);
+                    if (obj == null)
+                    {
+                        rs.IsSuccess = false;
+                        rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Phiếu báo giá này không tồn tại hoặc đã bị xóa, Vui Lòng kiểm tra lại." });
+                        return rs;
+                    }
+                    obj.StatusId = (int)eStatus.Approved;
+                    obj.IsApproved = true;
+                    obj.ApprovedDate = DateTime.Now;
+                    obj.ApprovedUser = actionUserId;
+                    db.SaveChanges();
+                    rs.IsSuccess = true;
+                    return rs;
+                }
+                catch (Exception ex)
+                {
+                    rs.IsSuccess = false;
+                    rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Lỗi Exception: " + ex.Message });
+                    return rs;
+                }
+            }
+        }
+         
         public List<ModelSelectItem> GetSelectItem(string strConnection, List<ModelSelectItem> customers)
         {
             try

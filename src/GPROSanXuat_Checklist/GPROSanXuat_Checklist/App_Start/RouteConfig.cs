@@ -170,10 +170,43 @@ namespace GPROSanXuat_Checklist
                defaults: new { controller = "ChecklistApprove", action = "Index", id = UrlParameter.Optional }
            );
             routes.MapRoute(
-              name: "bao-cao-kho",
-              url: "bao-cao-kho",
+              name: "bao-cao-vat-tu-kho",
+              url: "bao-cao-vat-tu-kho",
               defaults: new { controller = "LotSupplies", action = "ReportInventory", id = UrlParameter.Optional }
           );
+            routes.MapRoute(
+             name: "bao-cao-ton-kho",
+             url: "bao-cao-ton-kho",
+             defaults: new { controller = "LotSupplies", action = "ReportInventory_w", id = UrlParameter.Optional }
+         );
+            routes.MapRoute(
+             name: "bao-cao-xuat-kho-ma-hang",
+             url: "bao-cao-xuat-kho-ma-hang",
+             defaults: new { controller = "Delivery", action = "Export_Cust", id = UrlParameter.Optional }
+         );
+
+            routes.MapRoute(
+             name: "bao-cao-nhap-kho-ma-hang",
+             url: "bao-cao-nhap-kho-ma-hang",
+             defaults: new { controller = "Receiption", action = "Export_Cust", id = UrlParameter.Optional }
+         );
+
+            routes.MapRoute(
+            name: "bao-cao-tien-do-san-xuat",
+            url: "bao-cao-tien-do-san-xuat",
+            defaults: new { controller = "PMSReport", action = "TienDoSX", id = UrlParameter.Optional }
+        );
+
+            routes.MapRoute(
+         name: "ke-hoach-san-xuat-nam",
+         url: "ke-hoach-san-xuat-nam",
+         defaults: new { controller = "PMSReport", action = "ProductionPlanInYear", id = UrlParameter.Optional }
+     );
+            routes.MapRoute(
+        name: "ke-hoach-san-xuat-thang",
+        url: "ke-hoach-san-xuat-thang",
+        defaults: new { controller = "PMSReport", action = "ProductionPlanInMonth", id = UrlParameter.Optional }
+    );
 
             routes.MapRoute(
              name: "ket-noi-csdl",
@@ -186,7 +219,16 @@ namespace GPROSanXuat_Checklist
            url: "phan-hang-sx",
            defaults: new { controller = "Assignment", action = "index", id = UrlParameter.Optional }
        );
-
+            routes.MapRoute(
+         name: "cong-doan",
+         url: "cong-doan",
+         defaults: new { controller = "phase", action = "index", id = UrlParameter.Optional }
+     );
+            routes.MapRoute(
+                     name: "dinh-muc-san-xuat",
+                     url: "dinh-muc-san-xuat",
+                     defaults: new { controller = "ProductionPlan", action = "index", id = UrlParameter.Optional }
+                 );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

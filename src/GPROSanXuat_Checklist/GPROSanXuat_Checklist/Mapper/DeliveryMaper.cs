@@ -148,21 +148,23 @@ namespace GPROSanXuat_Checklist.Mapper
                             objs[i].MaterialName = found.NameTM;
                             objs[i].MaterialIndex = found.Index;
 
-                            objs[i].UnitId =  found.UnitId;
-                            objs[i].UnitName =  found.C_Unit.Name;
+                            objs[i].UnitId = found.UnitId;
+                            objs[i].UnitName = found.C_Unit.Name;
                         }
 
                         found = units.FirstOrDefault(x => x.Id == objs[i].UnitId);
                         if (found != null)
                             objs[i].UnitName = found.Name;
 
-                        objs[i].LotName = "<span >" + objs[i].LotName + "</span> (<span class=\"red\">" + objs[i].LotIndex + "</span>)";
-                        objs[i].MaterialName = "<span >" + objs[i].MaterialName + "</span> (<span class=\"red\">" + objs[i].MaterialIndex + "</span>)";
+                        objs[i].strLotName = "<span >" + objs[i].LotName + "</span> (<span class=\"red\">" + objs[i].LotIndex + "</span>)";
+                        objs[i].strMaterialName = "<span >" + objs[i].MaterialName + "</span> (<span class=\"red\">" + objs[i].MaterialIndex + "</span>)";
 
                         found = warehouses.FirstOrDefault(x => x.Id == objs[i].WareHouseId);
                         if (found != null)
                         {
-                            objs[i].WareHouseName = "<span>" + found.Name + "</span> (<span class=\"red\">" +  found.Index + "</span>)";
+                            objs[i].strWareHouseName = "<span>" + found.Name + "</span> (<span class=\"red\">" + found.Index + "</span>)";
+                            objs[i].WareHouseName = found.Name;
+                            objs[i].WareHouseIndex = found.Index;
                         }
                     }
                 }
@@ -170,7 +172,7 @@ namespace GPROSanXuat_Checklist.Mapper
             return objs;
         }
 
-        public  List<DeliveryDetailModel> MapInfoFromGPROCommon( List<DeliveryDetailModel> objs)
+        public List<DeliveryDetailModel> MapInfoFromGPROCommon(List<DeliveryDetailModel> objs)
         {
             if (objs.Count > 0)
             {
@@ -193,7 +195,7 @@ namespace GPROSanXuat_Checklist.Mapper
                             objs[i].UnitName = _found.C_Unit.Name;
                         }
 
-                       dynamic found = units.FirstOrDefault(x => x.Id == objs[i].UnitId);
+                        dynamic found = units.FirstOrDefault(x => x.Id == objs[i].UnitId);
                         if (found != null)
                             objs[i].UnitName = found.Name;
 
@@ -205,19 +207,21 @@ namespace GPROSanXuat_Checklist.Mapper
                         if (found != null)
                             objs[i].CustomerName = found.Name;
 
-                        objs[i].LotName = "<span >" + objs[i].LotName + "</span> (<span class=\"red\">" + objs[i].LotIndex + "</span>)";
-                        objs[i].MaterialName = "<span >" + objs[i].MaterialName + "</span> (<span class=\"red\">" + objs[i].MaterialIndex + "</span>)";
+                        objs[i].strLotName = "<span >" + objs[i].LotName + "</span> (<span class=\"red\">" + objs[i].LotIndex + "</span>)";
+                        objs[i].strMaterialName = "<span >" + objs[i].MaterialName + "</span> (<span class=\"red\">" + objs[i].MaterialIndex + "</span>)";
 
                         found = warehouses.FirstOrDefault(x => x.Id == objs[i].WareHouseId);
                         if (found != null)
                         {
-                            objs[i].WareHouseName = "<span>" + found.Name + "</span> (<span class=\"red\">" + found.Index + "</span>)";
+                            objs[i].strWareHouseName = "<span>" + found.Name + "</span> (<span class=\"red\">" + found.Index + "</span>)";
+                            objs[i].WareHouseName = found.Name;
+                            objs[i].WareHouseIndex = found.Index;
                         }
                     }
                 }
             }
             return objs;
         }
-         
+
     }
 }

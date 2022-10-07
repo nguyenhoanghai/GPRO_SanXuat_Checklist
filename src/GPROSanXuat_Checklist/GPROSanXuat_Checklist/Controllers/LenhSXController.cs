@@ -134,7 +134,52 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
+
+        [HttpPost]
+        public JsonResult GetLenhSelect( )
+        {
+            try
+            {
+                if (isAuthenticate)
+                {
+                    JsonDataResult.Result = "OK";
+                    var obj = BLLLenhSX.Instance.GetLenhs(AppGlobal.ConnectionstringSanXuatChecklist );
+                    if (obj != null)
+                        obj = LenhMaper.Instance.MapInfoFromGPROCommon(obj);
+                    JsonDataResult.Data = obj;
+                }
+            }
+            catch (Exception ex)
+            {
+                //add error
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Delete Area", Message = "Lỗi: " + ex.Message });
+            }
+            return Json(JsonDataResult);
+        }
          
+        [HttpPost]
+        public JsonResult GetLenhProductSelect(int lenhId)
+        {
+            try
+            {
+                if (isAuthenticate)
+                {
+                    JsonDataResult.Result = "OK";
+                    var obj = BLLLenhSX.Instance.GetLenhProducts(AppGlobal.ConnectionstringSanXuatChecklist,lenhId);
+                    if (obj != null)
+                        obj = LenhMaper.Instance.MapInfoLenhProducts(obj);
+                    JsonDataResult.Data = obj;
+                }
+            }
+            catch (Exception ex)
+            {
+                //add error
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Delete Area", Message = "Lỗi: " + ex.Message });
+            }
+            return Json(JsonDataResult);
+        }
 
     }
 }

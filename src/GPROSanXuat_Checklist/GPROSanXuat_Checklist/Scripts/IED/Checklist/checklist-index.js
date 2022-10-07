@@ -221,7 +221,7 @@ GPRO.Checklist = function () {
                     sorting: false,
                 },
                 ProductName: {
-                    title: "Sản phẫm",
+                    title: "Sản phẩm",
                     width: "10%",
 
                 },

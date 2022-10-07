@@ -220,7 +220,7 @@ GPRO.ChecklistApprove = function () {
                     width: "20%",
                 },
                 ProductName: {
-                    title: "Sản phẫm",
+                    title: "Sản phẩm",
                     width: "10%",
 
                 },

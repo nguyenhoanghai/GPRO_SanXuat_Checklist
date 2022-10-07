@@ -34,20 +34,16 @@ namespace GPROSanXuat_Checklist.Data
         public DbSet<Checklist_Job_Error> Checklist_Job_Error { get; set; }
         public DbSet<Checklist_Job_NotifyLog> Checklist_Job_NotifyLog { get; set; }
         public DbSet<Checklist_JobStep> Checklist_JobStep { get; set; }
-        public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<DeliveryDetail> DeliveryDetails { get; set; }
         public DbSet<Lenh_Products> Lenh_Products { get; set; }
         public DbSet<Lenh_VatTu> Lenh_VatTu { get; set; }
         public DbSet<LenhSanXuat> LenhSanXuats { get; set; }
         public DbSet<LotSupply> LotSupplies { get; set; }
         public DbSet<MaterialNorm> MaterialNorms { get; set; }
-        public DbSet<Order> Orders { get; set; }
         public DbSet<P_Config> P_Config { get; set; }
-        public DbSet<PO_Sell> PO_Sell { get; set; }
         public DbSet<ProductionBatch> ProductionBatches { get; set; }
         public DbSet<ProductionFile> ProductionFiles { get; set; }
         public DbSet<ProFileControl> ProFileControls { get; set; }
-        public DbSet<Receiption> Receiptions { get; set; }
         public DbSet<ReceiptionDetail> ReceiptionDetails { get; set; }
         public DbSet<SConfig> SConfigs { get; set; }
         public DbSet<Template_Checklist> Template_Checklist { get; set; }
@@ -60,5 +56,9 @@ namespace GPROSanXuat_Checklist.Data
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Checklist_Job> Checklist_Job { get; set; }
         public DbSet<Template_CL_Job> Template_CL_Job { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<Receiption> Receiptions { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<PO_Sell> PO_Sell { get; set; }
     }
 }

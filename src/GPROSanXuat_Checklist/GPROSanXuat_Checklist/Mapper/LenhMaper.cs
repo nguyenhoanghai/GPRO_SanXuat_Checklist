@@ -1,8 +1,10 @@
 ﻿using GPROCommon.Data;
+using GPROCommon.Models;
 using GPROCommon.Repository;
 using GPROSanXuat_Checklist.App_Global;
 using GPROSanXuat_Checklist.Business.Model;
 using PagedList;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GPROSanXuat_Checklist.Mapper
@@ -139,6 +141,50 @@ namespace GPROSanXuat_Checklist.Mapper
                 }
             }
             return obj;
+        }
+
+        public List<ModelSelectItem> MapInfoFromGPROCommon(List<ModelSelectItem> objs)
+        {
+            if (objs.Count > 0)
+            {
+                using (var db = new GPROCommonEntities(AppGlobal.ConnectionstringGPROCommon))
+                {
+                    var employees = EmployeeRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon);
+                    ModelSelectItem _employ;
+                    foreach (var item in objs)
+                    {
+                        _employ = employees.FirstOrDefault(x => x.Value == item.Id);
+                        if (_employ != null)
+                            item.Name = _employ.Name;
+                    }
+                }
+            }
+            return objs;
+        }
+
+        public List<ModelSelectItem> MapInfoLenhProducts(List<ModelSelectItem> objs)
+        {
+            if (objs.Count > 0)
+            {
+                using (var db = new GPROCommonEntities(AppGlobal.ConnectionstringGPROCommon))
+                {
+                    var products = db.C_Product.Where(x => !x.IsDeleted).ToList();
+                    var custs = db.C_Customer.Where(x => !x.IsDeleted).ToList();
+                    C_Product _pro;
+                    C_Customer _cust;
+                    foreach (var item in objs)
+                    {
+                        _pro = products.FirstOrDefault(x => x.Id == item.Value);
+                        if (_pro != null)
+                            item.Code = _pro.Name;
+
+                        _cust = custs.FirstOrDefault(x => x.Id == (int)item.Data1);
+                        if (_cust != null)
+                            item.Name = _cust.Name;
+                    }
+                }
+            }
+            return objs;
         }
 
     }

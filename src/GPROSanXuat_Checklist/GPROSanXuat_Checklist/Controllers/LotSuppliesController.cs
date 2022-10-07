@@ -5,7 +5,7 @@ using GPROSanXuat_Checklist.Business;
 using GPROSanXuat_Checklist.Business.Model;
 using GPROSanXuat_Checklist.Mapper;
 using OfficeOpenXml;
-using OfficeOpenXml.Style; 
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,7 +22,12 @@ namespace GPROSanXuat_Checklist.Controllers
             return View();
         }
 
-        public ActionResult ReportInventory()  //Report so luong ton kho  
+        public ActionResult ReportInventory()  //Report so luong vật tư ton kho  
+        {
+            return PartialView();
+        }
+
+        public ActionResult ReportInventory_w()  //Report so luong ton kho  
         {
             return PartialView();
         }
@@ -35,7 +40,7 @@ namespace GPROSanXuat_Checklist.Controllers
             {
                 var objs = BLLLotSupplies.Instance.Gets(AppGlobal.ConnectionstringSanXuatChecklist, whId, greaterThan0, keyword, jtStartIndex, jtPageSize, jtSorting);
 
-                JsonDataResult.Records = LotSupplyMaper.Instance.MapInfoFromGPROCommon( objs);
+                JsonDataResult.Records = LotSupplyMaper.Instance.MapInfoFromGPROCommon(objs);
                 JsonDataResult.Result = "OK";
                 JsonDataResult.TotalRecordCount = objs.TotalItemCount;
             }
@@ -78,7 +83,6 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
-
 
         [HttpPost]
         public JsonResult Delete(int Id)
@@ -134,11 +138,11 @@ namespace GPROSanXuat_Checklist.Controllers
         /// <param name="mId"></param>
         /// <param name="whId"></param>
         /// <returns></returns>
-        public JsonResult GetReportInventory(string mId, string whId) 
+        public JsonResult GetReportInventory(int objId, int groupByMaterial)
         {
             try
             {
-                var listObjs = BLLLotSupplies.Instance.GetReportInventory(AppGlobal.ConnectionstringSanXuatChecklist, mId, whId);
+                var listObjs = BLLLotSupplies.Instance.GetReportInventory(AppGlobal.ConnectionstringSanXuatChecklist, (groupByMaterial == 1 ? objId : 0), (groupByMaterial == 0 ? objId : 0));
 
                 JsonDataResult.Result = "OK";
                 JsonDataResult.Data = LotSupplyMaper.Instance.MapInfoFromGPROCommon(listObjs);
@@ -155,14 +159,14 @@ namespace GPROSanXuat_Checklist.Controllers
         /// </summary>
         /// <param name="mId"></param>
         /// <param name="whId"></param>
-        public void ExportToExcel_Inventory(string mId, string whId) 
+        public void ExportToExcel_Inventory(int objId, int groupByMaterial)
         {
             try
             {
-                var reportObj = LotSupplyMaper.Instance.MapInfoFromGPROCommon(BLLLotSupplies.Instance.GetReportInventory(AppGlobal.ConnectionstringSanXuatChecklist, mId, whId));
+                var reportObj = LotSupplyMaper.Instance.MapInfoFromGPROCommon(BLLLotSupplies.Instance.GetReportInventory(AppGlobal.ConnectionstringSanXuatChecklist, (groupByMaterial == 1 ? objId : 0), (groupByMaterial == 0 ? objId : 0)));
                 var excelPackage = new ExcelPackage();
                 excelPackage.Workbook.Properties.Author = "GPRO";
-                excelPackage.Workbook.Properties.Title = "Báo Cáo Số Lượng Tồn Kho VT";
+                excelPackage.Workbook.Properties.Title = "Báo Cáo Số Lượng Tồn Kho ";
                 var sheet = excelPackage.Workbook.Worksheets.Add("Sheet1");
                 sheet.Name = "Sheet1";
                 sheet.Cells.Style.Font.Size = 12;
@@ -236,15 +240,15 @@ namespace GPROSanXuat_Checklist.Controllers
                 sheet.Cells[rowIndex, 15].Style.Border.BorderAround(ExcelBorderStyle.Thin);
                 rowIndex++;
                 List<IGrouping<int, ReportInventoryDetailModel>> aa = new List<IGrouping<int, ReportInventoryDetailModel>>();
-                if (!string.IsNullOrEmpty(reportObj.WarehouseName))
+                if (groupByMaterial == 0)
                 {
                     aa = reportObj.Details.GroupBy(x => x.StoreWarehouseId).ToList();
-                    GenerateReportWithMaterial(aa, ref sheet, ref rowIndex);
+                    GenerateReportWithWarehouse(aa, ref sheet, ref rowIndex);
                 }
                 else
                 {
                     aa = reportObj.Details.GroupBy(x => x.MaterialId).ToList();
-                    GenerateReportWithWarehouse(aa, ref sheet, ref rowIndex);
+                    GenerateReportWithMaterial(aa, ref sheet, ref rowIndex);
                 }
 
                 sheet.Cells.AutoFitColumns(5);
@@ -262,7 +266,9 @@ namespace GPROSanXuat_Checklist.Controllers
                 Response.ClearContent();
                 Response.BinaryWrite(excelPackage.GetAsByteArray());
                 DateTime dateNow = DateTime.Now;
-                string fileName = "BaoCaoSoLuongTonKhoVatTu_" + dateNow.ToString("yyMMddhhmmss") + ".xlsx";
+                string fileName = "BaoCaoSoLuongTonKho_" + dateNow.ToString("yyMMddhhmmss") + ".xlsx";
+                if(groupByMaterial==1)
+                  fileName = "BaoCaoSoLuongVatTuTonKho_" + dateNow.ToString("yyMMddhhmmss") + ".xlsx";
                 Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
                 Response.ContentType = "application/excel";
                 Response.Flush();
@@ -324,13 +330,13 @@ namespace GPROSanXuat_Checklist.Controllers
                     rowIndex++;
                 }
 
-                sheet.Cells[rowIndex, 2].Value = "Tổng tồn";
-                sheet.Cells[rowIndex, 2, rowIndex, 7].Merge = true;
-                sheet.Cells[rowIndex, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                //sheet.Cells[rowIndex, 2].Value = "Tổng tồn";
+                //sheet.Cells[rowIndex, 2, rowIndex, 7].Merge = true;
+                //sheet.Cells[rowIndex, 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
 
-                sheet.Cells[rowIndex, 8].Value = total + " " + (list.Count > 0 ? list[0].UnitName : "");
-                sheet.Cells[rowIndex, 8, rowIndex, 9].Merge = true;
-                sheet.Cells[rowIndex, 8].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                //sheet.Cells[rowIndex, 8].Value = total + " " + (list.Count > 0 ? list[0].UnitName : "");
+                //sheet.Cells[rowIndex, 8, rowIndex, 9].Merge = true;
+                //sheet.Cells[rowIndex, 8].Style.Border.BorderAround(ExcelBorderStyle.Thin);
 
                 sheet.Cells[rowIndex, 10].Value = "Tổng tiền";
                 sheet.Cells[rowIndex, 10].Style.Border.BorderAround(ExcelBorderStyle.Thin);

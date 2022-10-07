@@ -1,5 +1,6 @@
 ﻿using GPRO.Core.Mvc;
 using GPROCommon.Models;
+using GPROCommon.Repository;
 using GPROSanXuat_Checklist.App_Global;
 using GPROSanXuat_Checklist.Business;
 using GPROSanXuat_Checklist.Business.Enum;
@@ -54,6 +55,7 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
+
 
         public JsonResult Save(OrderModel model)
         {
@@ -110,12 +112,40 @@ namespace GPROSanXuat_Checklist.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetSelect()
+        public JsonResult Approve(int Id)
+        {
+            ResponseBase responseResult;
+            try
+            {
+                if (isAuthenticate)
+                {
+                    responseResult = BLLOrder.Instance.Approve(AppGlobal.ConnectionstringSanXuatChecklist, Id, UserContext.UserID, isOwner);
+                    if (responseResult.IsSuccess)
+                        JsonDataResult.Result = "OK";
+                    else
+                    {
+                        JsonDataResult.Result = "ERROR";
+                        JsonDataResult.ErrorMessages.AddRange(responseResult.Errors);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //add error
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Delete Area", Message = "Lỗi: " + ex.Message });
+            }
+            return Json(JsonDataResult);
+        }
+
+
+        [HttpPost]
+        public JsonResult GetSelectList(bool approved)
         {
             try
             {
                 JsonDataResult.Result = "OK";
-                JsonDataResult.Data = BLLOrder.Instance.GetSelectItem(AppGlobal.ConnectionstringSanXuatChecklist);
+                JsonDataResult.Data = BLLOrder.Instance.GetSelectItem(AppGlobal.ConnectionstringSanXuatChecklist, approved);
             }
             catch (Exception ex)
             {
@@ -125,5 +155,20 @@ namespace GPROSanXuat_Checklist.Controllers
             return Json(JsonDataResult);
         }
 
+        [HttpPost]
+        public JsonResult GetDetailSelectList(int orderId)
+        {
+            try
+            {
+                JsonDataResult.Result = "OK";
+                JsonDataResult.Data = BLLOrder.Instance.GetOrderDetailSelectItem(AppGlobal.ConnectionstringSanXuatChecklist,orderId, ProductRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon,UserContext.CompanyId,UserContext.ChildCompanyId));
+            }
+            catch (Exception ex)
+            {
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Get List ObjectType", Message = "Lỗi: " + ex.Message });
+            }
+            return Json(JsonDataResult);
+        }
     }
 }

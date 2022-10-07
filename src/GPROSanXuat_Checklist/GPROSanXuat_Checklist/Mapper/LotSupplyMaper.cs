@@ -92,37 +92,37 @@ namespace GPROSanXuat_Checklist.Mapper
                     var warehouses = db.WareHouses.Where(x => !x.IsDeleted).ToList();
                     var materials = db.Materials.Where(x => !x.IsDeleted && !x.MaterialType.IsDeleted).ToList();
 
-                    dynamic found = warehouses.FirstOrDefault(x => x.Id == obj.WarehouseId);
-                    if (found != null)
-                        obj.WarehouseName = found.Name;
+                    WareHouse whFound = warehouses.FirstOrDefault(x => x.Id == obj.WarehouseId);
+                    if (whFound != null)
+                        obj.WarehouseName = whFound.Name;
 
-                    found = materials.FirstOrDefault(x => x.Id == obj.MaterialId);
-                    if (found != null)
-                        obj.MaterialName = found.Name;
-
+                   Material maObj = materials.FirstOrDefault(x => x.Id == obj.MaterialId);
+                    if (maObj != null)
+                        obj.MaterialName = maObj.NameTM;
+                    C_Unit uObj = null;
                     if (obj.Details.Count > 0)
                     {
                         foreach (var item in obj.Details)
                         {
-                            found = materials.FirstOrDefault(x => x.Id == item.MaterialId);
-                            if (found != null)
+                            maObj = materials.FirstOrDefault(x => x.Id == item.MaterialId);
+                            if (maObj != null)
                             {
-                                item.MaterialName = found.NameTM;
-                                item.MaterialIndex = found.Index;
-                                item.UnitId = found.UnitId;
-                                item.UnitName = found.C_Unit.Name;
+                                item.MaterialName = maObj.NameTM;
+                                item.MaterialIndex = maObj.Index;
+                                item.UnitId = maObj.UnitId;
+                                item.UnitName = maObj.C_Unit.Name;
                             }
 
-                            found = warehouses.FirstOrDefault(x => x.Id == item.StoreWarehouseId);
-                            if (found != null)
+                            whFound = warehouses.FirstOrDefault(x => x.Id == item.StoreWarehouseId);
+                            if (whFound != null)
                             {
-                                item.StoreWareHouseName = found.Name;
-                                item.StoreWareHouseIndex = found.Index;
+                                item.StoreWareHouseName = whFound.Name;
+                                item.StoreWareHouseIndex = whFound.Index;
                             }
 
-                            found = units.FirstOrDefault(x => x.Id == item.MoneyTypeId);
-                            if (found != null)
-                                item.MoneyTypeName = found.Name;
+                            uObj = units.FirstOrDefault(x => x.Id == item.MoneyTypeId);
+                            if (uObj != null)
+                                item.MoneyTypeName = uObj.Name;
 
                             item.MaterialCode = "" + item.MaterialIndex;
                             item.StoreWareHouseCode = "" + item.StoreWareHouseIndex;

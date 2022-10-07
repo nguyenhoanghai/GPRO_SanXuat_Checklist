@@ -219,10 +219,13 @@
     <Compile Include="Controllers\MaterialTypeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PhaseController.cs" />
+    <Compile Include="Controllers\PMSReportController.cs" />
     <Compile Include="Controllers\POController.cs" />
     <Compile Include="Controllers\PositionController.cs" />
     <Compile Include="Controllers\PositionTypeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ProductionPlanController.cs" />
     <Compile Include="Controllers\ProductivityReportController.cs" />
     <Compile Include="Controllers\ReceiptionController.cs" />
     <Compile Include="Controllers\ReceiptionDetailController.cs" />
@@ -249,9 +252,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\SoTienBangChu.cs" />
+    <Compile Include="Mapper\AssignmentMapper.cs" />
     <Compile Include="Mapper\OrderMaper.cs" />
     <Compile Include="Mapper\LotSupplyMaper.cs" />
     <Compile Include="Mapper\LenhMaper.cs" />
+    <Compile Include="Mapper\ProductionPlanMapper.cs" />
     <Compile Include="Mapper\ReceiptionMaper.cs" />
     <Compile Include="Mapper\DeliveryMaper.cs" />
     <Compile Include="Mapper\POMaper.cs" />
@@ -1795,6 +1800,7 @@
     <Content Include="Scripts\IED\Common.min.js" />
     <Content Include="Scripts\IED\Customer\customer-report.js" />
     <Content Include="Scripts\IED\Customer\customer.js" />
+    <Content Include="Scripts\IED\Delivery\delivery-export.js" />
     <Content Include="Scripts\IED\Delivery\delivery-index.js" />
     <Content Include="Scripts\IED\Delivery\Delivery_Create.js" />
     <Content Include="Scripts\IED\Department\department-index.js" />
@@ -1810,16 +1816,25 @@
     <Content Include="Scripts\IED\line-part\line-part-index.js" />
     <Content Include="Scripts\IED\Line\Line.js" />
     <Content Include="Scripts\IED\LotSupplies\lot-supplies-index.js" />
+    <Content Include="Scripts\IED\LotSupplies\R_Inventory-warehouse.js" />
     <Content Include="Scripts\IED\LotSupplies\R_Inventory.js" />
     <Content Include="Scripts\IED\LotSupplies\R_InventoryByWH.js" />
     <Content Include="Scripts\IED\master\master-page.js" />
     <Content Include="Scripts\IED\MaterialType\material-type-index.js" />
     <Content Include="Scripts\IED\Menu\M_Index.js" />
     <Content Include="Scripts\IED\MType\MT_Index.js" />
+    <Content Include="Scripts\IED\Order\order-index.css" />
     <Content Include="Scripts\IED\Order\order-index.js" />
     <Content Include="Scripts\IED\Lenh\lenh-index.js" />
+    <Content Include="Scripts\IED\Phase\phase-index.js" />
+    <Content Include="Scripts\IED\PMSReport\pro-plan-month.js" />
+    <Content Include="Scripts\IED\PMSReport\pro-plan-year.css" />
+    <Content Include="Scripts\IED\PMSReport\pro-plan-year.js" />
+    <Content Include="Scripts\IED\PMSReport\tien-do-sx.css" />
+    <Content Include="Scripts\IED\PMSReport\tien-do-sx.js" />
     <Content Include="Scripts\IED\Position\position-index.js" />
     <Content Include="Scripts\IED\PO\po-index.js" />
+    <Content Include="Scripts\IED\production-plan\pro-plan-index.js" />
     <Content Include="Scripts\IED\ProductionFile\ProductFileCreate.js" />
     <Content Include="Scripts\IED\ProductionFile\ProductionFile.js" />
     <Content Include="Scripts\IED\productivity-report\report-complete-daily.js" />
@@ -1829,7 +1844,9 @@
     <Content Include="Scripts\IED\productivity-report\report-productivity-in-day.js" />
     <Content Include="Scripts\IED\productivity-report\report-btp.js" />
     <Content Include="Scripts\IED\Product\product-index.js" />
+    <Content Include="Scripts\IED\Delivery\delivery-index.css" />
     <Content Include="Scripts\IED\Receiption\Receiption_Create.js" />
+    <Content Include="Scripts\IED\Receiption\Receiption_export.js" />
     <Content Include="Scripts\IED\Receiption\Receiption_Index.js" />
     <Content Include="Scripts\IED\Role\R_Create.css" />
     <Content Include="Scripts\IED\Role\R_Create.js" />
@@ -2008,6 +2025,14 @@
     <Content Include="Views\Department\Index.cshtml" />
     <Content Include="Views\LinePart\Index.cshtml" />
     <Content Include="Views\EmployeeSkill\Index.cshtml" />
+    <Content Include="Views\LotSupplies\ReportInventory_w.cshtml" />
+    <Content Include="Views\Delivery\Export_Cust.cshtml" />
+    <Content Include="Views\Receiption\Export_Cust.cshtml" />
+    <Content Include="Views\PMSReport\TienDoSX.cshtml" />
+    <Content Include="Views\Phase\Index.cshtml" />
+    <Content Include="Views\ProductionPlan\Index.cshtml" />
+    <Content Include="Views\PMSReport\ProductionPlanInYear.cshtml" />
+    <Content Include="Views\PMSReport\ProductionPlanInMonth.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -14,6 +14,12 @@ namespace GPROSanXuat_Checklist.Data
     
     public partial class OrderDetail
     {
+        public OrderDetail()
+        {
+            this.Deliveries = new HashSet<Delivery>();
+            this.Receiptions = new HashSet<Receiption>();
+        }
+    
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int ProductId { get; set; }
@@ -30,6 +36,8 @@ namespace GPROSanXuat_Checklist.Data
         public Nullable<System.DateTime> DeletedDate { get; set; }
         public Nullable<int> DeletedUser { get; set; }
     
+        public virtual ICollection<Delivery> Deliveries { get; set; }
+        public virtual ICollection<Receiption> Receiptions { get; set; }
         public virtual Order Order { get; set; }
     }
 }

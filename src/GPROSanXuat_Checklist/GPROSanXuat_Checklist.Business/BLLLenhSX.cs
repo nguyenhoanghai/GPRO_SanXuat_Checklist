@@ -85,7 +85,7 @@ namespace GPROSanXuat_Checklist.Business
                                     lenh_Products.CreatedUser = obj.CreatedUser;
                                     obj.Lenh_Products.Add(lenh_Products);
 
-                                    if (item.PODetailId.HasValue && obj.StatusId != (int)eStatus.Draft )
+                                    if (item.PODetailId.HasValue && obj.StatusId != (int)eStatus.Draft)
                                     {
                                         var po = db.PO_SellDetail.FirstOrDefault(x => !x.IsDeleted && x.Id == item.PODetailId);
                                         if (po != null)
@@ -151,7 +151,7 @@ namespace GPROSanXuat_Checklist.Business
                                                     oldProducts[i].UpdatedDate = obj.UpdatedDate;
                                                     oldProducts[i].UpdatedUser = model.ActionUser;
                                                     model.Products.Remove(found);
-                                                    if (oldProducts[i].PODetailId.HasValue && obj.StatusId !=(int)eStatus.Draft)
+                                                    if (oldProducts[i].PODetailId.HasValue && obj.StatusId != (int)eStatus.Draft)
                                                     {
                                                         int id = oldProducts[i].PODetailId.Value;
                                                         var po = db.PO_SellDetail.FirstOrDefault(x => !x.IsDeleted && x.Id == id);
@@ -458,8 +458,8 @@ namespace GPROSanXuat_Checklist.Business
                                 Id = x.Id,
                                 LenhId = x.LenhId,
                                 Quantities_PC = x.Quantity_PC,
-                                PODetailId = x.PODetailId??0,
-                                POCode = (x.PODetailId.HasValue ? x.PO_SellDetail.PO_Sell.Code:""),
+                                PODetailId = x.PODetailId ?? 0,
+                                POCode = (x.PODetailId.HasValue ? x.PO_SellDetail.PO_Sell.Code : ""),
                                 Quantity = x.Quantity,
                                 ProductId = x.ProductId
                             }));
@@ -497,7 +497,8 @@ namespace GPROSanXuat_Checklist.Business
                              Id = x.Id,
                              Data = x.Quantity_PC,
                              Double = x.Quantity,
-                             Name = "" //x.Customer.Name,
+                             Name = "", //x.Customer.Name,
+                             intVal = x.PODetailId.HasValue ? x.PO_SellDetail.PO_Sell.CustomerId : 0
 
                          }).ToList();
                 }
@@ -507,6 +508,33 @@ namespace GPROSanXuat_Checklist.Business
                 throw ex;
             }
         }
+
+        public ModelSelectItem GetLenhProductById(string strConnection, int Id)
+        {
+            try
+            {
+                using (db = new SanXuatCheckListEntities(strConnection))
+                {
+                     return db.Lenh_Products.Where(x => Id == x.Id)  .Select(
+                         x => new ModelSelectItem()
+                         {
+                             Value = x.LenhId,
+                             Code = x.LenhSanXuat.Code,
+                             Id = x.Id,
+                             Data = x.Quantity_PC,
+                             Double = x.Quantity,
+                             Name = "", //x.Customer.Name,
+                             intVal = x.PODetailId.HasValue? x.PO_SellDetail.PO_Sell.CustomerId :0
+                         }).FirstOrDefault();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
 
         public void UpdatePC(string strConnection, int lenhProId, int slCu, int slMoi)
         {
@@ -520,5 +548,59 @@ namespace GPROSanXuat_Checklist.Business
                 }
             }
         }
+
+        public List<ModelSelectItem> GetLenhs(string strConnection)
+        {
+            try
+            {
+                using (db = new SanXuatCheckListEntities(strConnection))
+                {
+                    return db.LenhSanXuats.Where(x => !x.IsDeleted && x.StatusId == (int)eStatus.Approved).Select(
+                         x => new ModelSelectItem()
+                         {
+                             Value = x.Id,
+                             Code = x.Code,
+                             Id = x.EmployeeId,
+                             //Data = x.Quantity_PC,
+                             //Double = x.Quantity,
+                             //Name = "", //x.Customer.Name,
+                             //Data1 = x.PO_SellDetail.PO_Sell.CustomerId
+                         }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<ModelSelectItem> GetLenhProducts(string strConnection, int lenhId)
+        {
+            try
+            {
+                using (db = new SanXuatCheckListEntities(strConnection))
+                {
+                    return db.Lenh_Products.Where(x => !x.IsDeleted && x.LenhId == lenhId)
+                        .ToList()
+                        .Select(
+                         x => new ModelSelectItem()
+                         {
+                             Value = x.ProductId,
+                             Code = "" ,
+                             Id = x.Id,
+                             Data = x.Quantity_PC,
+                             Double = x.Quantity,
+                             Name = "", //x.Customer.Name,
+                             Data1 = x.PO_SellDetail.PO_Sell.CustomerId 
+
+                         }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

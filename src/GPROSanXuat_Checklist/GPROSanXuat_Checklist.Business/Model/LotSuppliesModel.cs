@@ -22,6 +22,7 @@ namespace GPROSanXuat_Checklist.Business.Model
         public double ExchangeRate { get; set; }
 
         public DateTime InputDate { get; set; }
+        public bool IsApproved { get; set; }
         public int StatusId { get; set; }
         public string strStatus { get; set; }
         public int MaterialUnitId { get; set; }

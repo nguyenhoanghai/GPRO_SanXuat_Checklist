@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Công đoạn";
+}
+
+<div id="jtable-phase" class="table-center"></div>
+
+<div class="modal   fade  " id="popup-phase" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button">   ×  </button>
+                <h4 class="modal-title">Thông tin công đoạn</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="container-fluid">
+                    <input class="form-control" id="phase-id" type="hidden" />
+                    <div class="form-group  ">
+                        <label class="control-label">Loại công đoạn<span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="phase-type">
+                                <option value="1">BTP Hoàn chỉnh</option>
+                                <option value="2">Hoàn tất</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">STT <span class="required-class">*</span></label>
+                        <input class="form-control" id="phase-stt" required="required" type="text" onkeypress="return isNumberKey(event)" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên công đoạn <span class="required-class">*</span></label>
+                        <input class="form-control" id="phase-name" required="required" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Ghi chú </label>
+                        <textarea class="form-control" id="phase-note" required="required"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" phase-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" phase-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/IED/Phase/phase-index.js"></script>

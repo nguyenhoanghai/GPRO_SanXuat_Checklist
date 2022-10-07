@@ -408,9 +408,9 @@ namespace GPROSanXuat_Checklist.Controllers
                 DateTime dateNow = DateTime.Now;
                 string fileName;
                 if (objModel != null && objModel.Count > 0)
-                    fileName = objModel[0].ReceiptionName + "(" + objModel[0].ReceiptionCode + ")-" + dateNow.ToString("yyMMddhhmmss") + ".xlsx";
+                    fileName = "PhieuNhapKho-"+objModel[0].ReceiptionName + "(" + objModel[0].ReceiptionCode + ")-" + dateNow.ToString("yyMMddhhmmss") + ".xlsx";
                 else
-                    fileName = "Empty File-" + dateNow.ToString("yyMMddhhmmss") + ".xlsx";
+                    fileName = "PhieuNhapKho-Empty File-" + dateNow.ToString("yyMMddhhmmss") + ".xlsx";
                 Response.AddHeader("content-disposition", "attachment;filename=" + fileName);
                 Response.ContentType = "application/excel";
                 Response.Flush();

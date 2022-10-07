@@ -257,6 +257,7 @@ namespace GPROSanXuat_Checklist.Business
                         WarrantyDate = x.LotSupply.WarrantyDate,
                         ExpiryDate = x.LotSupply.ExpiryDate,
 
+                        IsApproved = x.Receiption.IsApproved,
                         // StatusId = x.LotSupplies.StatusId,
                         Note = x.LotSupply.Note,
                         CreatedDate = x.LotSupply.CreatedDate,
@@ -355,6 +356,7 @@ namespace GPROSanXuat_Checklist.Business
                         WarrantyDate = x.LotSupply.WarrantyDate,
                         ExpiryDate = x.LotSupply.ExpiryDate,
 
+                        IsApproved = x.Receiption.IsApproved,
                         StatusId = x.Receiption.StatusId,
                         //strStatus = x.Receiption.Status.Name,
                         Note = x.LotSupply.Note,
@@ -397,38 +399,38 @@ namespace GPROSanXuat_Checklist.Business
         }
 
 
-        public ReportInventoryModel GetReportInventory(string strConnection, string vattuId, string khoId)  // Báo cáo sl tồn kho vật tư theo vật tư
+        public ReportInventoryModel GetReportInventory(string strConnection, int vattuId, int khoId)  // Báo cáo sl tồn kho vật tư theo vật tư
         {
             using (db = new SanXuatCheckListEntities(strConnection))
             {
                 var report = new ReportInventoryModel();
                 List<ReportInventoryModel> listObjs = new List<ReportInventoryModel>();
-                int mId = 0, whId = 0;
+                //int mId = 0, whId = 0;
 
-                if (!string.IsNullOrEmpty(vattuId))
-                {
-                    int.TryParse(vattuId, out mId);
-                    //var found = db.Material.FirstOrDefault(x => !x.IsDeleted && x.Id == mId);
-                    //if (found != null)
-                    //    report.MaterialName = found.NameTM;
-                }
+                //if (!string.IsNullOrEmpty(vattuId))
+                //{
+                //    int.TryParse(vattuId, out mId);
+                //    //var found = db.Material.FirstOrDefault(x => !x.IsDeleted && x.Id == mId);
+                //    //if (found != null)
+                //    //    report.MaterialName = found.NameTM;
+                //}
 
-                if (!string.IsNullOrEmpty(khoId))
-                {
-                    int.TryParse(khoId, out whId);
-                    //var found = db.WareHouse.FirstOrDefault(x => !x.IsDeleted && x.Id == mId);
-                    //if (found != null)
-                    //    report.WarehouseName = found.Name;
-                }
-                report.MaterialId = mId;
-                report.WarehouseId = whId;
+                //if (!string.IsNullOrEmpty(khoId))
+                //{
+                //    int.TryParse(khoId, out whId);
+                //    //var found = db.WareHouse.FirstOrDefault(x => !x.IsDeleted && x.Id == mId);
+                //    //if (found != null)
+                //    //    report.WarehouseName = found.Name;
+                //}
+                report.MaterialId = vattuId;
+                report.WarehouseId = khoId;
                 var objs = db.ReceiptionDetails
                        .Where(x => !x.IsDeleted && (x.LotSupply.Quantity - x.LotSupply.QuantityUsed) > 0 && x.Receiption.StatusId == (int)eStatus.Approved);
 
-                if (mId > 0)
-                    objs = objs.Where(x => x.LotSupply.MaterialId == mId);
-                if (whId > 0)
-                    objs = objs.Where(x => x.Receiption.StoreWarehouseId == whId);
+                if (vattuId > 0)
+                    objs = objs.Where(x => x.LotSupply.MaterialId == vattuId);
+                if (khoId > 0)
+                    objs = objs.Where(x => x.Receiption.StoreWarehouseId == khoId);
 
                 report.Details.AddRange(objs.Select(x => new ReportInventoryDetailModel()
                 {
@@ -459,7 +461,7 @@ namespace GPROSanXuat_Checklist.Business
                     ExpiryDate = x.LotSupply.ExpiryDate,
                     ManufactureDate = x.LotSupply.ManufactureDate,
                     WarrantyDate = x.LotSupply.WarrantyDate,
-                    SpecificationsPaking = x.LotSupply.SpecificationsPaking
+                    SpecificationsPaking = x.LotSupply.SpecificationsPaking, 
                     //  StatusId = x.LotSupplies.StatusId
                 })
                 .OrderBy(x => x.StoreWarehouseId)

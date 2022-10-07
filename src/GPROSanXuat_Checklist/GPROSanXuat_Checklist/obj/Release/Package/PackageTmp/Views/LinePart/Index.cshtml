@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Chuyền - tổ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid">
+    <fieldset>
+        <legend>Lọc thông tin</legend>
+        <div class="col-md-3 form-group ">
+            <label class="control-label">Phân xưởng<span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="line-part-workshop"></select>
+                <i re_workshop class="fa fa-refresh clickable red"></i>
+                <a href="/phan-xuong" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3 form-group ">
+            <label class="control-label">Lầu <span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="line-part-floor"></select>
+                <i re_floor class="fa fa-refresh clickable red"></i>
+                <a href="/floor" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+        <div class="col-md-3 form-group ">
+            <label class="control-label">Chuyền <span class="required-class">*</span></label>
+            <div class="select-box">
+                <select class="form-control" id="line-part-line"></select>
+                <i re_line class="fa fa-refresh clickable red"></i>
+                <a href="/line" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+            </div>
+        </div>
+    </fieldset>
+
+    <div id="line-part-jtable" class="table-center"></div>
+</div>
+
+
+<div class="modal fade  " id="line-part-popup" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" cancel class="close" type="button">×</button>
+                <h4 class="modal-title">Thông tin tổ</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    
+                    <div class="form-group">
+                        <input class="form-control" id="line-part-id" type="hidden" />
+                        <label class="control-label">Mã   <span class="required-class">*</span></label>
+                        <input class="form-control" id="line-part-code" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Tên   <span class="required-class">*</span></label>
+                        <input class="form-control" id="line-part-name" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Mô Tả</label><br />
+                        <textarea id="line-part-note" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/line-part/line-part-index.js"></script>

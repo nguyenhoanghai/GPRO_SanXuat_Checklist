@@ -8,14 +8,17 @@ namespace GPROSanXuat_Checklist.Business.Model
         public int UnitId { get; set; }
         public string UnitName { get; set; }
         public string LotName { get; set; }
+        public string strLotName { get; set; }
         public int LotIndex { get; set; } 
         public int MaterialId { get; set; }
         public string MaterialName { get; set; }
+        public string strMaterialName { get; set; }
 
         public string MaterialCode { get; set; }
         public int MaterialIndex { get; set; }
         public int WareHouseId { get; set; }
         public string WareHouseName { get; set; }
+        public string strWareHouseName { get; set; }
         public int WareHouseIndex { get; set; }
         public double QuantityUsed { get; set; }
         public double QuantityLo { get; set; }

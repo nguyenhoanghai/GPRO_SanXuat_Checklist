@@ -1,7 +1,9 @@
-﻿using GPROCommon.Models;
+﻿using GPRO.Core.Mvc;
+using GPROCommon.Models;
 using GPROCommon.Repository;
 using GPROSanXuat_Checklist.App_Global;
 using GPROSanXuat_Checklist.Business;
+using GPROSanXuat_Checklist.Mapper;
 using PMS.Service.Models;
 using PMS.Service.Repository;
 using System;
@@ -120,8 +122,6 @@ namespace GPROSanXuat_Checklist.Controllers
             return Json(JsonDataResult);
         }
 
-
-
         [HttpPost]
         public JsonResult Save(ChuyenSanPhamModel model)
         {
@@ -153,7 +153,6 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
-
 
         [HttpPost]
         public JsonResult GetNXs( int cspId, int jtStartIndex = 0, int jtPageSize = 1000, string jtSorting = "")
@@ -208,7 +207,6 @@ namespace GPROSanXuat_Checklist.Controllers
             return Json(JsonDataResult);
         }
 
-
         [HttpPost]
         public JsonResult GetNXGios(string strDate, int cspId, int lineId)
         {
@@ -225,6 +223,28 @@ namespace GPROSanXuat_Checklist.Controllers
             catch (Exception ex)
             {
                 throw (ex);
+            }
+            return Json(JsonDataResult);
+        }
+
+        [HttpPost]
+        public JsonResult GetSelectList()
+        {
+            try
+            {
+                if (isAuthenticate)
+                {
+                    JsonDataResult.Result = "OK";
+                    var obj = AssignmentRepository.Instance.Gets(AppGlobal.ConnectionstringPMS );
+                    obj = AssignmentMapper.Instance.MapInfoFromGPROCommon(obj);
+                    JsonDataResult.Data = obj;
+                }
+            }
+            catch (Exception ex)
+            {
+                //add error
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Delete Area", Message = "Lỗi: " + ex.Message });
             }
             return Json(JsonDataResult);
         }

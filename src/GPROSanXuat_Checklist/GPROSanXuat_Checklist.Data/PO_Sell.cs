@@ -29,6 +29,9 @@ namespace GPROSanXuat_Checklist.Data
         public double Exchange { get; set; }
         public System.DateTime DeliveryDate { get; set; }
         public int StatusId { get; set; }
+        public bool IsApproved { get; set; }
+        public Nullable<int> ApprovedUser { get; set; }
+        public Nullable<System.DateTime> ApprovedDate { get; set; }
         public bool IsDeleted { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedUser { get; set; }

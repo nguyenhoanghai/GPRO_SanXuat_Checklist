@@ -3,85 +3,8 @@
     ViewBag.Title = "Đơn đặt hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
 
-    #table-details th,
-    #table-details td {
-        border: 1px solid black;
-        text-align: center
-    }
-
-        #table-details th:first-child,
-        #table-details th:last-child,
-        #table-details tr td:first-child,
-        #table-details tr td:last-child {
-            width: 50px !important;
-            text-align: center !important
-        }
-
-    .table-detail td {
-        line-height: 34px !important
-    }
-
-    .w-50px {
-        width: 50px !important
-    }
-
-    .w-100px {
-        width: 100px !important
-    }
-
-    .w-150px {
-        width: 150px !important
-    }
-
-    .number-input {
-        text-align: right
-    }
-
-    #jtable-detail-order .jtable-column-header:first-child,
-    #jtable-detail-order .jtable-column-header:last-child,
-    #jtable-detail-order .jtable-data-row td:first-child,
-    #jtable-detail-order .jtable-data-row td:last-child {
-        width: 50px !important;
-        text-align: center
-    }
-
-    #jtable-detail-order .jtable-column-header:nth-child(3),
-    #jtable-detail-order .jtable-column-header:nth-child(4),
-    #jtable-detail-order .jtable-column-header:nth-child(5),
-    #jtable-detail-order .jtable-data-row td:nth-child(3) input,
-    #jtable-detail-order .jtable-data-row td:nth-child(3),
-    #jtable-detail-order .jtable-data-row td:nth-child(4) input,
-    #jtable-detail-order .jtable-data-row td:nth-child(4),
-    #jtable-detail-order .jtable-data-row td:nth-child(5) {
-        width: 100px !important;
-        text-align: right
-    }
-
-    .total-box {
-        padding: 10px 0px;
-        display: flex;
-        line-height: 34px;
-        float: right;
-    }
-
-        .total-box select {
-            width: 100px;
-            margin-left: 10px;
-        }
-
-        .total-box input {
-            margin-left: 5px;
-            text-align: right;
-            width: 50px
-        }
-
-    .box-info,
-    .box-info .form-group {
-        padding: 0
-    }
-</style>
+<link href="~/Scripts/IED/Order/order-index.css" rel="stylesheet" />
 <div id="jtable-order" class="table-center"></div>
 
 <div class="modal fade " id="popup-order" data-backdrop="static" data-keyboard="false">
@@ -95,9 +18,11 @@
                 <div class="container-fluid">
                     <div class="form-group col-md-12">
                         <div class="form-group col-md-9" style="padding-left:10px">
-                            <select class="form-control" id="order-po-select" style="margin-top:-5px; width:400px; margin-right:5px"></select>
-                            <button type="button" btn-order-get-po-info class="btn btn-primary"><i class="fa fa-cloud-download"></i> Lấy thông tin từ phiếu báo giá </button>
-                            <button type="button" btn-order-reset-po-info class="btn btn-danger"><i class="fa fa-ban"></i> Hủy bỏ </button>
+                            <div class="order-box-po-select" style=" margin-bottom:5px; display:flex">
+                                <select class="form-control" id="order-po-select" ></select>
+                                <button type="button" btn-order-get-po-info class="btn btn-primary"><i class="fa fa-cloud-download"></i> Lấy thông tin từ phiếu báo giá </button>
+                                <button type="button" btn-order-reset-po-info class="btn btn-danger"><i class="fa fa-ban"></i> Hủy bỏ </button>
+                            </div>
 
                             <div id="jtable-detail-order"></div>
                             <div class="total-box">Tổng tiền: <span id="total-order" class="red bold" style="padding-left:5px"></span>  <select class="form-control" id="order-unit"></select><input class="form-control" id="order-exchange" type="text" onkeypress="return isNumberKey(event)" /></div>
@@ -115,7 +40,7 @@
                                 <input class="form-control" id="order-code" disabled type="text" />
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="control-label">Khách hàng </label><br /> 
+                                <label class="control-label">Khách hàng <span style="color:red"> *</span></label><br />
                                 <div class="select-box">
                                     <select class="form-control" id="order-customer"></select>
                                     <i re_customer class="fa fa-refresh clickable red"></i>
@@ -123,11 +48,11 @@
                                 </div>
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="control-label">Người liên hệ</label><br />
+                                <label class="control-label">Người liên hệ <span style="color:red"> *</span></label><br />
                                 <input class="form-control" id="order-contact-name" type="text" />
                             </div>
                             <div class="form-group col-md-12">
-                                <label class="control-label">Số điện thoại </label><br />
+                                <label class="control-label">Số điện thoại <span style="color:red"> *</span></label><br />
                                 <input class="form-control" id="order-phone" type="text" />
                             </div>
                             <div class="form-group col-md-12">
@@ -137,24 +62,27 @@
                             <div class="form-group col-md-12">
                                 <label class="control-label">Ngày giao hàng</label><br />
                                 <div>
-                                    <input class="form-control" id="order-delivery-date" type="text" placeholder="dd/mm/yyyy" style="max-width: 226px" />
+                                    <input type="text" class="form-control center" id="order-delivery-date-text" disabled style="border-right:none; width:100px; position:absolute" />
+                                    <input type="date" class="form-control center" id="order-delivery-date" style="width:140px" />
                                 </div>
                             </div>
                             <div class="form-group col-md-12" style="padding:0">
-                                <label class="control-label">Địa chỉ giao hàng</label><br />
+                                <label class="control-label">Địa chỉ giao hàng <span style="color:red"> *</span></label><br />
                                 <textarea id="order-address" class="form-control"></textarea>
                             </div>
-                            <div class="form-group col-md-12">
-                                <label class="control-label">Trạng thái</label><br />
-                                <select class="form-control" id="order-status"></select>
-                            </div>
+                            @*<div class="form-group col-md-12">
+                                    <label class="control-label">Trạng thái</label><br />
+                                    <select class="form-control" id="order-status"></select>
+                                </div>*@
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" order-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu nháp </button>
+                <button type="button" order-submit class="btn btn-success"><i class="fa fa-floppy-o"></i> Lưu & gửi duyệt </button>
+                <button type="button" order-approve class="btn btn-danger"><i class="fa fa-floppy-o"></i> Duyệt phiếu </button>
                 <button type="button" order-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
-                <button type="button" order-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
             </div>
         </div>
     </div>

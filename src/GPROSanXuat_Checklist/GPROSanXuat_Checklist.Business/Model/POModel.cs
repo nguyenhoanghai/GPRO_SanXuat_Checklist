@@ -11,6 +11,7 @@ namespace GPROSanXuat_Checklist.Business.Model
         public string MoneyTypeName { get; set; }
         public string StatusName { get; set; }
         public double Total { get; set; }
+        public string ApprovedUserName { get; set; }
         public List<PO_SellDetailModel> Details { get; set; }
         public PO_SellModel()
         {

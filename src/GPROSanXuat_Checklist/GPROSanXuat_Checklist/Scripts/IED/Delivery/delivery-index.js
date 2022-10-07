@@ -23,6 +23,7 @@ GPRO.Delivery = function () {
             GetList: '/Delivery/Gets',
             Delete: '/Delivery/Delete',
             Save: '/Delivery/Save',
+            Approve: '/Delivery/approve',
 
             GetChild: '/DeliveryDetail/Gets?Id=',
             SaveChild: '/DeliveryDetail/Save',
@@ -50,6 +51,7 @@ GPRO.Delivery = function () {
             Index: 0,
             Code: '',
             KhoObj: { Id: 0, Name: '' },
+            orderDetailId: 0
         }
     }
     this.GetGlobal = function () {
@@ -58,22 +60,31 @@ GPRO.Delivery = function () {
 
     this.Init = function () {
         RegisterEvent();
-GetWarehouseSelect('delivery-warehouse');
+        GetWarehouseSelect('delivery-warehouse');
         GetEmployeeSelect('delivery-deliverier');
         GetUnitSelect('delivery-unit', 'tiente');
         GetCustomerSelect('delivery-customer');  // 0 la tat ca, 1 la khach hang
+        GetOrderSelect('delivery-order', true);
 
         InitList();
         ReloadList();
-        InitPopup(); 
+        InitPopup();
         InitPopupChild();
 
-        
         InitDatePicker();
-
+        $('[delivery-detail-save],[delivery-save],[delivery-save_d]').show();
+        $('[delivery-approve]').hide();
     }
 
     var RegisterEvent = function () {
+        $('[re-delivery-order]').click(function () {
+            GetOrderSelect('delivery-order', true);
+        });
+
+        $('#delivery-order').change(function () {
+            GetOrderDetailSelect('delivery-order-detail', $('#delivery-order').val(), Global.Data.orderDetailId);
+        })
+
         $('[re-delivery-unit]').click(function () {
             GetUnitSelect('delivery-unit', 'tiente');
             $('#moneytype option:first').prop('selected', true);
@@ -95,8 +106,8 @@ GetWarehouseSelect('delivery-warehouse');
         $('[re-delivery-warehouse]').click(function () {
             GetWarehouseSelect('delivery-warehouse');
         });
-         
-       
+
+
 
         $('[detailbox]').hide();
 
@@ -109,8 +120,6 @@ GetWarehouseSelect('delivery-warehouse');
         $('[re_approveduser]').click(function () {
             GetEmployeeSelect('approveduser');
         });
-
-
     }
 
     function InitDatePicker() {
@@ -131,10 +140,10 @@ GetWarehouseSelect('delivery-warehouse');
             selectShow: true,
             actions: {
                 listAction: Global.UrlAction.GetList,
-                createAction: Global.Element.Popup, 
+                createAction: Global.Element.Popup,
             },
             messages: {
-                addNewRecord: 'Thêm mới', 
+                addNewRecord: 'Thêm mới',
                 selectShow: 'Ẩn hiện cột'
             },
             searchInput: {
@@ -172,7 +181,7 @@ GetWarehouseSelect('delivery-warehouse');
                 },
                 WarehouseId: {
                     title: "Kho xuất",
-                    width: "15%", 
+                    width: "15%",
                     display: function (data) {
                         var txt = '<span>' + data.record.strWarehouse + '</span>';
                         return txt;
@@ -180,47 +189,56 @@ GetWarehouseSelect('delivery-warehouse');
                 },
                 CustomerId: {
                     title: "Khách Hàng",
-                    width: "15%",
+                    width: "10%",
                     display: function (data) {
                         var txt = '<span>' + data.record.strCustomer + '</span>';
                         return txt;
                     }
                 },
-                Reciever: {
-                    title: "Người Nhận",
-                    width: "10%",
-                },
-                TransactionType: {
-                    title: "HT Giao Dịch",
-                    width: "7%",
-                    display: function (data) {
-                        var txt = '';
-                        switch (data.record.TransactionType) {
-                            case 1:
-                                txt = '<span>' + "GD Trực Tiếp" + '</span>';
-                                break;
-                            case 2:
-                                txt = '<span>' + "GD Tại Sở Giao Dịch" + '</span>';
-                                break;
-                            case 3:
-                                txt = '<span>' + "Mua Bán Đối Lưu" + '</span>';
-                                break;
-                            case 4:
-                                txt = '<span>' + "Mua Bán Tái Xuất" + '</span>';
-                                break;
-                        }
-                        return txt;
-                    }
-                },
-                Total: {
-                    title: "Tổng Tiền - Tỷ Giá",
-                    width: "15%",
-                    sorting: false,
-                    display: function (data) {
-                        var txt = `<span class="bold red">${ParseStringToCurrency(data.record.Total)}</span> ${data.record.TienTe} <i class="fa fa-arrow-right blue"></i> <span class="bold red">${ParseStringToCurrency(data.record.ExchangeRate)}</span>`;
-                        return txt;
-                    }
-                },
+                /*  OrderDetailId: {
+                      title: "Đ.Hàng - S.Phẩm",
+                      width: "15%",
+                      display: function (data) {
+                          if (data.record.OrderDetailId)
+                              return `<span>${data.record.OrderCode} - ${data.record.ProductName}</span>`;
+                          return '';
+                      }
+                  },*/
+                /* Reciever: {
+                     title: "Người Nhận",
+                     width: "10%",
+                 },
+                 TransactionType: {
+                     title: "HT Giao Dịch",
+                     width: "7%",
+                     display: function (data) {
+                         var txt = '';
+                         switch (data.record.TransactionType) {
+                             case 1:
+                                 txt = '<span>' + "GD Trực Tiếp" + '</span>';
+                                 break;
+                             case 2:
+                                 txt = '<span>' + "GD Tại Sở Giao Dịch" + '</span>';
+                                 break;
+                             case 3:
+                                 txt = '<span>' + "Mua Bán Đối Lưu" + '</span>';
+                                 break;
+                             case 4:
+                                 txt = '<span>' + "Mua Bán Tái Xuất" + '</span>';
+                                 break;
+                         }
+                         return txt;
+                     }
+                 },
+                 Total: {
+                     title: "Tổng Tiền - Tỷ Giá",
+                     width: "15%",
+                     sorting: false,
+                     display: function (data) {
+                         var txt = `<span class="bold red">${ParseStringToCurrency(data.record.Total)}</span> ${data.record.TienTe} <i class="fa fa-arrow-right blue"></i> <span class="bold red">${ParseStringToCurrency(data.record.ExchangeRate)}</span>`;
+                         return txt;
+                     }
+                 },*/
                 DateOfAccounting: {
                     title: 'Ngày Hạch Toán',
                     width: '5%',
@@ -228,25 +246,36 @@ GetWarehouseSelect('delivery-warehouse');
                         var txt = "";
                         if (data.record.DateOfAccounting != null) {
                             var date = new Date(parseJsonDateToDate(data.record.DateOfAccounting))
-                            txt = '<span  class="bold blue">' + ParseDateToString(date) + '</span>';
+                            txt = '<span  class="bold red">' + ParseDateToString(date) + '</span>';
                         }
                         else
                             txt = '<span class="">' + "" + '</span>';
                         return txt;
                     }
                 },
-                IsApproved: {
-                    title: "TT Duyệt",
+                StatusId: {
+                    title: 'Trạng thái',
                     width: "5%",
                     display: function (data) {
-                        var txt = '';
-                        if (data.record.IsApproved)
-                            txt = '<i class="fa fa-check-square-o red  "><i/>';
-                        else
-                            txt = '<i class="fa fa-square-o" ></i>';
-                        return txt;
+                        if (data.record.StatusId == 9)
+                            return `<span class="blue">Đã duyệt</span>`;
+                        if (data.record.StatusId == 8)
+                            return `<span class="red">Chờ duyệt</span>`;
+                        return `<span class="">Bản nháp</span>`;
                     }
                 },
+                //IsApproved: {
+                //    title: "TT Duyệt",
+                //    width: "5%",
+                //    display: function (data) {
+                //        var txt = '';
+                //        if (data.record.IsApproved)
+                //            txt = '<i class="fa fa-check-square-o red  "><i/>';
+                //        else
+                //            txt = '<i class="fa fa-square-o" ></i>';
+                //        return txt;
+                //    }
+                //},
                 ApprovedUser: {
                     title: "Người Duyệt",
                     width: "7%",
@@ -270,12 +299,14 @@ GetWarehouseSelect('delivery-warehouse');
                     }
                 },
                 Detail: {
-                    title: 'DS Chi Tiết',
-                    width: '3%',
+                    title: 'Hành động',
+                    width: '5%',
                     sorting: false,
                     edit: false,
                     display: function (parent) {
-                        var $img = $('<i class="fa fa-list-ol clickable red aaa" title="Click Xem Danh Sách Chi Tiết ' + parent.record.Name + '"></i>');
+                        var $div = $('<div></div>');
+
+                        var $img = $('<i class="fa fa-list-ol jtable-action red aaa" title="Click Xem Danh Sách Chi Tiết ' + parent.record.Name + '"></i>');
                         $img.click(function () {
                             Global.Data.KhoObj = { Id: parent.record.WarehouseId, Name: parent.record.strWarehouse };
                             Global.Data.parentId = parent.record.Id;
@@ -339,11 +370,11 @@ GetWarehouseSelect('delivery-warehouse');
                                                 txt = '<span >' + data.record.MaterialName + '</span>';
                                                 return txt;
                                             }
-                                        }, 
+                                        },
                                         Quantity: {
                                             title: 'Số Lượng',
                                             width: '10%',
-                                            sorting:false,
+                                            sorting: false,
                                             display: function (data) {
                                                 var txt = '<span class="bold red">' + ParseStringToCurrency(data.record.Quantity) + '</span> ' + data.record.UnitName;
                                                 return txt;
@@ -399,10 +430,18 @@ GetWarehouseSelect('delivery-warehouse');
                                                         $('#delivery-detail-price').val(data.record.Price);
                                                         Global.Data.ObjectId = data.record.LotSupliesId;
                                                         $('#delivery-detail-id').val(data.record.Id);
-                                                        var str = 'Mã lô : <span class="red">' + data.record.LotName + '</span> Vật tư : <span class="red">' + data.record.MaterialName + ' </span> Kho : <span class="red">' + data.record.WareHouseName + ' </span> Ngày nhập : <span class="red">' + ParseDateToString(parseJsonDateToDate(data.record.InputDate)) + '</span> Số lượng tồn : <span class="red">' + (data.record.QuantityLo - data.record.QuantityUsed) + ' ' + data.record.UnitName + '</span >';
+
+                                                        var str = ` <ul class="lot-info-box">
+                                <li>Mã lô : <span class="red">${data.record.LotName}  </span></li> 
+                                <li>Vật tư : <span class="red">${data.record.MaterialName}</span></li>
+                                <li>Kho : <span class="red">${parent.record.strWarehouse}</span></li>
+                                <li>Ngày nhập : <span class="red">${ ParseDateToString(parseJsonDateToDate(data.record.InputDate))}</span></li>
+                                <li>Số lượng tồn của lô : <span class="red">${(data.record.QuantityLo - data.record.QuantityUsed)}</span > ${data.record.UnitName}</li>`;
                                                         if (data.record.ExpiryDate != null)
-                                                            str += ' Ngày hết hạn : <span class="red">' + ParseDateToString(parseJsonDateToDate(data.record.ExpiryDate)) + '</span>';
+                                                            str += ' <li>Ngày hết hạn : <span class="red">' + ParseDateToString(parseJsonDateToDate(data.record.ExpiryDate)) + '</span></li>';
+                                                        str += '</ul>';
                                                         $('#LotInfo').html(str);
+                                                        changeControlStatus(parent.record.IsApproved, parent.record.StatusId == 8);
                                                     });
                                                     return text;
                                                 }
@@ -427,69 +466,62 @@ GetWarehouseSelect('delivery-warehouse');
                                     }
                                 }, function (data) { //opened handler
                                     data.childTable.jtable('load');
+                                    if (parent.record.StatusId != 7)
+                                        $('.jtable-child-table-container .jtable-toolbar-item-add-record').addClass('hide')
                                 });
                         });
-                        return $img;
-                    }
-                },
-                edit: {
-                    title: '',
-                    width: '1%',
-                    sorting: false,
-                    display: function (data) {
-                        if (!data.record.IsApproved) {
-                            var text = $('<i data-toggle="modal" data-target="#' + Global.Element.Popup + '" title="Chỉnh sửa thông tin" class="fa fa_tb fa-pencil-square-o clickable blue"  ></i>');
-                            text.click(function () {
-                                $('#delivery-id').val(data.record.Id);
-                                $('#delivery-name').val(data.record.Name);
-                                $('#delivery-index').val(data.record.Code);
-                                Global.Data.Index = data.record.Index;
-                                $('#delivery-warehouse').val(data.record.WarehouseId);
-                                $('#delivery-date').data("kendoDatePicker").value(data.record.DeliveryDate ? new Date(moment(data.record.DeliveryDate)) : null);
-                                $('#delivery-deliverier').val(data.record.Deliverier);
-                                $('#delivery-customer').val(data.record.CustomerId);
-                                $('#delivery-reciever').val(data.record.Reciever);
-                                $('#delivery-unit').val(data.record.UnitId);
-                                $('#delivery-exchangerate').val(data.record.ExchangeRate);
+                        $div.append($img);
 
-                                $('#delivery-transactiontype').val(data.record.TransactionType);
-                                $('#delivery-dateofaccounting').data("kendoDatePicker").value(data.record.DateOfAccounting ? new Date(moment(data.record.DateOfAccounting)) : null);
-                                $('#delivery-note').val(data.record.Note);
+                        var $edit = $('<i data-toggle="modal" data-target="#' + Global.Element.Popup + '" title="Chỉnh sửa thông tin" class="fa fa_tb fa-pencil-square-o jtable-action blue"  ></i>');
+                        $edit.click(function () {
+                            $('#delivery-id').val(parent.record.Id);
+                            $('#delivery-name').val(parent.record.Name);
+                            $('#delivery-index').val(parent.record.Code);
+                            Global.Data.Index = parent.record.Index;
+                            $('#delivery-warehouse').val(parent.record.WarehouseId);
+                            $('#delivery-date').data("kendoDatePicker").value(parent.record.DeliveryDate ? new Date(moment(parent.record.DeliveryDate)) : null);
+                            $('#delivery-deliverier').val(parent.record.Deliverier);
+                            $('#delivery-customer').val(parent.record.CustomerId);
+                            $('#delivery-reciever').val(parent.record.Reciever);
+                            $('#delivery-unit').val(parent.record.UnitId);
+                            $('#delivery-exchangerate').val(parent.record.ExchangeRate);
 
-                                if (data.record.IsApproved)
-                                    $('#delivery-save_d,delivery-save').hide();
-                                $('#delivery-total').val(ParseStringToCurrency(data.record.Total));
-                            });
-                            return text;
-                        }
-                    }
-                },
-                Delete: {
-                    title: '',
-                    width: "3%",
-                    sorting: false,
-                    display: function (data) {
-                        if (!data.record.IsApproved) {
-                            var text = $('<button title="Xóa" class="jtable-command-button jtable-delete-command-button"><span>Xóa</span></button>');
-                            text.click(function () {
+                            $('#delivery-transactiontype').val(parent.record.TransactionType);
+                            $('#delivery-dateofaccounting').data("kendoDatePicker").value(parent.record.DateOfAccounting ? new Date(moment(parent.record.DateOfAccounting)) : null);
+                            $('#delivery-note').val(parent.record.Note);
+                            $('#delivery-total').val(ParseStringToCurrency(parent.record.Total));
+
+                            if (parent.record.OrderDetailId) {
+                                Global.Data.orderDetailId = parent.record.OrderDetailId;
+                                $('#delivery-order').val(parent.record.OrderId).change();
+                            }
+                            else {
+                                Global.Data.orderDetailId = 0;
+                                $('#delivery-order-detail').val(0);
+                                $('#delivery-order').val(0)
+                            }
+                            changeControlStatus(parent.record.IsApproved, parent.record.StatusId == 8);
+                        });
+                        $div.append($edit);
+
+                        if (parent.record.StatusId == 7) {
+                            var $delete = $('<i title="Xóa" class="fa fa-trash-o red jtable-action  "></i>');
+                            $delete.click(function () {
                                 GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
-                                    Delete(data.record.Id);
+                                    Delete(parent.record.Id);
                                 }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Thông báo');
                             });
+                            $div.append($delete);
                         }
-                        return text;
-                    }
-                },
-                ExportToExcel: {
-                    title: '',
-                    width: '1%',
-                    sorting: false,
-                    display: function (data) {
-                        var text = $('<i title="Xuất file excel" class="fa fa-file-excel-o clickable green bold"  ></i>');
-                        text.click(function () {
-                            window.location.href = '/DeliveryDetail/ExportToExcel?deliveryId=' + (data.record.Id == null || data.record.Id == "" ? 0 : data.record.Id);
-                        });
-                        return text;
+
+                        if (parent.record.StatusId != 7) {
+                            var $excel = $('<i title="Xuất file excel" class="fa fa-file-excel-o jtable-action green  "  ></i>');
+                            $excel.click(function () {
+                                window.location.href = '/DeliveryDetail/ExportToExcel?deliveryId=' + (parent.record.Id == null || parent.record.Id == "" ? 0 : parent.record.Id);
+                            });
+                            $div.append($excel);
+                        }
+                        return $div;
                     }
                 }
             }
@@ -529,19 +561,23 @@ GetWarehouseSelect('delivery-warehouse');
 
         $('#' + Global.Element.Popup + ' button[delivery-save]').click(function () {
             if (CheckValidate())
-                Save(false);
+                Save(7);
         });
 
         $('#' + Global.Element.Popup + ' button[delivery-save_d]').click(function () {
             if (CheckValidate()) {
-                Global.Data.DeliveryModel.IsApproved = true;
-                Save(true);
+                Save(8);
             }
+        });
+
+        $('#' + Global.Element.Popup + ' button[delivery-approve]').click(function () {
+            Approve($('#delivery-id').val());
         });
 
         $('#' + Global.Element.Popup + ' button[delivery-cancel]').click(function () {
             $("#" + Global.Element.Popup).modal("hide");
             ResetForm();
+            changeControlStatus(false, false);
         });
     }
 
@@ -589,7 +625,7 @@ GetWarehouseSelect('delivery-warehouse');
         return true;
     }
 
-    function Save(isApprove) {
+    function Save(status) {
         var obj = {
             Id: $('#delivery-id').val(),
             Name: $('#delivery-name').val(),
@@ -600,11 +636,13 @@ GetWarehouseSelect('delivery-warehouse');
             CustomerId: $('#delivery-customer').val(),
             Reciever: $('#delivery-reciever').val(),
             UnitId: $('#delivery-unit').val(),
+            StatusId: status,
             ExchangeRate: parseFloat($('#delivery-exchangerate').val()),
             TransactionType: $('#delivery-transactiontype').val(),
             DateOfAccounting: ($('#delivery-dateofaccounting').val() == '' ? null : $('#delivery-dateofaccounting').data("kendoDatePicker").value()),
-            IsApproved: isApprove,
+            IsApproved: false,
             Note: $('#delivery-note').val(),
+            OrderDetailId: $('#delivery-order-detail').val()
         };
         if (obj.Id == '0' || obj.Id == '')
             obj.Index += 1;
@@ -646,6 +684,29 @@ GetWarehouseSelect('delivery-warehouse');
         });
     }
 
+    function Approve(Id) {
+        $.ajax({
+            url: Global.UrlAction.Approve,
+            type: 'POST',
+            data: JSON.stringify({ 'Id': Id }),
+            contentType: 'application/json charset=utf-8',
+            beforeSend: function () { $('#loading').show(); },
+            success: function (data) {
+                $('#loading').hide();
+                GlobalCommon.CallbackProcess(data, function () {
+                    if (data.Result == "OK") {
+                        ReloadList();
+                        $('#' + Global.Element.Popup + ' button[delivery-cancel]').click();
+                    }
+                }, false, Global.Element.PopupDelivery, true, true, function () {
+
+                    var msg = GlobalCommon.GetErrorMessage(data);
+                    GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra.");
+                });
+            }
+        });
+    }
+
     function GetLastIndex() {
         $.ajax({
             url: '/Delivery/GetLastIndex',
@@ -676,7 +737,7 @@ GetWarehouseSelect('delivery-warehouse');
         $('#delivery-date').data("kendoDatePicker").value('');
         $('#delivery-total').val(0);
         $('#delivery-note').val('');
-        $('#delivery-save_d,delivery-save').show();
+        $('#delivery-order').val(0).change();
     }
 
     function InitPopupChild() {
@@ -722,7 +783,6 @@ GetWarehouseSelect('delivery-warehouse');
             ReloadTableLotSupplies();
         });
     }
-
 
     function SaveDetail() {
         var obj = {
@@ -777,7 +837,7 @@ GetWarehouseSelect('delivery-warehouse');
             }
         });
     }
-     
+
     function InitTableLotSupplies() {
         $('#' + Global.Element.JtableChild).jtable({
             title: `Danh sách lô vật tư trong kho : ${Global.Data.KhoObj.Name}`,
@@ -898,12 +958,12 @@ GetWarehouseSelect('delivery-warehouse');
                     Global.Data.Quantity = record.Quantity - record.QuantityUsed;
                     $('[jtableBox],[searchbox]').hide();
                     $('[detailbox]').show();
-                    var str = ` <ul>
+                    var str = ` <ul class="lot-info-box">
                                 <li>Mã lô : <span class="red">${record.Name} (${record.Code})</span></li> 
                                 <li>Vật tư : <span class="red">${record.strMaterial}</span></li>
                                 <li>Kho : <span class="red">${record.strWarehouse}</span></li>
                                 <li>Ngày nhập : <span class="red">${ ParseDateToString(parseJsonDateToDate(record.InputDate))}</span></li>
-                                <li>Số lượng tồn : <span class="red">${(record.Quantity - record.QuantityUsed)}</span > ${record.strMaterialUnit}</li>`;
+                                <li>Số lượng tồn của lô : <span class="red">${(record.Quantity - record.QuantityUsed)}</span > ${record.strMaterialUnit}</li>`;
                     if (record.ExpiryDate != null)
                         str += ' <li>Ngày hết hạn : <span class="red">' + ParseDateToString(parseJsonDateToDate(record.ExpiryDate)) + '</span></li>';
                     str += '</ul>';
@@ -917,6 +977,25 @@ GetWarehouseSelect('delivery-warehouse');
         $('#' + Global.Element.JtableChild).jtable('load', { 'whId': Global.Data.KhoObj.Id, 'greaterThan0': true, 'keyword': $('#delivery-detail-search-key').val() });
     }
 
+    function changeControlStatus(approved, disabled) {
+        $('#delivery-name,#delivery-order-detail,#delivery-order,#delivery-total,#delivery-note,#delivery-transactiontype,#delivery-exchangerate,#delivery-warehouse,#delivery-deliverier,#delivery-customer,#delivery-reciever,#delivery-unit').prop('disabled', disabled);
+        $('#delivery-detail-quantity,#delivery-detail-price').prop('disabled', disabled);
+
+        $('#delivery-dateofaccounting').data('kendoDatePicker').enable(!disabled);
+        $('#delivery-date').data('kendoDatePicker').enable(!disabled);
+
+        if (approved) {
+            $('[delivery-detail-save],[delivery-save],[delivery-save_d],[delivery-approve],[delivery-detail-save],[btnchonlo]').hide();
+            return;
+        }
+        if (disabled) {
+            $('[delivery-detail-save],[delivery-save],[delivery-save_d],[delivery-detail-save],[btnchonlo]').hide();
+            $('[delivery-approve]').show();
+            return;
+        }
+        $('[delivery-detail-save],[delivery-save],[delivery-save_d],[delivery-detail-save],[btnchonlo]').show();
+        $('[delivery-approve]').hide();
+    }
 }
 $(document).ready(function () {
     var obj = new GPRO.Delivery();

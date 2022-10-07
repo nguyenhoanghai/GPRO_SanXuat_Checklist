@@ -202,6 +202,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Index" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="OrderDetailId" Type="int" />
     <Property Name="WarehouseId" Type="int" Nullable="false" />
     <Property Name="CustomerId" Type="int" Nullable="false" />
     <Property Name="Reciever" Type="nvarchar" MaxLength="500" />
@@ -210,11 +211,12 @@
     <Property Name="TransactionType" Type="int" Nullable="false" />
     <Property Name="DateOfAccounting" Type="datetime" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" />
-    <Property Name="ApprovedUser" Type="int" />
-    <Property Name="ApprovedDate" Type="datetime" />
-    <Property Name="IsApproved" Type="bit" Nullable="false" />
     <Property Name="DeliveryDate" Type="datetime" Nullable="false" />
     <Property Name="Deliverier" Type="int" Nullable="false" />
+    <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
+    <Property Name="ApprovedUser" Type="int" />
+    <Property Name="ApprovedDate" Type="datetime" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedUser" Type="int" Nullable="false" />
@@ -494,6 +496,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Index" Type="int" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="OrderDetailId" Type="int" />
     <Property Name="FromWarehouseId" Type="int" />
     <Property Name="FromCustomerId" Type="int" />
     <Property Name="StoreWarehouseId" Type="int" Nullable="false" />
@@ -505,6 +508,7 @@
     <Property Name="InputDate" Type="datetime" Nullable="false" />
     <Property Name="Note" Type="nvarchar(max)" />
     <Property Name="StatusId" Type="int" Nullable="false" />
+    <Property Name="IsApproved" Type="bit" Nullable="false" />
     <Property Name="ApprovedUser" Type="int" />
     <Property Name="ApprovedDate" Type="datetime" />
     <Property Name="IsDeleted" Type="bit" Nullable="false" />
@@ -790,6 +794,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Delivery_OrderDetail">
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="0..1" />
+    <End Role="Delivery" Type="Self.Delivery" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderDetail">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Delivery">
+        <PropertyRef Name="OrderDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Lenh_Products_LenhSanXuat">
     <End Role="LenhSanXuat" Type="Self.LenhSanXuat" Multiplicity="1" />
     <End Role="Lenh_Products" Type="Self.Lenh_Products" Multiplicity="*" />
@@ -895,6 +911,18 @@
       </Principal>
       <Dependent Role="PO_SellDetail">
         <PropertyRef Name="POId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receiption_OrderDetail">
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="0..1" />
+    <End Role="Receiption" Type="Self.Receiption" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderDetail">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Receiption">
+        <PropertyRef Name="OrderDetailId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1062,6 +1090,10 @@
       <End Role="Template_Checklist" EntitySet="Template_Checklist" />
       <End Role="Checklist" EntitySet="Checklist" />
     </AssociationSet>
+    <AssociationSet Name="FK_Delivery_OrderDetail" Association="Self.FK_Delivery_OrderDetail">
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+      <End Role="Delivery" EntitySet="Delivery" />
+    </AssociationSet>
     <AssociationSet Name="FK_Lenh_Products_LenhSanXuat" Association="Self.FK_Lenh_Products_LenhSanXuat">
       <End Role="LenhSanXuat" EntitySet="LenhSanXuat" />
       <End Role="Lenh_Products" EntitySet="Lenh_Products" />
@@ -1097,6 +1129,10 @@
     <AssociationSet Name="FK_PO_SellDetail_PO_Sell" Association="Self.FK_PO_SellDetail_PO_Sell">
       <End Role="PO_Sell" EntitySet="PO_Sell" />
       <End Role="PO_SellDetail" EntitySet="PO_SellDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receiption_OrderDetail" Association="Self.FK_Receiption_OrderDetail">
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+      <End Role="Receiption" EntitySet="Receiption" />
     </AssociationSet>
     <AssociationSet Name="FK_Template_CL_Job_Template_CL_JobStep" Association="Self.FK_Template_CL_Job_Template_CL_JobStep">
       <End Role="Template_CL_JobStep" EntitySet="Template_CL_JobStep" />

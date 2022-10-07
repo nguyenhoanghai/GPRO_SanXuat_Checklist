@@ -31,6 +31,23 @@
                         <input type="text" id="receiption-name" class="form-control" />
                     </div>
                     <div class="form-group col-md-4">
+                        <label class=" control-label">Đơn hàng</label>  
+                        <div class="select-box">
+                            <select id="receiption-order" class="form-control"></select>
+                            <i re-receiption-order class="fa fa-refresh clickable red"></i>
+                            <span><a href="/order/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Sản phẩm</label> 
+                        <div class="select-box">
+                            <select id="receiption-order-detail" class="form-control"></select>
+                            <i re-receiption-order-detail class="fa fa-refresh clickable red"></i>
+                           @* <span><a href="/order/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a></span>*@
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
                         <label class=" control-label">Kho lưu</label><span style="color:red"> *</span>
                         <div class="select-box">
                             <select id="receiption-warehouse" class="form-control"></select>
@@ -92,9 +109,10 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" receiption-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
-                <button type="button" receiption-save_d class="btn btn-danger"><i class="fa fa-floppy-o"></i> Lưu và duyệt </button>
                 <button type="button" receiption-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+                <button type="button" receiption-save_d class="btn btn-success"><i class="fa fa-floppy-o"></i> Lưu & gửi duyệt </button>
+                <button type="button" receiption-approve class="btn btn-danger"><i class="fa fa-floppy-o"></i> Duyệt phiếu </button>
+                <button type="button" receiption-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
             </div>
         </div>
     </div>
@@ -139,7 +157,7 @@
                             </div>
                         </div>*@
                     <div class="form-group col-md-4">
-                        <label class="control-label">Số Lượng Nhập - Thực Tế</label><span style="color:red"> *</span>
+                        <label class="control-label">SL nhập - tồn của lô</label><span style="color:red"> *</span>
                         <div class="inline-number">
                             <input type="text" onkeypress="return isNumberKey(event)" class="form-control  " id="receiption-detail-quantity" style=" width:107px" value="0">
                             <i class="fa fa-arrow-right red"> </i>

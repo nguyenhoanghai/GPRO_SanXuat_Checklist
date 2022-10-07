@@ -27,7 +27,7 @@ namespace GPROSanXuat_Checklist.Data
         public Nullable<int> DeletedUser { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
-        public virtual Delivery Delivery { get; set; }
         public virtual LotSupply LotSupply { get; set; }
+        public virtual Delivery Delivery { get; set; }
     }
 }

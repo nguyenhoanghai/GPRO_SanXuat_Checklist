@@ -2,15 +2,11 @@
 @{
     ViewBag.Title = "Phiếu xuất kho";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<style>
-    #delivery-detail-jtable .jtable-toolbar {
-        top: 6px
-    }
-</style>
-
-<div id="delivery-jtable"></div>
+} 
+<link href="~/Scripts/IED/Delivery/delivery-index.css" rel="stylesheet" />
  
+<div id="delivery-jtable"></div>
+
 <div id="delivery-popup" class="modal fade" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -28,6 +24,22 @@
                     <div class="form-group col-md-4">
                         <label class=" control-label">Tên Phiếu Xuất</label><span style="color:red"> *</span>
                         <input type="text" id="delivery-name" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Đơn hàng</label>
+                        <div class="select-box">
+                            <select id="delivery-order" class="form-control"></select>
+                            <i re-delivery-order class="fa fa-refresh clickable red"></i>
+                            <span><a href="/order/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class=" control-label">Sản phẩm</label>
+                        <div class="select-box">
+                            <select id="delivery-order-detail" class="form-control"></select>
+                            <i re-delivery-order-detail class="fa fa-refresh clickable red"></i>
+                            @* <span><a href="/order/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a></span>*@
+                        </div>
                     </div>
                     <div class="form-group col-md-4">
                         <label class=" control-label">Hình Thức Giao Dịch </label><span style="color:red"> *</span>
@@ -95,7 +107,7 @@
                         <label class=" control-label">Tổng Tiền</label>
                         <input class="form-control" type="text" disabled value="0" id="delivery-total" />
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-8">
                         <label class=" control-label">Ghi Chú</label>
                         <textarea class="form-control" id="delivery-note"></textarea>
                     </div>
@@ -103,9 +115,10 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: white">
+                <button type="button" delivery-save class="btn btn-primary"><i class="fa fa-save"></i> Lưu nháp </button>
+                <button type="button" delivery-save_d class="btn btn-success"><i class="fa fa-save"></i> Lưu & gửi duyệt </button>
+                <button type="button" delivery-approve class="btn btn-danger  "><i class="fa fa-save"></i> Duyệt phiếu </button>
                 <button type="button" delivery-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
-                <button type="button" delivery-save_d class="btn btn-danger"><i class="fa fa-save"></i> Lưu và Duyệt </button>
-                <button type="button" delivery-save class="btn btn-primary"><i class="fa fa-save"></i> Lưu lại </button>
             </div>
         </div>
     </div>
@@ -142,7 +155,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label class=" control-label  "> </label>
-                            <button type="button" style="margin-top:27px" delivery-detail-save class="btn btn-danger"><i class="fa fa-plus"></i> Thêm </button>
+                            <button type="button" style="margin-top:27px" delivery-detail-save class="btn btn-danger"><i class="fa fa-plus"></i> Lưu lại </button>
                             <button type="button" style="margin-top:27px" btnchonlo class="btn btn-primary"><i class="fa fa-refresh"></i> Chọn lô </button>
                         </div>
                     </div>

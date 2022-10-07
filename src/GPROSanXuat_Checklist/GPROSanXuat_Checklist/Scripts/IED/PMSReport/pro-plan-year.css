@@ -1,0 +1,28 @@
+﻿.confirmed {
+    background: green !important;
+    color: white !important
+}
+.planned { background: yellow !important; color:black !important}
+
+.confirmed,
+.planned {
+    margin: 5px;
+    padding: 5px 0;
+    border: 1px solid #bbb;
+    border-radius: 7px;
+}
+
+.chu-thich {
+    font-size: 14px;
+    padding: 10px 25px;
+    color: black;
+}
+
+.table-data .weekday{ width:150px}
+
+.table-data td {
+    padding: 0 !important
+}
+
+.sunday {background:red !important; color:white !important;  }
+ 

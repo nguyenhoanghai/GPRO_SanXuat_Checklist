@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GPROSanXuat_Checklist.Business;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace GPROSanXuat_Checklist.Controllers
                 {
                     var file = Request.Files[0];
                     var filename = Path.GetFileName(file.FileName);
+                    filename = BLLHelper.ReplaceVietNameseChar(filename);
                     guid = Guid.NewGuid();
                     returnPath = "~/UploadFile/Files/" + DateTime.Now.Year + "/" + DateTime.Now.Month + "/" + DateTime.Now.Day + "/";
                     string directoryPath = Server.MapPath(returnPath);

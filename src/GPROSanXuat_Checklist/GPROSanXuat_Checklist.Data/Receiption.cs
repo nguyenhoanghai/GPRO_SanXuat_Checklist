@@ -22,6 +22,7 @@ namespace GPROSanXuat_Checklist.Data
         public int Id { get; set; }
         public int Index { get; set; }
         public string Name { get; set; }
+        public Nullable<int> OrderDetailId { get; set; }
         public Nullable<int> FromWarehouseId { get; set; }
         public Nullable<int> FromCustomerId { get; set; }
         public int StoreWarehouseId { get; set; }
@@ -33,6 +34,7 @@ namespace GPROSanXuat_Checklist.Data
         public System.DateTime InputDate { get; set; }
         public string Note { get; set; }
         public int StatusId { get; set; }
+        public bool IsApproved { get; set; }
         public Nullable<int> ApprovedUser { get; set; }
         public Nullable<System.DateTime> ApprovedDate { get; set; }
         public bool IsDeleted { get; set; }
@@ -43,6 +45,7 @@ namespace GPROSanXuat_Checklist.Data
         public Nullable<int> DeletedUser { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
+        public virtual OrderDetail OrderDetail { get; set; }
         public virtual ICollection<ReceiptionDetail> ReceiptionDetails { get; set; }
     }
 }

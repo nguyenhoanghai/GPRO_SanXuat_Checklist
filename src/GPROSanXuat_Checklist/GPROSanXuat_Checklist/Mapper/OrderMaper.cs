@@ -1,4 +1,5 @@
 ﻿using GPROCommon.Data;
+using GPROCommon.Repository;
 using GPROSanXuat_Checklist.App_Global;
 using GPROSanXuat_Checklist.Business.Model;
 using PagedList;
@@ -35,6 +36,7 @@ namespace GPROSanXuat_Checklist.Mapper
                     var customers = db.C_Customer.Where(x => !x.IsDeleted).ToList();
                     var units = db.C_Unit.Where(x => !x.IsDeleted).ToList();
                     var status = db.C_Status.Where(x => !x.IsDeleted).ToList();
+                    var users = UserRepository.Instance.GetSelectItem(AppGlobal.ConnectionstringGPROCommon);
 
                     for (int i = 0; i < objs.Count; i++)
                     {
@@ -49,6 +51,13 @@ namespace GPROSanXuat_Checklist.Mapper
                         found = status.FirstOrDefault(x => x.Id == objs[i].StatusId);
                         if (found != null)
                             objs[i].StatusName = found.Name;
+
+                        if (objs[i].ApprovedUser.HasValue)
+                        {
+                            found = users.FirstOrDefault(x => x.Value == objs[i].ApprovedUser.Value);
+                            if (found != null)
+                                objs[i].ApprovedUserName = found.Name;
+                        }
                     }
                 }
             }

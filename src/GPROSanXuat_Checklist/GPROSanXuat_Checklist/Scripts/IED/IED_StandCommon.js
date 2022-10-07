@@ -938,6 +938,158 @@ function GetPOSelect(controlId) {
     });
 }
 
+function GetOrderSelect(controlId, approvedOnly ) {
+    $.ajax({
+        url: '/Order/GetSelectList',
+        type: 'POST',
+        data: JSON.stringify({ 'approved': approvedOnly }),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
+                    });
+                }
+                $('#' + controlId).empty().append(str).change();
+                $('[' + controlId + ']').empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetOrderDetailSelect(controlId, orderId, detailId) {
+    $.ajax({
+        url: '/Order/GetDetailSelectList',
+        type: 'POST',
+        data: JSON.stringify({ 'OrderId': orderId }),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ' <option value="' + item.Value + '">' + item.Name + '</option>';
+                    });
+                }
+                $('#' + controlId).empty().append(str).change();
+                $('[' + controlId + ']').empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+                if (detailId) {
+                    $(`#${controlId},[${controlId}]`).val(detailId);
+                }
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetLenhSelect(controlId) {
+    $.ajax({
+        url: '/lenhsx/GetLenhSelect',
+        type: 'POST',
+        data: '',
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {
+                    // str = ' <option value="0">- Chọn Loại Thời Gian -</option>';
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ` <option value="${item.Value}">${item.Code} | Phụ trách: ${item.Name}</option>`;
+                    });
+                }
+                $(`#${controlId},[${controlId}]`).empty().append(str).change(); 
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetLenhProductSelect(controlId, lenhId) {
+    $.ajax({
+        url: '/lenhsx/GetLenhProductSelect',
+        type: 'POST',
+        data: JSON.stringify({ 'lenhId': lenhId }),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {  
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ` <option value="${item.Id}">${item.Code} | K.hàng: ${item.Name}</option>`;
+                    });
+                }
+                $(`#${controlId},[${controlId}]`).empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetPhaseSelect(controlId, _type) {
+    $.ajax({
+        url: '/phase/GetSelectList',
+        type: 'POST',
+        data: JSON.stringify({ 'type': _type }),
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) {
+                    // str = ' <option value="0">- Chọn Loại Thời Gian -</option>';
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ` <option value="${item.Value}">${item.Name}</option>`;
+                    });
+                }
+                $(`#${controlId},[${controlId}]`).empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+function GetAssignmentSelect(controlId  ) {
+    $.ajax({
+        url: '/Assignment/GetSelectList',
+        type: 'POST',
+        data: '',
+        contentType: 'application/json charset=utf-8',
+        success: function (data) {
+            if (data.Result == "OK") {
+                var str = ' <option value="0"> Không có dữ liệu </option>';
+                if (data.Data.length > 0) { 
+                    str = ' ';
+                    $.each(data.Data, function (index, item) {
+                        str += ` <option value="${item.STT}">SP: ${item.CommoName} | Chuyền: ${item.LineName} | | KHoạch: ${item.ProductionPlans} | Vào chuyền: ${ddMMyyyy(item.DateInput)}</option>`;
+                    });
+                }
+                $(`#${controlId},[${controlId}]`).empty().append(str).change();
+                $('#' + controlId).trigger('liszt:updated');
+            }
+            else
+                GlobalCommon.ShowMessageDialog('Lỗi', function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+        }
+    });
+}
+
+
 function getStatusId(name) {
     switch (name) {
         case 'NotStated': return 1;

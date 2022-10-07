@@ -1043,7 +1043,7 @@ GPRO.Lenh = function () {
                     sorting: false,
                 },
                 ProductName: {
-                    title: "Sản phẫm",
+                    title: "Sản phẩm",
                     width: "10%",
 
                 },

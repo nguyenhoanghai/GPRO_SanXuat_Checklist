@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "Báo cáo kho";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .report table {
+        border: 2px solid #ccc;
+        width: 100%;
+    }
+
+        .report table caption {
+            border: 2px solid #ccc;
+            padding: 10px 0;
+            color: black;
+            border-bottom: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .report table thead th {
+            background-color: blue;
+            color: white;
+            font-weight: bold;
+        }
+
+
+        .report table td,
+        .report table th {
+            border: 1px solid #ccc;
+            border-right: none;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .report table tr.row_2 td {
+            background: #efefef !important;
+        }
+
+        .report table td {
+            color: blue;
+        }
+
+            .report table td:last-child,
+            .report table th:last-child {
+                border-right: 1px solid #ccc;
+            }
+
+            .report table td:first-child,
+            .report table th:first-child {
+                border-left: 1px solid #ccc;
+            }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .report div#EquipmentInfo {
+        width: 55%;
+        color: blue;
+        padding: 0;
+    }
+
+        .report div#EquipmentInfo div {
+            padding: 0;
+        }
+
+            .report div#EquipmentInfo div div {
+                border-top: none;
+                border-right: 0.5px solid #ccc;
+                border-bottom: 0.5px solid #ccc;
+                border-left: none;
+                padding: 3px;
+            }
+
+            .report div#EquipmentInfo div:first-child {
+                border-left: 1px solid #ccc;
+            }
+
+            .report div#EquipmentInfo div:last-child {
+                border-right: 1px solid #ccc;
+            }
+
+            .report div#EquipmentInfo div:nth-child(even) div {
+                background-color: blue;
+                color: white;
+                font-weight: bold;
+            }
+
+            .report div#EquipmentInfo div:first-child div {
+                background-color: #DEDEDE;
+                text-transform: uppercase;
+                font-weight: bold;
+                text-align: center;
+                color: black;
+                font-size: 14px;
+                border-top: 1px solid #ccc;
+            }
+</style>
+
+<div class="container report">
+    <div class="clearfix"></div>
+    <div id="material_selection" class="form-inline" style="margin-top:20px; margin-bottom:20px">
+        @*<div class="form-group" style="margin-right:5px; line-height:25px">
+            <label class="control-label" style="margin-right:5px; margin-top: 5px">Vật Tư </label>
+        </div>
+        <div class="form-group" style="margin-right:5px;">
+            <input type="text" id="inventory_material" class="form-control" style="width:250px" />
+        </div>*@
+        <div class="form-group" style="margin-right:5px; line-height:25px">
+                <label class="control-label" style="margin-right:5px; margin-top: 5px">Kho hàng </label>
+            </div>
+            <div class="form-group" style="margin-right:5px;">
+                <input type="text" id="inventory_warehouse" class="form-control" style="width:250px" />
+            </div> 
+        <div class="form-group" style="margin-right:5px; margin-top:5px ; line-height:40px">
+            <i inventory_re_material class="fa fa-refresh clickable red"></i>
+            <a href="/MaterialType/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+        </div>
+        <div class="form-group">
+            <button id="inventory_btnView" class="form-control btn-primary" style="width:107px; "><i class="fa fa-search"></i> Tìm kiếm</button>
+        </div>
+        <div class="form-group">
+            <button id="inventory_btnExportToExcel" class="form-control btn-danger" style="width:115px;  "><span><i class="fa fa-file-excel-o"></i></span>   Xuất Excel</button>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <table id="inventory_table1">
+        <caption>BÁO CÁO SỐ LƯỢNG TỒN KHO  <span id="inventory_materialname" class="bold upper red"> </span></caption>
+        <thead>
+            <tr>
+                <th style="width:60px">STT</th>
+                <th>Kho</th>
+                <th>Vật tư</th>
+                <th>Lô vật tư</th>
+                <th>Ngày nhập kho</th>
+                <th>Số lượng nhập - tồn kho</th>
+                <th>Đơn Giá</th>
+                <th>Thành Tiền (tỉ giá)</th>
+                <th>Ngày sản xuất</th>
+                <th>Ngày bảo hành</th>
+                <th>Ngày Hết Hạn SD</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="11">Không có dữ liệu</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="~/Scripts/IED/LotSupplies/R_Inventory-warehouse.js"></script>

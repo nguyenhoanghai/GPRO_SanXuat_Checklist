@@ -31,7 +31,10 @@ namespace GPROSanXuat_Checklist.Data
         public int MoneyUnitId { get; set; }
         public double Exchange { get; set; }
         public Nullable<System.DateTime> DeliveryDate { get; set; }
-        public Nullable<int> StatusId { get; set; }
+        public int StatusId { get; set; }
+        public bool IsApproved { get; set; }
+        public Nullable<int> ApprovedUser { get; set; }
+        public Nullable<System.DateTime> ApprovedDate { get; set; }
         public bool IsDeleted { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedUser { get; set; }
@@ -40,7 +43,7 @@ namespace GPROSanXuat_Checklist.Data
         public Nullable<System.DateTime> DeletedDate { get; set; }
         public Nullable<int> DeletedUser { get; set; }
     
-        public virtual PO_Sell PO_Sell { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual PO_Sell PO_Sell { get; set; }
     }
 }

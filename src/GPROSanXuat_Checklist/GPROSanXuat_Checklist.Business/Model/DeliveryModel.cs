@@ -17,5 +17,11 @@ namespace GPROSanXuat_Checklist.Business.Model
         public string Code { get; set; }
         public double Total { get; set; }
         public int ActionUser { get; set; }
+
+        public int OrderId { get; set; }
+        public string OrderCode { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string StatusName { get; set; }
     }
 }

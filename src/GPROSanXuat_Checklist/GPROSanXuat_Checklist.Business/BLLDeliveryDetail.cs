@@ -63,10 +63,10 @@ namespace GPROSanXuat_Checklist.Business
                             Parse.CopyObject(model, ref obj);
                             db.DeliveryDetails.Add(obj);
 
-                            if (lotObj != null)
-                            {
-                                lotObj.QuantityUsed += model.Quantity;
-                            }
+                            //if (lotObj != null)
+                            //{
+                            //    lotObj.QuantityUsed += model.Quantity;
+                            //}
                             result.IsSuccess = true;
                         }
                         #endregion
@@ -100,11 +100,11 @@ namespace GPROSanXuat_Checklist.Business
                                     obj.UpdatedDate = model.UpdatedDate;
                                     obj.UpdatedUser = model.UpdatedUser;
 
-                                    if (lotObj != null)
-                                    {
-                                        lotObj.QuantityUsed -= oldSL;
-                                        lotObj.QuantityUsed += model.Quantity;
-                                    }
+                                    //if (lotObj != null)
+                                    //{
+                                    //    lotObj.QuantityUsed -= oldSL;
+                                    //    lotObj.QuantityUsed += model.Quantity;
+                                    //}
                                     result.IsSuccess = true;
                                 }
                             }

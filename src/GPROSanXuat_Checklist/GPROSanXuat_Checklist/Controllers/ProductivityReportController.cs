@@ -39,7 +39,7 @@ namespace GPROSanXuat_Checklist.Controllers
             {
                 if (isAuthenticate)
                 {
-                    var _phases = PhaseInDayRepository.Instance.GetPhases(AppGlobal.ConnectionstringPMS, type);
+                    var _phases = PhaseRepository.Instance.GetSelectList(AppGlobal.ConnectionstringGPROCommon, type);// PhaseInDayRepository.Instance.GetPhases(AppGlobal.ConnectionstringPMS, type );
                     List<AddPhaseQuantitiesModel> objs = PhaseInDayRepository.Instance.ReportPhaseDayInfo(AppGlobal.ConnectionstringPMS, type, from, to);
                     for (int i = 0; i < _phases.Count; i++)
                     {
@@ -76,7 +76,7 @@ namespace GPROSanXuat_Checklist.Controllers
                     DateTime _from = DateTime.Now, _to = DateTime.Now;
                     _from = DateTime.ParseExact(from, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     _to = DateTime.ParseExact(to, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    var _phases = PhaseInDayRepository.Instance.GetPhases(AppGlobal.ConnectionstringPMS, type);
+                    var _phases = PhaseRepository.Instance.GetSelectList(AppGlobal.ConnectionstringGPROCommon, type); //PhaseInDayRepository.Instance.GetPhases(AppGlobal.ConnectionstringPMS, type);
                     List<AddPhaseQuantitiesModel> objs = PhaseInDayRepository.Instance.ReportPhaseDayInfo(AppGlobal.ConnectionstringPMS, type, _from, _to);
                     for (int i = 0; i < _phases.Count; i++)
                     {
@@ -325,7 +325,7 @@ namespace GPROSanXuat_Checklist.Controllers
                     }
                     var groupList = objs.GroupBy(x => x.Ngay).Select(x => new { Date = x.Key, Lines = x.ToList() }).ToList();
 
-                    sheet.Cells[1, 2].Value = "BÁN THÀNH PHẪM GIAO CHUYỀN  ";
+                    sheet.Cells[1, 2].Value = "BÁN THÀNH phẩm GIAO CHUYỀN  ";
                     sheet.Cells[1, 2].Style.Font.Size = 14;
                     sheet.Cells[1, 2, 1, _lines.Count + 2].Merge = true;
                     sheet.Cells[1, 2, 1, _lines.Count + 2].Style.Font.Bold = true;

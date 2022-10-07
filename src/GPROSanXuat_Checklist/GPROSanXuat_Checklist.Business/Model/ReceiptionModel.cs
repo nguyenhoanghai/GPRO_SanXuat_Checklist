@@ -16,6 +16,10 @@ namespace GPROSanXuat_Checklist.Business.Model
         public string TransactionTypeName { get; set; }
         public double Total { get; set; }
         public bool IsApproved { get; set; }
-    }
- 
+
+        public int OrderId { get; set; }
+        public string OrderCode { get; set; }
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+    } 
 }

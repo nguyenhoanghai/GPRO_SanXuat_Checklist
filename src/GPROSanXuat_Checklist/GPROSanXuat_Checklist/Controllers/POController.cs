@@ -78,8 +78,7 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
-
-
+        
         [HttpPost]
         public JsonResult GetById(int poid, bool getTemplate)
         {
@@ -152,6 +151,34 @@ namespace GPROSanXuat_Checklist.Controllers
             }
             return Json(JsonDataResult);
         }
+
+        [HttpPost]
+        public JsonResult Approve(int Id)
+        {
+            ResponseBase responseResult;
+            try
+            {
+                if (isAuthenticate)
+                {
+                    responseResult = BLLPO_Sell.Instance.Approve(AppGlobal.ConnectionstringSanXuatChecklist, Id, UserContext.UserID);
+                    if (responseResult.IsSuccess)
+                        JsonDataResult.Result = "OK";
+                    else
+                    {
+                        JsonDataResult.Result = "ERROR";
+                        JsonDataResult.ErrorMessages.AddRange(responseResult.Errors);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //add error
+                JsonDataResult.Result = "ERROR";
+                JsonDataResult.ErrorMessages.Add(new Error() { MemberName = "Delete Area", Message = "Lỗi: " + ex.Message });
+            }
+            return Json(JsonDataResult);
+        }
+
 
         [HttpPost]
         public JsonResult GetSelectList()

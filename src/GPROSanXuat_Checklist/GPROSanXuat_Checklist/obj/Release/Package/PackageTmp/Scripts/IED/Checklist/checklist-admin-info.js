@@ -604,7 +604,7 @@ GPRO.ChecklistAdminInfo = function () {
         return html;
     }
 
-    BindJob = (id) => { 
+    BindJob = (id) => {
         GetJobDetail(id);
     }
 
@@ -906,7 +906,7 @@ GPRO.ChecklistAdminInfo = function () {
                                         <td rowspan="22">${item.PriceCM}</td>
                                         <td rowspan="3" class="col-tim">Cắt (PCS)</td>
                                         <td class="col-tim">Cắt</td>
-                                        <td>${(item.lkCat - item.Cat)}</td>
+                                        <td>${(item.lkCat - item.Cat) > 0 ? (item.lkCat - item.Cat) : item.Cat}</td>
                                         <td>${ item.lkCat}</td>
                                         <td>${(item.SanLuongKeHoach - item.lkCat)}</td>
                                         ${getWorkingTimes(item.workingTimes, item, 'col-sum', 19)}                                        
@@ -915,7 +915,7 @@ GPRO.ChecklistAdminInfo = function () {
 
                             tr = $(`<tr>
                                         <td class="col-tim">Đồng bộ</td>
-                                        <td>${(item.lkDongBo - item.DongBo)}</td>
+                                        <td>${(item.lkDongBo - item.DongBo) > 0 ? (item.lkDongBo - item.DongBo) : item.DongBo}</td>
                                         <td>${ item.lkDongBo}</td>
                                         <td>${(item.SanLuongKeHoach - item.lkDongBo)}</td>
                                         ${getWorkingTimes(item.workingTimes, item, 'col-sum', 20)}  
@@ -1067,28 +1067,28 @@ GPRO.ChecklistAdminInfo = function () {
 
                             tr = $(`<tr> 
                                         <td class="col-tim" rowspan="3">Hoàn thành (PCS)</td>
-                                        <td class="col-tim">Ủi</td>
-                                        <td  class="col-sum">${item.lkUi}</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td class="col-tim">Ủi</td> 
+                                        <td class="col-sum">${(item.lkUi - item.Ui) > 0 ? (item.lkUi - item.Ui) : item.Ui}</td>
+                                        <td>${ item.lkUi}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkUi)}</td>
                                         ${getWorkingTimes(item.workingTimes, item, '', 14)}  
                                     </tr>`);
                             _body.append(tr);
 
                             tr = $(`<tr>  
-                                        <td class="col-tim">Giao hoàn thành</td>
-                                        <td  class="col-sum">${item.lkHoanThanh}</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td class="col-tim">Giao hoàn thành</td> 
+                                        <td class="col-sum">${(item.lkHoanThanh - item.HoanThanh) > 0 ? (item.lkHoanThanh - item.HoanThanh) : item.HoanThanh}</td>
+                                        <td>${ item.lkHoanThanh}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkHoanThanh)}</td>
                                         ${getWorkingTimes(item.workingTimes, item, '', 15)}  
                                     </tr>`);
                             _body.append(tr);
 
                             tr = $(`<tr>  
-                                        <td class="col-tim">Đóng thùng</td>
-                                        <td  class="col-sum">${item.lkDongThung}</td>
-                                        <td></td>
-                                        <td></td>
+                                        <td class="col-tim">Đóng thùng</td> 
+                                        <td class="col-sum">${(item.lkDongThung - item.DongThung) > 0 ? (item.lkDongThung - item.DongThung) : item.DongThung}</td>
+                                        <td>${ item.lkDongThung}</td>
+                                        <td>${(item.SanLuongKeHoach - item.lkDongThung)}</td>
                                         ${getWorkingTimes(item.workingTimes, item, '', 16)}  
                                     </tr>`);
                             _body.append(tr);

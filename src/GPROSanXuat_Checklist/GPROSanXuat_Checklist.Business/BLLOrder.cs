@@ -69,7 +69,10 @@ namespace GPROSanXuat_Checklist.Business
                         Exchange = x.Exchange,
                         Note = x.Note,
                         StatusId = x.StatusId,
-                        //StatusName = x.Status.Name
+                        //StatusName = x.Status.Name,
+                        IsApproved = x.IsApproved,
+                        ApprovedDate = x.ApprovedDate,
+                        ApprovedUser = x.ApprovedUser
                     }).ToList(), pageNumber, pageSize);
                     if (objs.Count > 0)
                     {
@@ -83,7 +86,6 @@ namespace GPROSanXuat_Checklist.Business
                             objs[i].Total = details.Where(x => x.OrderId == objs[i].Id).Sum(x => x.Quantity * x.Price);
                         }
                     }
-
                     return objs;
                 }
             }
@@ -117,7 +119,10 @@ namespace GPROSanXuat_Checklist.Business
                          Exchange = x.Exchange,
                          Note = x.Note,
                          StatusId = x.StatusId,
-                         //StatusName = x.Status.Name
+                         //StatusName = x.Status.Name,
+                         IsApproved = x.IsApproved,
+                         ApprovedDate = x.ApprovedDate,
+                         ApprovedUser = x.ApprovedUser
                      }).FirstOrDefault();
 
                     var details = db.OrderDetails
@@ -160,144 +165,136 @@ namespace GPROSanXuat_Checklist.Business
                         result.Errors.Add(new Error() { MemberName = "Insert ", Message = "Mã phiếu này đã tồn tại. Vui lòng chọn lại Mã khác !." });
                         return result;
                     }
-                    else if (model.StatusId != (int)eStatus.Draft && model.Details == null || model.Details.Count == 1)
+                    if (model.Details == null || model.Details.Count == 1)
                     {
                         result.IsSuccess = false;
                         result.Errors.Add(new Error() { MemberName = "Insert ", Message = "Vui lòng chọn ít nhất 1 sản phẩm cho phiếu đặt hàng" });
                         return result;
                     }
-                    else
+
+                    Order obj = db.Orders.FirstOrDefault(x => !x.IsDeleted && x.FromPOId == model.FromPOId && x.Id != model.Id);
+                    if (obj != null)
                     {
-                        Order obj = db.Orders.FirstOrDefault(x => !x.IsDeleted && x.FromPOId == model.FromPOId && x.Id != model.Id);
-                        if (obj != null)
+                        result.IsSuccess = false;
+                        result.Errors.Add(new Error() { MemberName = "Insert ", Message = "Đã có đơn hàng được tạo từ phiếu báo giá này. Vui lòng chọn phiếu báo giá khác." });
+                        return result;
+                    }
+                    if (model.Id == 0)
+                    {
+                        obj = new Order();
+                        Parse.CopyObject(model, ref obj);
+                        obj.Code = model.Code;
+                        obj.CreatedDate = DateTime.Now;
+                        obj.CreatedUser = model.ActionUser;
+                        if (obj.FromPOId == 0)
+                            obj.FromPOId = null;
+                         
+                        if (model.Details != null && model.Details.Count > 1)
+                        {
+                            obj.OrderDetails = new List<OrderDetail>();
+                            OrderDetail child = null;
+                            foreach (var item in model.Details)
+                            {
+                                if (item.ProductId != 0)
+                                {
+                                    child = new OrderDetail();
+                                    Parse.CopyObject(item, ref child);
+                                    child.CreatedDate = obj.CreatedDate;
+                                    child.CreatedUser = obj.CreatedUser;
+                                    child.Order = obj;
+                                    obj.OrderDetails.Add(child);
+                                }
+                            }
+                        }
+                        db.Orders.Add(obj);
+                        db.SaveChanges();
+                        result.IsSuccess = true;
+                        return result;
+                    }
+                    if (model.Id != 0)
+                    {
+                        obj = db.Orders.FirstOrDefault(x => !x.IsDeleted && x.Id == model.Id);
+                        if (obj == null)
                         {
                             result.IsSuccess = false;
-                            result.Errors.Add(new Error() { MemberName = "Insert ", Message = "Đã có đơn hàng được tạo từ phiếu báo giá này. Vui lòng chọn phiếu báo giá khác." });
+                            result.Errors.Add(new Error() { MemberName = "Update ", Message = "Phiếu bạn đang thao tác đã bị xóa hoặc không tồn tại. Vui lòng kiểm tra lại !." });
                             return result;
                         }
-                        else
+                        if (obj.StatusId != (int)eStatus.Draft)
                         {
-                            if (model.Id == 0)
-                            {
-                                obj = new Order();
-                                Parse.CopyObject(model, ref obj);
-                                obj.Code = model.Code;
-                                obj.CreatedDate = DateTime.Now;
-                                obj.CreatedUser = model.ActionUser;
-                                if (obj.FromPOId == 0)
-                                    obj.FromPOId = null;
+                            result.IsSuccess = false;
+                            result.Errors.Add(new Error() { MemberName = "Update ", Message = "Trạng thái phiếu đặt hàng này không còn cho phép bạn cập nhật thông tin. Vui lòng liện hệ Admin" });
+                            return result;
+                        }
+                        if (!checkPermis(obj, model.ActionUser, isOwner))
+                        {
+                            result.IsSuccess = false;
+                            result.Errors.Add(new Error() { MemberName = "update", Message = "Bạn không phải là người tạo phiếu này nên bạn không cập nhật được thông tin cho phiếu này." });
+                            return result;
+                        }
+                        obj.Phone = model.Phone;
+                        obj.Email = model.Email;
+                        obj.Address = model.Address;
+                        obj.ContactName = model.ContactName;
+                        obj.CustomerId = model.CustomerId;
+                        obj.DeliveryDate = model.DeliveryDate;
+                        obj.StatusId = model.StatusId;
+                        obj.MoneyUnitId = model.MoneyUnitId;
+                        obj.Exchange = model.Exchange;
+                        obj.Note = model.Note;
+                        obj.UpdatedUser = model.ActionUser;
+                        obj.UpdatedDate = DateTime.Now;
 
-                                if (model.Details != null && model.Details.Count > 1)
-                                {
-                                    obj.OrderDetails = new List<OrderDetail>();
-                                    OrderDetail child = null;
-                                    foreach (var item in model.Details)
-                                    {
-                                        if (item.ProductId != 0)
-                                        {
-                                            child = new OrderDetail();
-                                            Parse.CopyObject(item, ref child);
-                                            child.CreatedDate = obj.CreatedDate;
-                                            child.CreatedUser = obj.CreatedUser;
-                                            child.Order = obj;
-                                            obj.OrderDetails.Add(child);
-                                        }
-                                    }
-                                }
-                                db.Orders.Add(obj);
-                                db.SaveChanges();
-                                result.IsSuccess = true;
-                            }
-                            else
+                        var _details = db.OrderDetails.Where(x => x.OrderId == obj.Id);
+                        if (_details != null && _details.Count() > 0)
+                        {
+                            var newChilds = model.Details.Where(x => x.ProductId != 0).ToList();
+                            foreach (var item in _details)
                             {
-                                obj = db.Orders.FirstOrDefault(x => !x.IsDeleted && x.Id == model.Id);
-                                if (obj == null)
+                                var found = newChilds.FirstOrDefault(x => x.ProductId == item.ProductId);
+                                if (found == null)
                                 {
-                                    result.IsSuccess = false;
-                                    result.Errors.Add(new Error() { MemberName = "Update ", Message = "Phiếu bạn đang thao tác đã bị xóa hoặc không tồn tại. Vui lòng kiểm tra lại !." });
-                                    return result;
-                                }
-                                else if (obj.StatusId != (int)eStatus.Draft && obj.StatusId != (int)eStatus.Submited)
-                                {
-                                    result.IsSuccess = false;
-                                    result.Errors.Add(new Error() { MemberName = "Update ", Message = "Trạng thái phiếu đặt hàng này không còn cho phép bạn cập nhật thông tin. Vui lòng liện hệ Admin" });
-                                    return result;
+                                    //ko còn xóa đi
+                                    item.IsDeleted = true;
+                                    item.DeletedUser = model.ActionUser;
+                                    item.DeletedDate = obj.UpdatedDate;
                                 }
                                 else
                                 {
-                                    if (!checkPermis(obj, model.ActionUser, isOwner))
-                                    {
-                                        result.IsSuccess = false;
-                                        result.Errors.Add(new Error() { MemberName = "update", Message = "Bạn không phải là người tạo phiếu này nên bạn không cập nhật được thông tin cho phiếu này." });
-                                    }
-                                    else
-                                    {
-                                        obj.Phone = model.Phone;
-                                        obj.Email = model.Email;
-                                        obj.Address = model.Address;
-                                        obj.ContactName = model.ContactName;
-                                        obj.CustomerId = model.CustomerId;
-                                        obj.DeliveryDate = model.DeliveryDate;
-                                        obj.StatusId = model.StatusId;
-                                        obj.MoneyUnitId = model.MoneyUnitId;
-                                        obj.Exchange = model.Exchange;
-                                        obj.Note = model.Note;
-                                        obj.UpdatedUser = model.ActionUser;
-                                        obj.UpdatedDate = DateTime.Now;
+                                    // có update thong tin moi
+                                    item.StartDate = found.StartDate;
+                                    item.EndDate = found.EndDate;
+                                    item.DeliveryDate = found.DeliveryDate;
+                                    item.Quantities = found.Quantities;
+                                    item.Price = found.Price;
+                                    item.UpdatedUser = model.ActionUser;
+                                    item.UpdatedDate = obj.UpdatedDate;
+                                    newChilds.Remove(found);
+                                }
+                            }
 
-                                        var _details = db.OrderDetails.Where(x => x.OrderId == obj.Id);
-                                        if (_details != null && _details.Count() > 0)
-                                        {
-                                            var newChilds = model.Details.Where(x => x.ProductId != 0).ToList();
-                                            foreach (var item in _details)
-                                            {
-                                                var found = newChilds.FirstOrDefault(x => x.ProductId == item.ProductId);
-                                                if (found == null)
-                                                {
-                                                    //ko còn xóa đi
-                                                    item.IsDeleted = true;
-                                                    item.DeletedUser = model.ActionUser;
-                                                    item.DeletedDate = obj.UpdatedDate;
-                                                }
-                                                else
-                                                {
-                                                    // có update thong tin moi
-                                                    item.StartDate = found.StartDate;
-                                                    item.EndDate = found.EndDate;
-                                                    item.DeliveryDate = found.DeliveryDate;
-                                                    item.Quantities = found.Quantities;
-                                                    item.Price = found.Price;
-                                                    item.UpdatedUser = model.ActionUser;
-                                                    item.UpdatedDate = obj.UpdatedDate;
-                                                    newChilds.Remove(found);
-                                                }
-                                            }
-
-                                            if (newChilds.Count > 0)
-                                            {
-                                                OrderDetail child = null;
-                                                foreach (var item in newChilds)
-                                                {
-                                                    if (item.ProductId != 0)
-                                                    {
-                                                        child = new OrderDetail();
-                                                        Parse.CopyObject(item, ref child);
-                                                        child.CreatedDate = obj.CreatedDate;
-                                                        child.CreatedUser = obj.CreatedUser;
-                                                        child.OrderId = obj.Id;
-                                                        obj.OrderDetails.Add(child);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        db.SaveChanges();
-                                        result.IsSuccess = true;
+                            if (newChilds.Count > 0)
+                            {
+                                OrderDetail child = null;
+                                foreach (var item in newChilds)
+                                {
+                                    if (item.ProductId != 0)
+                                    {
+                                        child = new OrderDetail();
+                                        Parse.CopyObject(item, ref child);
+                                        child.CreatedDate = obj.CreatedDate;
+                                        child.CreatedUser = obj.CreatedUser;
+                                        child.OrderId = obj.Id;
+                                        obj.OrderDetails.Add(child);
                                     }
                                 }
                             }
                         }
+                        db.SaveChanges();
+                        result.IsSuccess = true;
                         return result;
                     }
+                    return result;
                 }
             }
             catch (Exception ex)
@@ -334,24 +331,25 @@ namespace GPROSanXuat_Checklist.Business
                     {
                         result.IsSuccess = false;
                         result.Errors.Add(new Error() { MemberName = "Delete ", Message = "Phiếu bạn đang thao tác đã bị xóa hoặc không tồn tại. Vui lòng kiểm tra lại !." });
+                        return result;
                     }
-                    else
+                    if (obj.IsApproved)
                     {
-                        if (!checkPermis(obj, acctionUserId, isOwner))
-                        {
-                            result.IsSuccess = false;
-                            result.Errors.Add(new Error() { MemberName = "Delete", Message = "Bạn không phải là người tạo Phiếu này nên bạn không xóa được Phiếu này." });
-                        }
-                        else
-                        {
-                            obj.IsDeleted = true;
-                            obj.DeletedUser = acctionUserId;
-                            obj.DeletedDate = DateTime.Now;
-
-                            db.SaveChanges();
-                            result.IsSuccess = true;
-                        }
+                        result.IsSuccess = false;
+                        result.Errors.Add(new Error() { MemberName = "Delete ", Message = "Phiếu bạn đang thao tác đã được duyệt không được xóa. Vui lòng kiểm tra lại !." });
+                        return result;
                     }
+                    if (!checkPermis(obj, acctionUserId, isOwner))
+                    {
+                        result.IsSuccess = false;
+                        result.Errors.Add(new Error() { MemberName = "Delete", Message = "Bạn không phải là người tạo Phiếu này nên bạn không xóa được Phiếu này." });
+                        return result;
+                    }
+                    obj.IsDeleted = true;
+                    obj.DeletedUser = acctionUserId;
+                    obj.DeletedDate = DateTime.Now;
+                    db.SaveChanges();
+                    result.IsSuccess = true;
                     return result;
                 }
             }
@@ -361,27 +359,103 @@ namespace GPROSanXuat_Checklist.Business
             }
         }
 
-        public List<ModelSelectItem> GetSelectItem(string strConnection)
+        public ResponseBase Approve(string strConnection, int Id, int actionUserId, bool isOwner)
+        {
+            using (db = new SanXuatCheckListEntities(strConnection))
+            {
+                var rs = new ResponseBase();
+                try
+                {
+                    var obj = db.Orders.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);
+                    if (obj == null)
+                    {
+                        rs.IsSuccess = false;
+                        rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Đơn hàng này không tồn tại hoặc đã bị xóa, Vui Lòng kiểm tra lại." });
+                        return rs;
+                    }
+                    obj.StatusId = (int)eStatus.Approved;
+                    obj.IsApproved = true;
+                    obj.ApprovedDate = DateTime.Now;
+                    obj.ApprovedUser = actionUserId;
+                    db.SaveChanges();
+                    rs.IsSuccess = true;
+                    return rs;
+                }
+                catch (Exception ex)
+                {
+                    rs.IsSuccess = false;
+                    rs.Errors.Add(new Error() { MemberName = "Delete", Message = "Lỗi Exception: "+ex.Message });
+                    return rs;
+                }
+            }
+        }
+
+        public List<ModelSelectItem> GetSelectItem(string strConnection, bool approved)
         {
             try
             {
                 using (db = new SanXuatCheckListEntities(strConnection))
                 {
                     var listModelSelect = new List<ModelSelectItem>();
-                    var productTypes = db.Orders.Where(x => !x.IsDeleted).Select(
+                    IQueryable<Order> IOrders = db.Orders.Where(x => !x.IsDeleted);
+                    if (approved)
+                        IOrders = IOrders.Where(x => x.StatusId == (int)eStatus.Approved && x.IsApproved);
+                    var objs = IOrders.Select(
                         x => new ModelSelectItem()
                         {
                             Value = x.Id,
                             Name = x.Code
                         }).ToList();
 
-                    if (productTypes != null && productTypes.Count() > 0)
+                    if (objs != null && objs.Count() > 0)
                     {
-                        listModelSelect.Add(new ModelSelectItem() { Value = 0, Name = " --  Chọn phiếu báo giá  -- " });
-                        listModelSelect.AddRange(productTypes);
+                        listModelSelect.Add(new ModelSelectItem() { Value = 0, Name = " --  Chọn đơn hàng  -- " });
+                        listModelSelect.AddRange(objs);
                     }
                     else
-                        listModelSelect.Add(new ModelSelectItem() { Value = 0, Name = "  Không có phiếu báo giá  " });
+                        listModelSelect.Add(new ModelSelectItem() { Value = 0, Name = "  Không có đơn hàng  " });
+                    return listModelSelect;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public List<ModelSelectItem> GetOrderDetailSelectItem(string strConnection, int orderId, List<ModelSelectItem> products)
+        {
+            try
+            {
+                using (db = new SanXuatCheckListEntities(strConnection))
+                {
+                    var listModelSelect = new List<ModelSelectItem>();
+                    IQueryable<OrderDetail> IOrderDetails = db.OrderDetails.Where(x => !x.IsDeleted && !x.Order.IsDeleted && x.OrderId == orderId);
+                    var objs = IOrderDetails.Select(
+                       x => new ModelSelectItem()
+                       {
+                           Id = x.ProductId,
+                           Value = x.Id,
+                           //   Name = x.Code
+                       }).ToList();
+
+                    if (objs != null && objs.Count() > 0)
+                    {
+                        //listModelSelect.Add(new ModelSelectItem() { Value = 0, Name = " --  Chọn đơn hàng  -- " });
+                        if (products != null && products.Count > 0)
+                        {
+                            ModelSelectItem _proFound = null;
+                            for (int i = 0; i < objs.Count; i++)
+                            {
+                                _proFound = products.FirstOrDefault(x => x.Value == objs[i].Id);
+                                if (_proFound != null)
+                                    objs[i].Name = _proFound.Name;
+                            }
+                        }
+                        listModelSelect.AddRange(objs);
+                    }
+                    else
+                        listModelSelect.Add(new ModelSelectItem() { Value = 0, Name = "  Không có đơn hàng  " });
                     return listModelSelect;
                 }
             }

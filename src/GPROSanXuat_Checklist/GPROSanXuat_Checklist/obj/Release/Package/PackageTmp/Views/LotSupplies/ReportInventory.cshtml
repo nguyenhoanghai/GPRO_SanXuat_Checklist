@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Báo cáo";
+    ViewBag.Title = "Báo cáo vật tư tồn kho";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
@@ -108,12 +108,12 @@
         <div class="form-group" style="margin-right:5px;">
             <input type="text" id="inventory_material" class="form-control" style="width:250px" />
         </div>
-        <div class="form-group" style="margin-right:5px; line-height:25px">
+        @*<div class="form-group" style="margin-right:5px; line-height:25px">
             <label class="control-label" style="margin-right:5px; margin-top: 5px">Kho hàng </label>
         </div>
         <div class="form-group" style="margin-right:5px;">
             <input type="text" id="inventory_warehouse" class="form-control" style="width:250px" />
-        </div>
+        </div>*@
         <div class="form-group" style="margin-right:5px; margin-top:5px ; line-height:40px">
             <i inventory_re_material class="fa fa-refresh clickable red"></i>
             <a href="/MaterialType/Index" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
