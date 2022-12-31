@@ -400,7 +400,8 @@ namespace GPROSanXuat_Checklist.Business
                     {
                         #region comment
                         var comments = new List<CommentModel>();
-                        comments.AddRange(db.Checklist_Job_Comment.Where(x => !x.IsDeleted && x.JobId == job.Id).Select(x => new CommentModel()
+                        comments.AddRange(db.Checklist_Job_Comment.Where(x => !x.IsDeleted && x.JobId == job.Id)
+                            .Select(x => new CommentModel()
                         {
                             Id = x.Id,
                             JobId = x.JobId,
@@ -408,7 +409,7 @@ namespace GPROSanXuat_Checklist.Business
                             CType = 1,
                             IsErrorLog = false,
                             Type = x.Type,
-                            CreatedUser = x.CreatedUser,
+                            CreatedUser = x.CreatedUser, 
                             CreatedDate = x.CreatedDate
                         }).ToList());
                         job.CommentCount = comments.Count;

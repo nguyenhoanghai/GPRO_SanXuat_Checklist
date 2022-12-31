@@ -39,37 +39,43 @@
                 <div class="container-fluid">
                     <input type="hidden" txt="userId" data-bind="value: Id" />
                     <input id="required" type="text" style="display: none" />
-                    <div class="col-md-4  " id="rowUsername">
-                        <label class="control-label">Tên Tài Khoản <span class="required-class">*</span></label>
-                        <input class="form-control" txt="userName" data-bind="value: UserName" type="text" placeholder="Nhập Tên Tài Khoản ..." />
+
+                    <div class="col-md-5" style="padding-left:15px; text-align:center  ">
+                        <div class="box-avatar col-md-12" style="background: url() center center no-repeat; margin:0 auto !important; margin-bottom: 10px !important">
+                            <img id="user-img-avatar" src="/Images/no_image.png" alt="">
+                        </div>
+                        <form id="FormUpload" name="FormUpload" enctype="multipart/form-data" method="post" class="hide" style="margin:0 !important">
+                            <input type="file" id="uploader" name="uploader" filelist newurl="" accept="image/*" />
+                        </form>
+                        <button class="btn btn-default" id="user-btn-file-upload" style=" margin:0"><i class="fa fa-image"></i> Chọn ảnh đại diện</button>
                     </div>
-                    <div class="col-md-4">
-                        <label class="control-label">Email</label>
-                        <input class="form-control" txt="email" data-bind="value: Email" type="text" placeholder="Nhập địa chỉ thư điện tử ..." />
+                    <div class="col-md-7">
+                        <div class="col-md-12  " id="rowUsername">
+                            <label class="control-label">Tên Tài Khoản <span class="required-class">*</span></label>
+                            <input class="form-control" txt="userName" data-bind="value: UserName" type="text" placeholder="Nhập Tên Tài Khoản ..." />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="control-label">Họ Tên<span class="required-class">*</span></label>
+                            <input class="form-control" txt="txtName" type="text" placeholder="Nhập Họ ..." />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="control-label">Email</label>
+                            <input class="form-control" txt="email" data-bind="value: Email" type="text" placeholder="Nhập địa chỉ thư điện tử ..." />
+                        </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="clearfix"></div>
+
+                    <div class="col-md-6">
                         <label class="control-label">Mật Khẩu <span class="required-class">*</span></label>
                         <input class="form-control" txt="txtpass" data-bind="value: PassWord" type="password" placeholder="Nhập Mật Khẩu ..." />
                     </div>
-                    <div class="col-md-4">
-                        <label class="control-label">Nhập lại Mật Khẩu <span class="required-class">*</span></label>
+                    <div class="col-md-6">
+                        <label class="control-label">Xác nhận mật khẩu <span class="required-class">*</span></label>
                         <input class="form-control" txt="txtcpass" type="password" placeholder="Xác Nhận lại Mật Khẩu ..." />
                     </div>
-                    <div class="col-md-4">
-                        <label class="control-label">Họ <span class="required-class">*</span></label>
-                        <input class="form-control" txt="txtho" data-bind="value: FirstName" type="text" placeholder="Nhập Họ ..." />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="control-label">Tên <span class="required-class">*</span></label>
-                        <input class="form-control" txt="txtTen" data-bind="value: LastName" type="text" placeholder="Nhập Tên ..." />
-                    </div>
-                    <div class="col-md-4">
-                        <label class="control-label">Hình Ảnh</label>
-                        <form id="FormUpload" name="FormUpload" enctype="multipart/form-data" method="post" style="margin:0 !important">
-                            <input type="file" id="uploader" name="uploader" filelist newurl="" accept="image/*" />
-                        </form>
-                    </div>
-                    <div id="mytest" class="col-md-8" style="margin-bottom:10px">
+                     
+                    <div class="clearfix"></div>
+                    <div id="mytest" class="col-md-12" style="margin-bottom:10px">
                         <label class="control-label">Quyền Tài Khoản <span class="required-class">*</span></label>
                         @Html.DropDownList("userRoles", items, null, new { @select = "userRoles", @class = "chosen-select", @multiple = "", @placeholder = "Chọn quyền cho Tài Khoản..." })
                     </div>
@@ -82,7 +88,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button cancel aria-hidden="true" data-dismiss="modal" class="btn">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="btn btn-default">
                     <div class="button-image image-close"></div>
                     Đóng
                 </button>
@@ -128,7 +134,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button cancel aria-hidden="true" data-dismiss="modal" class="btn">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="btn btn-default">
                     <div class="button-image image-close"></div>
                     Đóng
                 </button>
@@ -190,7 +196,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button close-search aria-hidden="true" data-dismiss="modal" class="btn">
+                <button close-search aria-hidden="true" data-dismiss="modal" class="btn btn-default">
                     <div class="button-image image-close"></div>
                     Đóng
                 </button>

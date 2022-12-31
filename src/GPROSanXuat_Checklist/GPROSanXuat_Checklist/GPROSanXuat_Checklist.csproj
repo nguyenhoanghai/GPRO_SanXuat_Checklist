@@ -230,6 +230,7 @@
     <Compile Include="Controllers\ReceiptionController.cs" />
     <Compile Include="Controllers\ReceiptionDetailController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\ServiceAPIController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Mapper\DeliveryMaper.cs" />
     <Compile Include="Mapper\POMaper.cs" />
     <Compile Include="Mapper\ChecklistMaper.cs" />
+    <Compile Include="Models\APIResultModel.cs" />
     <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1819,6 +1821,7 @@
     <Content Include="Scripts\IED\LotSupplies\R_Inventory-warehouse.js" />
     <Content Include="Scripts\IED\LotSupplies\R_Inventory.js" />
     <Content Include="Scripts\IED\LotSupplies\R_InventoryByWH.js" />
+    <Content Include="Scripts\IED\Master-page\head.js" />
     <Content Include="Scripts\IED\master\master-page.js" />
     <Content Include="Scripts\IED\MaterialType\material-type-index.js" />
     <Content Include="Scripts\IED\Menu\M_Index.js" />
@@ -1903,7 +1906,6 @@
     <Content Include="UploadFile\Files\2018\4\19\e22bf900-a81a-4450-92c1-e41c54e86d82_sad.png" />
     <Content Include="UploadFile\Files\2019\2\17\42b749a6-a63b-431e-af93-355c99e54f8d_iconfinder_fax_531890 %281%29.png" />
     <Content Include="UploadFile\Files\2019\2\17\80a60f04-703a-4b3f-ba49-64f8a112be38_iconfinder_fax_531890 %281%29.png" />
-    <Content Include="UploadFile\Files\2019\2\17\9292ca89-75e7-4496-a338-78cefbc37a99_edit_info.png" />
     <Content Include="UploadFile\Files\2021\4\19\0437eb27-443b-42b2-a265-1dc7d7f64cbf_icon.png" />
     <Content Include="UploadFile\Files\2021\4\19\0754eec7-6b5c-4342-b9bf-46aac1eb1e51_icon.png" />
     <Content Include="UploadFile\Files\2021\4\19\3ccb56b0-f05c-4104-a501-d7cade5c913e_tien-thu.jpg" />

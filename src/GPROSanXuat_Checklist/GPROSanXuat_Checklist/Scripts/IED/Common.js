@@ -128,13 +128,13 @@ function ddMMyyyyHHmm(strDate) {
     return '';
 }
 
-function readURL(input) {
-    if (input.files && input.files[0]) {
+readURL = (fileInput, imageTag) => {
+    if (fileInput.files && fileInput.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            $('.img-avatar').attr('src', e.target.result);
+            $('#' + imageTag).attr('src', e.target.result);
         }
-        reader.readAsDataURL(input.files[0]); // convert to base64 string
+        reader.readAsDataURL(fileInput.files[0]); // convert to base64 string
     }
 }
 
@@ -149,4 +149,32 @@ function getDate(value) {
         return txt = '<span class="red ">' + date.format('DD/MM/YYYY') + '</span>';
     }
     return '';
+}
+
+function UploadPicture(controlId, returnId) {
+    if (window.FormData !== undefined) {
+        var fileUpload = $('#' + controlId).get(0);
+        var files = fileUpload.files;
+        var fileData = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            fileData.append(files[i].name, files[i]);
+        }
+        $.ajax({
+            url: '/Upload/single',
+            type: "POST",
+            data: fileData,
+            contentType: false, // Not to set any content header  
+            processData: false, // Not to process data  
+            success: function (result) {
+                $('#' + returnId).attr("newUrl", result);
+                $('#' + returnId).select();
+            },
+            error: function (err) {
+                alert("Lỗi up hình : " + err.statusText);
+            }
+        });
+    }
+    else {
+        alert("FormData is not supported.");
+    }
 }

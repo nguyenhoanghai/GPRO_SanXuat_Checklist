@@ -151,7 +151,7 @@ namespace GPROSanXuat_Checklist.Mapper
             {
                 using (var db = new GPROCommonEntities(AppGlobal.ConnectionstringGPROCommon))
                 {
-                    var employees = db.SUsers.Where(x => !x.IsDeleted).Select(x => new ModelSelectItem() { Value = x.Id, Name = (x.FirstName + " " + x.LastName) }).ToList();
+                    var employees = db.SUsers.Where(x => !x.IsDeleted).Select(x => new ModelSelectItem() { Value = x.Id, Name =  x.Name   }).ToList();
                     var status = db.C_Status.Where(x => !x.IsDeleted).ToList();
 
                     for (int i = 0; i < objs.Count; i++)

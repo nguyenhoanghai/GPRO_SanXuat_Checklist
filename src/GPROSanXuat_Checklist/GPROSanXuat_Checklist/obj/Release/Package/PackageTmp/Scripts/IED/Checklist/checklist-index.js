@@ -221,7 +221,7 @@ GPRO.Checklist = function () {
                     sorting: false,
                 },
                 ProductName: {
-                    title: "Sản phẫm",
+                    title: "Sản phẩm",
                     width: "10%",
 
                 },
@@ -298,7 +298,7 @@ GPRO.Checklist = function () {
             selectShow: false,
             selecting: true, //Enable selecting
             multiselect: false, //Allow multiple selecting
-            selectingCheckboxes: true, //Show checkboxes on first column
+           // selectingCheckboxes: true, //Show checkboxes on first column
             actions: {
                 listAction: Global.UrlAction.GetProducts,
             },

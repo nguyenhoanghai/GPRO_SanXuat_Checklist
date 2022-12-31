@@ -25,6 +25,7 @@ GPRO.PO = function () {
             GetById: '/PO/GetById',
             GetProducts: '/Product/GetSelectList',
             Save: '/PO/Save',
+            Approve: '/PO/Approve',
             Delete: '/PO/Delete',
         },
         Element: {
@@ -40,7 +41,7 @@ GPRO.PO = function () {
             Img: '',
             Childs: [],
             Products: [],
-            approve: false
+            textOnly: false
         }
     }
     this.GetGlobal = function () {
@@ -65,6 +66,7 @@ GPRO.PO = function () {
             format: "dd/MM/yyyy",
             // min: new Date()
         });
+        setToDefault();
     }
 
     var RegisterEvent = function () {
@@ -153,6 +155,25 @@ GPRO.PO = function () {
                         return txt;
                     }
                 },
+                ApprovedUser: {
+                    title: "Người Duyệt",
+                    width: "7%",
+                    display: function (data) {
+                        if (data.record.ApprovedUser != null)
+                            return '<span class="red ">' + data.record.ApprovedUserName + '</span>';
+                        return '';
+                    }
+                },
+                ApprovedDate: {
+                    title: "Ngày Duyệt",
+                    width: "5%",
+                    display: function (data) {
+                        if (data.record.ApprovedDate != null) {
+                            return '<span class="">' + ddMMyyyyHHmm(data.record.ApprovedDate) + '</span>';
+                        }
+                        return '';
+                    }
+                },
                 Note: {
                     title: "Ghi chú",
                     width: "20%",
@@ -168,18 +189,22 @@ GPRO.PO = function () {
                             $('#po-id').val(data.record.Id);
                             $('#po-code').val(data.record.Code);
                             $('#po-customer').val(data.record.CustomerId);
-                            $('#po-phone').val(data.record.Phone); 
+                            $('#po-phone').val(data.record.Phone);
                             $('#po-delivery-date').data("kendoDatePicker").value(new Date(moment(data.record.DeliveryDate)));
-                             
+
                             $('#po-unit').val(data.record.MoneyUnitId).change();
                             $('#po-exchange').val(data.record.Exchange);
                             $('#po-status').val(data.record.StatusId);
                             $('#po-note').val(data.record.Note);
                             GetById(data.record.Id, false);
                             Global.Data.IsInsert = false;
-                            if (data.record.StatusId == 9) {
-                                Global.Data.approve = true;
-                                $('#po-customer,#po-phone,#po-delivery-date,#po-unit,#po-exchange,#po-status,#po-note,[po-save]').prop('disabled', true);
+
+                            if (data.record.StatusId == 8 || data.record.IsApproved) {
+                                Global.Data.textOnly = true;
+                                $('#po-customer,#po-phone,#po-unit,#po-exchange,#po-status,#po-note').prop('disabled', true);
+                                $('[po-save],[po-submit]').hide();
+                                $('[po-approve]').show();
+                                $('#po-delivery-date').data('kendoDatePicker').enable(false);
                             }
                         });
                         return text;
@@ -239,10 +264,21 @@ GPRO.PO = function () {
         });
 
         $("#" + Global.Element.Popup + ' button[po-save]').click(function () {
-            // if (CheckValidate()) {                 
-            Save();
-            // }
+            if (CheckValidate()) {
+                Save(7);
+            }
         });
+
+        $("#" + Global.Element.Popup + ' button[po-submit]').click(function () {
+            if (CheckValidate()) {
+                Save(8);
+            }
+        });
+
+        $("#" + Global.Element.Popup + ' button[po-approve]').click(function () {
+            Approve($('#po-id').val());
+        });
+
         $("#" + Global.Element.Popup + ' button[po-cancel]').click(function () {
             $("#" + Global.Element.Popup).modal("hide");
             setToDefault();
@@ -274,16 +310,19 @@ GPRO.PO = function () {
     setToDefault = () => {
         $('#po-id').val(0);
         $('#po-code').val('');
-        $('#po-phone').val(''); 
-        $('#po-delivery-date').data("kendoDatePicker").value(new Date( ));
+        $('#po-phone').val('');
+        $('#po-delivery-date').data("kendoDatePicker").value(new Date());
+        $('#po-delivery-date').data('kendoDatePicker').enable(true);
         $('#po-status').val(0);
         $('#po-customer').val(0);
         $('#po-note').val('');
         Global.Data.Childs.length = 0;
-        Global.Data.approve = false;
+        Global.Data.textOnly = false;
         addEmptyChild();
         ReloadTableDetail();
         $('#po-customer,#po-phone,#po-delivery-date,#po-unit,#po-exchange,#po-status,#po-note,[po-save]').removeAttr('disabled');
+        $('[po-save],[po-submit]').show();
+        $('[po-approve]').hide();
     }
 
     GetById = (Id, getTemplate) => {
@@ -314,7 +353,7 @@ GPRO.PO = function () {
                                     DeliveryDate: item.DeliveryDate
                                 });
                             });
-                            if (data.Data.StatusId != 9)
+                            if (!Global.Data.textOnly)
                                 addEmptyChild();
                             ReloadTableDetail();
                         }
@@ -377,11 +416,38 @@ GPRO.PO = function () {
             url: Global.UrlAction.Delete,
             type: 'POST',
             data: JSON.stringify({ 'Id': Id }),
+            beforeSend: function () { $('#loading').show(); },
             contentType: 'application/json charset=utf-8',
             success: function (data) {
+                $('#loading').hide();
                 GlobalCommon.CallbackProcess(data, function () {
                     if (data.Result == "OK") {
                         ReloadTable();
+                    }
+                    else
+                        GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
+                }, false, Global.Element.Popup, true, true, function () {
+
+                    var msg = GlobalCommon.GetErrorMessage(data);
+                    GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra.");
+                });
+            }
+        });
+    }
+
+    function Approve(Id) {
+        $.ajax({
+            url: Global.UrlAction.Approve,
+            type: 'POST',
+            data: JSON.stringify({ 'Id': Id }),
+            contentType: 'application/json charset=utf-8',
+            beforeSend: function () { $('#loading').show(); },
+            success: function (data) {
+                $('#loading').hide();
+                GlobalCommon.CallbackProcess(data, function () {
+                    if (data.Result == "OK") {
+                        ReloadTable();
+                        $("#" + Global.Element.Popup + ' button[po-cancel]').click();
                     }
                     else
                         GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra trong quá trình xử lý.");
@@ -405,8 +471,6 @@ GPRO.PO = function () {
         }
         return true;
     }
-
-
 
     addEmptyChild = () => {
         Global.Data.Childs.push({
@@ -451,7 +515,7 @@ GPRO.PO = function () {
                     title: "Sản phẩm",
                     width: "45%",
                     display: function (data) {
-                        if (Global.Data.approve)
+                        if (Global.Data.textOnly)
                             return `<span>${data.record.ProductName}</span>`;
 
                         var txt = $('<input class="form-control" code_' + data.record.Index + ' list="products-po" type="text" value="' + data.record.ProductName + '" />');
@@ -459,7 +523,7 @@ GPRO.PO = function () {
                             var code = txt.val().trim();
                             if (Global.Data.Products.length > 0 && code != '') {
                                 var flag = false;
-                                var found = Global.Data.Childs.filter(x => x.ProductName &&  x.ProductName.trim() == code)[0];
+                                var found = Global.Data.Childs.filter(x => x.ProductName && x.ProductName.trim() == code)[0];
                                 if (found) {
                                     GlobalCommon.ShowMessageDialog('Sản phẩm này đã tồn tại trong danh sách. Vui lòng kiểm tra lại.', function () {
                                         txt.val(data.record.ProductName);
@@ -511,7 +575,7 @@ GPRO.PO = function () {
                     title: "Đơn giá",
                     width: "5%",
                     display: function (data) {
-                        if (Global.Data.approve)
+                        if (Global.Data.textOnly)
                             return `<span>${ParseStringToCurrency(data.record.Price)}</span>`;
 
                         var txt = $('<input class="form-control center" loop type="text" value="' + data.record.Price + '"  onkeypress="return isNumberKey(event)"/>');
@@ -529,7 +593,7 @@ GPRO.PO = function () {
                     title: "Số lượng",
                     width: "5%",
                     display: function (data) {
-                        if (Global.Data.approve)
+                        if (Global.Data.textOnly)
                             return `<span>${ParseStringToCurrency(data.record.Quantities)}</span>`;
 
                         var txt = $('<input class="form-control center" loop type="text" value="' + data.record.Quantities + '"  onkeypress="return isNumberKey(event)"/>');
@@ -555,6 +619,9 @@ GPRO.PO = function () {
                     title: 'Ngày bắt đầu(DK)',
                     width: '5%',
                     display: function (data) {
+                        if (Global.Data.textOnly)
+                            return `<span>${ddMMyyyy(data.record.StartDate)}</span>`;
+
                         var div = $(`<div> <div>`);
                         var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
                         var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
@@ -574,6 +641,9 @@ GPRO.PO = function () {
                     title: 'Ngày kết thúc(DK)',
                     width: '5%',
                     display: function (data) {
+                        if (Global.Data.textOnly)
+                            return `<span>${ddMMyyyy(data.record.EndDate)}</span>`;
+
                         var div = $(`<div> <div>`);
                         var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
                         var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
@@ -593,10 +663,13 @@ GPRO.PO = function () {
                     title: 'Ngày giao hàng(DK)',
                     width: '5%',
                     display: function (data) {
+                        if (Global.Data.textOnly)
+                            return `<span>${ddMMyyyy(data.record.DeliveryDate)}</span>`;
+
                         var div = $(`<div> <div>`);
                         var input1 = $(`<input type="text" class="form-control center" disabled style="border-right:none; width:100px; position:absolute" /> `);
                         var input2 = $(` <input type="date" class="form-control center" style="width:140px"/> `);
-                        
+
                         input2.change(function () {
                             input1.val(moment(input2.val()).format('DD/MM/YYYY'));
                             data.record.DeliveryDate = moment(input2.val());
@@ -613,7 +686,7 @@ GPRO.PO = function () {
                     width: "3%",
                     sorting: false,
                     display: function (data) {
-                        if (data.record.ProductId && !Global.Data.approve) {
+                        if (data.record.ProductId && !Global.Data.textOnly) {
                             var text = $('<button title="Xóa" class="jtable-command-button jtable-delete-command-button"><span>Xóa</span></button>');
                             text.click(function () {
                                 GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {

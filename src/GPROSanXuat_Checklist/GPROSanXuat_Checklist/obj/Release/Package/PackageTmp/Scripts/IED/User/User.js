@@ -259,8 +259,7 @@ GPRO.User = function () {
             Id: $('[txt="userId"]').val(),
             UserName: $('[txt="userName"]').val(),
             PassWord: $('[txt="txtpass"]').val(),
-            LastName: $('[txt="txtTen"]').val(),
-            FirstName: $('[txt="txtho"]').val(),
+            Name: $('[txt="txtName"]').val(),
             Email: $('[txt="email"]').val(),
             ImagePath: $('[filelist]').attr('newurl'),
             IsForgotPassword: false,
@@ -304,13 +303,20 @@ GPRO.User = function () {
             selectShow: true,
             actions: {
                 listAction: Global.UrlAction.GetList,
-                createAction: Global.Element.popupCreateUser,
-                searchAction: Global.Element.popupSearch
+                createAction: Global.Element.popupCreateUser, 
             },
             messages: {
-                addNewRecord: 'Thêm Tài Khoản',
-                searchRecord: 'Tìm kiếm',
+                addNewRecord: 'Thêm Tài Khoản', 
                 selectShow: 'Ẩn hiện cột',
+            },
+            searchInput: {
+                id: 'user-keyword',
+                className: 'search-input',
+                placeHolder: 'Nhập từ khóa ...',
+                keyup: function (evt) {
+                    if (evt.keyCode == 13)
+                        ReloadList();
+                }
             },
             fields: {
                 Id: {
@@ -319,34 +325,45 @@ GPRO.User = function () {
                     edit: false,
                     list: false
                 },
-                LockedTime: {
-                    title: '',
-                    width: '3%',
+                //LockedTime: {
+                //    title: '',
+                //    width: '3%',
+                //    display: function (data) {
+                //        if (data.record.LockedTime != null) {
+                //            var text = $('<button title="Mở khóa Thời Gian cho Tài Khoản ' + data.record.UserName + '" class="jtable-command-button image-icon image-lockTime"><span>Xóa</span></button>');
+                //            var dateLock = new Date(parseInt((data.record.LockedTime).substr(6)));
+                //            var today = new Date().getTime();
+                //            if (dateLock > today) {
+                //                text.click(function () {
+                //                    GlobalCommon.ShowConfirmDialog("Bạn có chắc chắn muốn mở khóa cho Tài Khoản ?", function () {
+                //                        UnLockTime(data.record.Id);
+                //                    }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Mở Khóa Thời Gian');
+                //                });
+                //                return text;
+                //            }
+                //        }
+                //    }
+                //},
+                //IsForgotPassword: {
+                //    title: '',
+                //    width: '3%',
+                //    display: function (data) {
+                //        if (data.record.IsForgotPassword) {
+                //            var text = $('<button title="Tài Khoản ' + data.record.UserName + ' đang yêu cầu cấp lại Mật Khẩu." class="jtable-command-button image-icon image-requiredPass" data-toggle="modal" data-target="#fogotPassModal"><span>Xóa</span></button>');
+                //            text.click(function () {
+                //                BindData(data.record);
+                //            })
+                //            return text;
+                //        }
+                //    }
+                //},
+                ImagePath: {
+                    title: "Hình",
+                    width: "3%",
+                    sorting: false,
                     display: function (data) {
-                        if (data.record.LockedTime != null) {
-                            var text = $('<button title="Mở khóa Thời Gian cho Tài Khoản ' + data.record.UserName + '" class="jtable-command-button image-icon image-lockTime"><span>Xóa</span></button>');
-                            var dateLock = new Date(parseInt((data.record.LockedTime).substr(6)));
-                            var today = new Date().getTime();
-                            if (dateLock > today) {
-                                text.click(function () {
-                                    GlobalCommon.ShowConfirmDialog("Bạn có chắc chắn muốn mở khóa cho Tài Khoản ?", function () {
-                                        UnLockTime(data.record.Id);
-                                    }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Mở Khóa Thời Gian');
-                                });
-                                return text;
-                            }
-                        }
-                    }
-                },
-                IsForgotPassword: {
-                    title: '',
-                    width: '3%',
-                    display: function (data) {
-                        if (data.record.IsForgotPassword) {
-                            var text = $('<button title="Tài Khoản ' + data.record.UserName + ' đang yêu cầu cấp lại Mật Khẩu." class="jtable-command-button image-icon image-requiredPass" data-toggle="modal" data-target="#fogotPassModal"><span>Xóa</span></button>');
-                            text.click(function () {
-                                BindData(data.record);
-                            })
+                        var text = $('<img src="' + data.record.ImagePath + '" width="40"/>');
+                        if (data.record.ImagePath != null) {
                             return text;
                         }
                     }
@@ -354,7 +371,11 @@ GPRO.User = function () {
                 UserName: {
                     visibility: 'fixed',
                     title: "Tên Đăng Nhập",
-                    width: "20%",
+                    width: "5%",
+                },
+                Name: {
+                    title: "Họ Tên",
+                    width: "10%",
                 },
                 RoleNames: {
                     title: 'Nhóm quyền TK',
@@ -363,29 +384,17 @@ GPRO.User = function () {
                         return text;
                     }
                 },
-                FirstName: {
-                    title: "Họ Tên",
-                    width: "20%",
-                    display: function (data) {
-                        txt = data.record.FirstName + ' ' + data.record.LastName;
-                        return txt;
-                    }
-                },
+                
                 Email: {
                     title: "Email",
                     width: "20%",
                 },
-                ImagePath: {
-                    title: "Hình",
-                    width: "3%",
-                    display: function (data) {
-                        var text = $('<img src="' + data.record.ImagePath + '" width="40"/>');
-                        if (data.record.ImagePath != null) {
-                            return text;
-                        }
-                    }
+                WorkshopNames: {
+                    title: 'Phân xưởng',
+                    width: '20%',
+                    sorting: false
                 },
-                IsRequireChangePW: {
+              /*  IsRequireChangePW: {
                     visibility: 'hidden',
                     title: 'YC đổi MK',
                     width: '1%',
@@ -416,20 +425,21 @@ GPRO.User = function () {
                         });
                         return text;
                     }
-                },
+                },*/
                 edit: {
                     title: '',
                     width: '1%',
                     sorting: false,
                     display: function (data) {
-                        var text = $('<i data-toggle="modal" data-target="#' + Global.Element.popupCreateUser + '" title="Chỉnh sửa thông tin" class="fa fa-pencil-square-o clickable blue"  ></i>');
-                        text.click(function () {
+                        var div = $('<div class="table-action text-center"></div>');
+                        var btnEdit = $('<i data-toggle="modal" data-target="#' + Global.Element.popupCreateUser + '" title="Chỉnh sửa thông tin" class="fa fa-pencil-square-o clickable blue"  ></i>');
+                        btnEdit.click(function () {
                             if (data.record.IsRequireChangePW) {
                                 $('#passwordRow').show();
                                 data.record.PassWord = '';
                                 $('#required').val('1')
                             }
-                           // $('#rowUsername').hide();
+                            // $('#rowUsername').hide();
                             $('[txt="userName"]').prop('disabled', true);
 
                             if (data.record.UserRoleIds != null)
@@ -444,30 +454,31 @@ GPRO.User = function () {
 
                             //do data vao modal
                             BindData(data.record);
+
+                            if (data.record.ImagePath)
+                                $('#user-img-avatar').attr('src', data.record.ImagePath);
+
                         });
-                        return text;
+                        div.append(btnEdit);
+
+                        if (!data.record.IsOwner) {
+                            var btnDelete = $('<i title="Xóa" class="fa fa-trash-o"></i>');
+                            btnDelete.click(function () {
+                                GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
+                                    Delete(data.record.Id);
+                                }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Thông báo');
+                            });
+                            div.append(btnDelete);
+                        }
+                        return div;
                     }
                 },
-                Delete: {
-                    title: '',
-                    width: "3%",
-                    sorting: false,
-                    display: function (data) {
-                        var text = $('<button title="Xóa" class="jtable-command-button jtable-delete-command-button"><span>Xóa</span></button>');
-                        text.click(function () {
-                            GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
-                                Delete(data.record.Id);
-                            }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Thông báo');
-                        });
-                        return text;
-                    }
-                }
             }
         });
     }
 
     function ReloadList() {
-        $('#' + Global.Element.JtableUser).jtable('load', { 'keyword': $('#keyword').val(), 'searchBy': $('#searchBy').val(), 'isBlock': $('#isblock').is(':checked'), 'isRequiredChangePass': $('#ischangepass').is(':checked'), 'isTimeBlock': $('#istimeblock').is(':checked'), 'isForgotPass': $('#isforgotpass').is(':checked') });
+        $('#' + Global.Element.JtableUser).jtable('load', { 'keyword': $('#user-keyword').val(), 'searchBy': 0, 'isBlock': $('#isblock').is(':checked'), 'isRequiredChangePass': $('#ischangepass').is(':checked'), 'isTimeBlock': $('#istimeblock').is(':checked'), 'isForgotPass': $('#isforgotpass').is(':checked') });
         $('#' + Global.Element.popupSearch).modal('hide');
     }
 

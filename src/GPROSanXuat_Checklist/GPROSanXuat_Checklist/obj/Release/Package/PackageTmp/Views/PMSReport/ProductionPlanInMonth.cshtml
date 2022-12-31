@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "GetProductionPlanInMonth";
+    int dayInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+}
+<link href="~/Scripts/IED/PMSReport/tien-do-sx.css" rel="stylesheet" />
+<link href="~/Scripts/IED/PMSReport/pro-plan-year.css" rel="stylesheet" />
+<div class="container report">
+    <div class="clearfix"></div>
+    <div class="title">Kế hoạch sản xuất trong tháng @DateTime.Now.Month</div>
+    <ul class="chu-thich">
+        <li>Green : Đang sản xuất</li>
+        <li>Yellow : Chưa sản xuất</li>
+        <li>White : Trống</li>
+    </ul>
+    <div class="div-table" >
+        <table class="table table-bordered table-data" id="pro-plan-month-jtable" ngay="@dayInMonth">
+            <thead>
+                <tr>
+                    <th>Chuyền</th>
+                    @{
+                        for (int i = DateTime.Now.Day; i <= dayInMonth; i++)
+                        {
+                            string cls = ((new DateTime(DateTime.Now.Year, DateTime.Now.Month, i)).DayOfWeek == DayOfWeek.Sunday ? "sunday" : "weekday");
+
+                            <th class="@cls ">@i</th>
+
+                        }
+                    }
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+<script src="~/Scripts/IED/PMSReport/pro-plan-month.js"></script>

@@ -16,9 +16,7 @@
     <EntitySet Name="LenhSanXuats" EntityType="SanXuatCheckListModel.LenhSanXuat" />
     <EntitySet Name="LotSupplies" EntityType="SanXuatCheckListModel.LotSupply" />
     <EntitySet Name="MaterialNorms" EntityType="SanXuatCheckListModel.MaterialNorm" />
-    <EntitySet Name="Orders" EntityType="SanXuatCheckListModel.Order" />
     <EntitySet Name="P_Config" EntityType="SanXuatCheckListModel.P_Config" />
-    <EntitySet Name="PO_Sell" EntityType="SanXuatCheckListModel.PO_Sell" />
     <EntitySet Name="ProductionBatches" EntityType="SanXuatCheckListModel.ProductionBatch" />
     <EntitySet Name="ProductionFiles" EntityType="SanXuatCheckListModel.ProductionFile" />
     <EntitySet Name="ProFileControls" EntityType="SanXuatCheckListModel.ProFileControl" />
@@ -54,10 +52,6 @@
       <End Role="LotSupply" EntitySet="LotSupplies" />
       <End Role="ReceiptionDetail" EntitySet="ReceiptionDetails" />
     </AssociationSet>
-    <AssociationSet Name="FK_Order_PO_Sell" Association="SanXuatCheckListModel.FK_Order_PO_Sell">
-      <End Role="PO_Sell" EntitySet="PO_Sell" />
-      <End Role="Order" EntitySet="Orders" />
-    </AssociationSet>
     <AssociationSet Name="FK_P_ProductionFile_P_TemplateFile" Association="SanXuatCheckListModel.FK_P_ProductionFile_P_TemplateFile">
       <End Role="TemplateFile" EntitySet="TemplateFiles" />
       <End Role="ProductionFile" EntitySet="ProductionFiles" />
@@ -87,15 +81,7 @@
       <End Role="PO_SellDetail" EntitySet="PO_SellDetail" />
       <End Role="Lenh_Products" EntitySet="Lenh_Products" />
     </AssociationSet>
-    <AssociationSet Name="FK_PO_SellDetail_PO_Sell" Association="SanXuatCheckListModel.FK_PO_SellDetail_PO_Sell">
-      <End Role="PO_Sell" EntitySet="PO_Sell" />
-      <End Role="PO_SellDetail" EntitySet="PO_SellDetail" />
-    </AssociationSet>
     <EntitySet Name="OrderDetails" EntityType="SanXuatCheckListModel.OrderDetail" />
-    <AssociationSet Name="FK_OrderDetail_Order" Association="SanXuatCheckListModel.FK_OrderDetail_Order">
-      <End Role="Order" EntitySet="Orders" />
-      <End Role="OrderDetail" EntitySet="OrderDetails" />
-    </AssociationSet>
     <EntitySet Name="Checklist_Job" EntityType="SanXuatCheckListModel.Checklist_Job" />
     <EntitySet Name="Template_CL_Job" EntityType="SanXuatCheckListModel.Template_CL_Job" />
     <AssociationSet Name="FK_Checklist_Job_ActionLog_Checklist_Job" Association="SanXuatCheckListModel.FK_Checklist_Job_ActionLog_Checklist_Job">
@@ -151,6 +137,20 @@
     <AssociationSet Name="FK_W_ReceiptionDetail_W_Receiption" Association="SanXuatCheckListModel.FK_W_ReceiptionDetail_W_Receiption">
       <End Role="Receiption" EntitySet="Receiptions" />
       <End Role="ReceiptionDetail" EntitySet="ReceiptionDetails" />
+    </AssociationSet>
+    <EntitySet Name="Orders" EntityType="SanXuatCheckListModel.Order" />
+    <AssociationSet Name="FK_OrderDetail_Order" Association="SanXuatCheckListModel.FK_OrderDetail_Order">
+      <End Role="Order" EntitySet="Orders" />
+      <End Role="OrderDetail" EntitySet="OrderDetails" />
+    </AssociationSet>
+    <EntitySet Name="PO_Sell" EntityType="SanXuatCheckListModel.PO_Sell" />
+    <AssociationSet Name="FK_Order_PO_Sell" Association="SanXuatCheckListModel.FK_Order_PO_Sell">
+      <End Role="PO_Sell" EntitySet="PO_Sell" />
+      <End Role="Order" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PO_SellDetail_PO_Sell" Association="SanXuatCheckListModel.FK_PO_SellDetail_PO_Sell">
+      <End Role="PO_Sell" EntitySet="PO_Sell" />
+      <End Role="PO_SellDetail" EntitySet="PO_SellDetail" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Checklist">
@@ -448,33 +448,6 @@
     <Property Name="DeletedUser" Type="Int32" />
     <Property Name="DeletedDate" Type="DateTime" Precision="3" />
   </EntityType>
-  <EntityType Name="Order">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="FromPOId" Type="Int32" />
-    <Property Name="Code" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="CustomerId" Type="Int32" Nullable="false" />
-    <Property Name="ContactName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
-    <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-    <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Address" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="MoneyUnitId" Type="Int32" Nullable="false" />
-    <Property Name="Exchange" Type="Double" Nullable="false" />
-    <Property Name="DeliveryDate" Type="DateTime" Precision="3" />
-    <Property Name="StatusId" Type="Int32" />
-    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="CreatedUser" Type="Int32" Nullable="false" />
-    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-    <Property Name="UpdatedUser" Type="Int32" />
-    <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-    <Property Name="DeletedUser" Type="Int32" />
-    <NavigationProperty Name="PO_Sell" Relationship="SanXuatCheckListModel.FK_Order_PO_Sell" FromRole="Order" ToRole="PO_Sell" />
-    <NavigationProperty Name="OrderDetails" Relationship="SanXuatCheckListModel.FK_OrderDetail_Order" FromRole="Order" ToRole="OrderDetail" />
-  </EntityType>
   <EntityType Name="P_Config">
     <Key>
       <PropertyRef Name="Id" />
@@ -484,29 +457,6 @@
     <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="Value" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-  </EntityType>
-  <EntityType Name="PO_Sell">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Code" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="CustomerId" Type="Int32" Nullable="false" />
-    <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="MoneyUnitId" Type="Int32" Nullable="false" />
-    <Property Name="Exchange" Type="Double" Nullable="false" />
-    <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="StatusId" Type="Int32" Nullable="false" />
-    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="CreatedUser" Type="Int32" Nullable="false" />
-    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
-    <Property Name="UpdatedUser" Type="Int32" />
-    <Property Name="DeletedDate" Type="DateTime" Precision="3" />
-    <Property Name="DeletedUser" Type="Int32" />
-    <NavigationProperty Name="Orders" Relationship="SanXuatCheckListModel.FK_Order_PO_Sell" FromRole="PO_Sell" ToRole="Order" />
-    <NavigationProperty Name="PO_SellDetail" Relationship="SanXuatCheckListModel.FK_PO_SellDetail_PO_Sell" FromRole="PO_Sell" ToRole="PO_SellDetail" />
   </EntityType>
   <EntityType Name="ProductionBatch">
     <Key>
@@ -774,18 +724,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Order_PO_Sell">
-    <End Type="SanXuatCheckListModel.PO_Sell" Role="PO_Sell" Multiplicity="0..1" />
-    <End Type="SanXuatCheckListModel.Order" Role="Order" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PO_Sell">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Order">
-        <PropertyRef Name="FromPOId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_P_ProductionFile_P_TemplateFile">
     <End Type="SanXuatCheckListModel.TemplateFile" Role="TemplateFile" Multiplicity="1" />
     <End Type="SanXuatCheckListModel.ProductionFile" Role="ProductionFile" Multiplicity="*" />
@@ -896,18 +834,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_PO_SellDetail_PO_Sell">
-    <End Type="SanXuatCheckListModel.PO_Sell" Role="PO_Sell" Multiplicity="1" />
-    <End Type="SanXuatCheckListModel.PO_SellDetail" Role="PO_SellDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="PO_Sell">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="PO_SellDetail">
-        <PropertyRef Name="POId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="OrderDetail">
     <Key>
       <PropertyRef Name="Id" />
@@ -927,22 +853,10 @@
     <Property Name="UpdatedUser" Type="Int32" />
     <Property Name="DeletedDate" Type="DateTime" Precision="3" />
     <Property Name="DeletedUser" Type="Int32" />
-    <NavigationProperty Name="Order" Relationship="SanXuatCheckListModel.FK_OrderDetail_Order" FromRole="OrderDetail" ToRole="Order" />
     <NavigationProperty Name="Deliveries" Relationship="SanXuatCheckListModel.FK_Delivery_OrderDetail" FromRole="OrderDetail" ToRole="Delivery" />
     <NavigationProperty Name="Receiptions" Relationship="SanXuatCheckListModel.FK_Receiption_OrderDetail" FromRole="OrderDetail" ToRole="Receiption" />
+    <NavigationProperty Name="Order" Relationship="SanXuatCheckListModel.FK_OrderDetail_Order" FromRole="OrderDetail" ToRole="Order" />
   </EntityType>
-  <Association Name="FK_OrderDetail_Order">
-    <End Type="SanXuatCheckListModel.Order" Role="Order" Multiplicity="1" />
-    <End Type="SanXuatCheckListModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Order">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="OrderDetail">
-        <PropertyRef Name="OrderId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="Checklist_Job">
     <Key>
       <PropertyRef Name="Id" />
@@ -1218,6 +1132,98 @@
       </Principal>
       <Dependent Role="ReceiptionDetail">
         <PropertyRef Name="ReceiptionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FromPOId" Type="Int32" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="ContactName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Address" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MoneyUnitId" Type="Int32" Nullable="false" />
+    <Property Name="Exchange" Type="Double" Nullable="false" />
+    <Property Name="DeliveryDate" Type="DateTime" Precision="3" />
+    <Property Name="StatusId" Type="Int32" Nullable="false" />
+    <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+    <Property Name="ApprovedUser" Type="Int32" />
+    <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedUser" Type="Int32" Nullable="false" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedUser" Type="Int32" />
+    <Property Name="DeletedDate" Type="DateTime" Precision="3" />
+    <Property Name="DeletedUser" Type="Int32" />
+    <NavigationProperty Name="OrderDetails" Relationship="SanXuatCheckListModel.FK_OrderDetail_Order" FromRole="Order" ToRole="OrderDetail" />
+    <NavigationProperty Name="PO_Sell" Relationship="SanXuatCheckListModel.FK_Order_PO_Sell" FromRole="Order" ToRole="PO_Sell" />
+  </EntityType>
+  <Association Name="FK_OrderDetail_Order">
+    <End Type="SanXuatCheckListModel.Order" Role="Order" Multiplicity="1" />
+    <End Type="SanXuatCheckListModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Order">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PO_Sell">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="Phone" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MoneyUnitId" Type="Int32" Nullable="false" />
+    <Property Name="Exchange" Type="Double" Nullable="false" />
+    <Property Name="DeliveryDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="StatusId" Type="Int32" Nullable="false" />
+    <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+    <Property Name="ApprovedUser" Type="Int32" />
+    <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+    <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedUser" Type="Int32" Nullable="false" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedUser" Type="Int32" />
+    <Property Name="DeletedDate" Type="DateTime" Precision="3" />
+    <Property Name="DeletedUser" Type="Int32" />
+    <NavigationProperty Name="Orders" Relationship="SanXuatCheckListModel.FK_Order_PO_Sell" FromRole="PO_Sell" ToRole="Order" />
+    <NavigationProperty Name="PO_SellDetail" Relationship="SanXuatCheckListModel.FK_PO_SellDetail_PO_Sell" FromRole="PO_Sell" ToRole="PO_SellDetail" />
+  </EntityType>
+  <Association Name="FK_Order_PO_Sell">
+    <End Type="SanXuatCheckListModel.PO_Sell" Role="PO_Sell" Multiplicity="0..1" />
+    <End Type="SanXuatCheckListModel.Order" Role="Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PO_Sell">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="FromPOId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PO_SellDetail_PO_Sell">
+    <End Type="SanXuatCheckListModel.PO_Sell" Role="PO_Sell" Multiplicity="1" />
+    <End Type="SanXuatCheckListModel.PO_SellDetail" Role="PO_SellDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PO_Sell">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="PO_SellDetail">
+        <PropertyRef Name="POId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

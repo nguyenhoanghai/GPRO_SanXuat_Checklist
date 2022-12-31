@@ -26,7 +26,7 @@ GPRO.LotSupplies = function () {
         },
         Element: {
             Jtable: 'lot-supplies-jtable',
-            Popup: 'lot-supplies-popup', 
+            Popup: 'lot-supplies-popup',
         },
         Data: {
             LotSupplies: {},
@@ -42,7 +42,7 @@ GPRO.LotSupplies = function () {
 
     this.Init = function () {
         RegisterEvent();
-        InitPopup(); 
+        InitPopup();
         GetLastIndex();
         InitList();
         ReloadList();
@@ -132,7 +132,7 @@ GPRO.LotSupplies = function () {
     /**********************************************************************************************************************
                                                             MaterialType
     ***********************************************************************************************************************/
-     
+
     function InitList() {
         $('#' + Global.Element.Jtable).jtable({
             title: 'Danh Sách Lô Vật Tư',
@@ -247,6 +247,18 @@ GPRO.LotSupplies = function () {
                         return txt;
                     }
                 },
+                StatusId: {
+                    title: 'Trạng thái',
+                    width: "5%",
+                    display: function (data) {
+                        let cls = '';
+                        if (data.record.StatusId == 9)
+                            cls= "blue"
+                        if (data.record.StatusId == 8)
+                            cls = "red";
+                        return `<span class="${cls}">${data.record.strStatus}</span>`;
+                    }
+                },
                 //Note: {
                 //    title: "Mô Tả",
                 //    width: "20%",
@@ -254,11 +266,13 @@ GPRO.LotSupplies = function () {
                 //},
                 edit: {
                     title: '',
-                    width: '1%',
+                    width: '5%',
                     sorting: false,
                     display: function (data) {
-                        var text = $('<i data-toggle="modal" data-target="#' + Global.Element.Popup + '" title="Chỉnh sửa thông tin" class="fa fa-pencil-square-o clickable blue"  ></i>');
-                        text.click(function () { 
+                        let $div = $('<div></div>');
+
+                        let $edit = $('<i data-toggle="modal" data-target="#' + Global.Element.Popup + '" title="Chỉnh sửa thông tin" class="fa fa-pencil-square-o clickable blue"  ></i>');
+                        $edit.click(function () {
                             $('#lot-supplies-Id').val(data.record.Id);
                             $('#lot-supplies-name').val(data.record.Name);
                             $('#lot-supplies-index').val(data.record.Code);
@@ -275,7 +289,7 @@ GPRO.LotSupplies = function () {
                             $('#lot-supplies-currentquantity').html(data.record.Quantity - data.record.QuantityUsed);
 
                             $('#lot-supplies-specifications-paking').val(data.record.SpecificationsPaking);
-                            $('#lot-supplies-status').val((data.record.StatusId)); 
+                            $('#lot-supplies-status').val((data.record.StatusId));
                             Global.Data.QuantityUsed = data.record.QuantityUsed;
 
                             var d = new Date(parseJsonDateToDate(data.record.InputDate));
@@ -323,29 +337,27 @@ GPRO.LotSupplies = function () {
                                     [lot-supplies-save]`).prop('disabled', true);
                             }
                         });
-                        return text;
+                        $div.append($edit);
+
+                        if (!data.record.IsApproved) {
+                            var $delete = $('<i title="Xóa" class="fa fa-trash-o red jtable-action"> ></i>');
+                            $delete.click(function () {
+                                GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
+                                    Delete(data.record.Id);
+                                }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Thông báo');
+                            });
+                            $div.append($delete);
+                        }
+
+                        return $div;
                     }
-                },
-                Delete: {
-                    title: '',
-                    width: "3%",
-                    sorting: false,
-                    display: function (data) {
-                        var text = $('<button title="Xóa" class="jtable-command-button jtable-delete-command-button"><span>Xóa</span></button>');
-                        text.click(function () {
-                            GlobalCommon.ShowConfirmDialog('Bạn có chắc chắn muốn xóa?', function () {
-                                Delete(data.record.Id);
-                            }, function () { }, 'Đồng ý', 'Hủy bỏ', 'Thông báo');
-                        });
-                        return text;
-                    }
-                }
+                } 
             }
         });
     }
 
     function ReloadList() {
-        $('#' + Global.Element.Jtable).jtable('load', { 'whId': 0, 'greaterThan0': false,'keyword': $('#lot-supplies-keyword').val() });
+        $('#' + Global.Element.Jtable).jtable('load', { 'whId': 0, 'greaterThan0': false, 'keyword': $('#lot-supplies-keyword').val() });
     }
 
     function InitPopup() {
@@ -404,7 +416,7 @@ GPRO.LotSupplies = function () {
                 [lot-supplies-save]`).prop('disabled', false);
         });
     }
-     
+
     function CheckValidate() {
         if ($('#lot-supplies-name').val().trim() == "") {
             GlobalCommon.ShowMessageDialog("Vui lòng nhập Tên Lô Vật Tư.", function () { }, "Lỗi Nhập liệu");

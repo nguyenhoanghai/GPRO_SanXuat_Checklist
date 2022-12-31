@@ -27,6 +27,7 @@ GPRO.Order = function () {
             GetProducts: '/Product/GetSelectList',
             Save: '/Order/Save',
             Delete: '/Order/Delete',
+            Approve: '/Order/Approve'
         },
         Element: {
             Jtable: 'jtable-order',
@@ -77,6 +78,10 @@ GPRO.Order = function () {
         });
 
         $('[re_customer]').click(() => { GetCustomerSelect('order-customer'); })
+
+        $("#order-delivery-date").change(() => {
+            $("#order-delivery-date-text").val(moment($("#order-delivery-date").val()).format('DD/MM/YYYY'));
+        })
     }
 
     InitTable = () => {
@@ -160,6 +165,25 @@ GPRO.Order = function () {
                         return txt;
                     }
                 },
+                ApprovedUser: {
+                    title: "Người Duyệt",
+                    width: "7%",
+                    display: function (data) {
+                        if (data.record.ApprovedUser != null)
+                            return '<span class="red ">' + data.record.ApprovedUserName + '</span>';
+                        return '';
+                    }
+                },
+                ApprovedDate: {
+                    title: "Ngày Duyệt",
+                    width: "5%",
+                    display: function (data) {
+                        if (data.record.ApprovedDate != null) {
+                            return '<span class="">' + ddMMyyyyHHmm(data.record.ApprovedDate) + '</span>';
+                        }
+                        return '';
+                    }
+                },
                 Note: {
                     title: "Ghi chú",
                     width: "20%",
@@ -179,22 +203,37 @@ GPRO.Order = function () {
                             $('#order-phone').val(data.record.Phone);
                             $('#order-email').val(data.record.Email);
                             $('#order-address').val(data.record.Address);
-                            $('#order-delivery-date').val(ddMMyyyy(data.record.DeliveryDate));
+
+                            if (data.record.DeliveryDate)
+                                $('#order-delivery-date-text').val(moment(data.record.DeliveryDate).format('DD/MM/YYYY'));
+
                             $('#order-unit').val(data.record.MoneyUnitId).change();
                             $('#order-exchange').val(data.record.Exchange);
                             $('#order-status').val(data.record.StatusId);
                             $('#order-note').val(data.record.Note);
 
-                            if (data.record.StatusId == 9) {
-                                Global.Data.disabledDetail = true;
-                                $('#order-customer,#order-address,#order-email,#order-contact-name,#order-phone,#order-delivery-date,#order-unit,#order-exchange,#order-status,#order-note,[order-save]').prop('disabled', true);
+                            if (data.record.StatusId == 7) {
+                                Global.Data.disabledDetail = false;
+                                $('#order-customer,#order-address,#order-email,#order-contact-name,#order-phone,#order-delivery-date,#order-unit,#order-exchange,#order-status,#order-note').prop('disabled', false);
+                                $('[order-save],[order-submit],[btn-order-get-po-info],[btn-order-reset-po-info]').show();
+                                $('[order-approve]').hide();
+
+                                if (data.record.FromPOId) {
+                                    $('#order-po-select').val(data.record.FromPOId);
+                                    $('#order-customer,#order-delivery-date').prop('disabled', true);
+                                    Global.Data.disabledDetail = true;
+                                }
                             }
-                            if (data.record.FromPOId) {
-                                $('#order-po-select').val(data.record.FromPOId);
-                                $('#order-customer,#order-delivery-date').prop('disabled', true);
+                            if (data.record.StatusId != 7) {
                                 Global.Data.disabledDetail = true;
+                                $('#order-customer,#order-address,#order-email,#order-contact-name,#order-phone,#order-delivery-date,#order-unit,#order-exchange,#order-status,#order-note,#order-po-select').prop('disabled', true);
+                                $('[order-save],[order-submit],[btn-order-get-po-info],[btn-order-reset-po-info]').hide();
+
+                                $('[order-approve]').show();
+                                if (data.record.IsApproved)
+                                    $('[order-approve]').hide();
                             }
-                            $('#order-po-select,[btn-order-get-po-info],[btn-order-reset-po-info]').prop('disabled', true);
+
                             GetById(data.record.Id, false);
                             Global.Data.IsInsert = false;
                         });
@@ -206,7 +245,7 @@ GPRO.Order = function () {
                     width: "3%",
                     sorting: false,
                     display: function (data) {
-                        if (data.record.StatusId == 9) {
+                        if (data.record.StatusId != 7) {
                             var btn = $(`<i data-toggle="modal" data-target="#${Global.Element.PopupView}" title="Chỉnh sửa thông tin" class="fa fa-file-word-o red"></i>`);
                             btn.click(() => {
                                 GetById(data.record.Id, true);
@@ -255,10 +294,22 @@ GPRO.Order = function () {
         });
 
         $("#" + Global.Element.Popup + ' button[order-save]').click(function () {
-            // if (CheckValidate()) {                 
-            Save();
-            // }
+            if (CheckValidate()) {
+                Save(7);
+            }
         });
+
+        $("#" + Global.Element.Popup + ' button[order-submit]').click(function () {
+            if (CheckValidate()) {
+                Save(8);
+            }
+        });
+
+        $("#" + Global.Element.Popup + ' button[order-approve]').click(function () {
+            Approve($('#order-id').val());
+        });
+
+
         $("#" + Global.Element.Popup + ' button[order-cancel]').click(function () {
             $("#" + Global.Element.Popup).modal("hide");
             setToDefault();
@@ -324,7 +375,9 @@ GPRO.Order = function () {
         Global.Data.approve = false;
         addEmptyChild();
         ReloadTableDetail();
-        $('#order-customer,#order-address,#order-email,#order-contact-name,#order-phone,#order-delivery-date,#order-unit,#order-exchange,#order-status,#order-note,[order-save],#order-po-select,[btn-order-get-po-info],[btn-order-reset-po-info]').removeAttr('disabled');
+        $('#order-customer,#order-address,#order-email,#order-contact-name,#order-phone,#order-delivery-date,#order-unit,#order-exchange,#order-status,#order-note,#order-po-select').removeAttr('disabled');
+        $('[order-save],[order-submit],[btn-order-get-po-info],[btn-order-reset-po-info]').show();
+        $('[order-approve]').hide();
     }
 
     GetById = (Id, getTemplate) => {
@@ -355,7 +408,7 @@ GPRO.Order = function () {
                                     DeliveryDate: item.DeliveryDate
                                 });
                             });
-                            if (data.Data.StatusId != 9)
+                            if (!Global.Data.disabledDetail)
                                 addEmptyChild();
                             ReloadTableDetail();
                         }
@@ -371,7 +424,7 @@ GPRO.Order = function () {
         });
     }
 
-    Save = () => {
+    Save = (status) => {
         var obj = {
             Id: $('#order-id').val(),
             FromPOId: $('#order-po-select').val(),
@@ -381,10 +434,10 @@ GPRO.Order = function () {
             Email: $('#order-email').val(),
             Address: $('#order-address').val(),
             ContactName: $('#order-contact-name').val(),
-            DeliveryDate: $('#order-delivery-date').val(),
+            DeliveryDate: moment($('#order-delivery-date-text').val()),
             MoneyUnitId: $('#order-unit').val(),
             Exchange: parseFloat($('#order-exchange').val()),
-            StatusId: $('#order-status').val(),
+            StatusId: status,
             Note: $('#order-note').val(),
             Details: Global.Data.Childs
         };
@@ -417,6 +470,30 @@ GPRO.Order = function () {
         });
     }
 
+    CheckValidate = () => {
+        if ($('#order-customer').val().trim() == "") {
+            GlobalCommon.ShowMessageDialog("Vui lòng chọn khách hàng.", function () { $('#order-customer').focus() }, "Lỗi Nhập liệu");
+            return false;
+        }
+        if ($('#order-contact-name').val().trim() == "") {
+            GlobalCommon.ShowMessageDialog("Vui lòng nhập tên người liên hệ.", function () { $('#order-contact-name').focus() }, "Lỗi Nhập liệu");
+            return false;
+        }
+        if ($('#order-phone').val().trim() == "") {
+            GlobalCommon.ShowMessageDialog("Vui lòng nhập số điện thoại liên hệ.", function () { $('#order-phone').focus() }, "Lỗi Nhập liệu");
+            return false;
+        }
+        if ($('#order-address').val().trim() == "") {
+            GlobalCommon.ShowMessageDialog("Vui lòng nhập địa chỉ giao hàng.", function () { $('#order-address').focus() }, "Lỗi Nhập liệu");
+            return false;
+        }
+        if (Global.Data.Childs == null || Global.Data.Childs.length <= 1) {
+            GlobalCommon.ShowMessageDialog("Vui lòng chọn ít nhất 1 sản phẩm cho đơn hàng của bạn.", function () { }, "Lỗi Nhập liệu");
+            return false;
+        }
+        return true;
+    }
+
     Delete = (Id) => {
         $.ajax({
             url: Global.UrlAction.Delete,
@@ -439,19 +516,28 @@ GPRO.Order = function () {
         });
     }
 
-    CheckValidate = () => {
-        if ($('#order-name').val().trim() == "") {
-            GlobalCommon.ShowMessageDialog("Vui lòng nhập Tên khách hàng.", function () { }, "Lỗi Nhập liệu");
-            return false;
-        }
-        else if ($('#order-product').val().trim() == "") {
-            GlobalCommon.ShowMessageDialog("Vui lòng chọn sản phẩm.", function () { }, "Lỗi Nhập liệu");
-            return false;
-        }
-        return true;
+    function Approve(Id) {
+        $.ajax({
+            url: Global.UrlAction.Approve,
+            type: 'POST',
+            data: JSON.stringify({ 'Id': Id }),
+            contentType: 'application/json charset=utf-8',
+            beforeSend: function () { $('#loading').show(); },
+            success: function (data) {
+                GlobalCommon.CallbackProcess(data, function () {
+                    if (data.Result == "OK") {
+                        ReloadTable();
+                        $('#loading').hide();
+                        $('#' + Global.Element.Popup + ' button[order-cancel]').click();
+                    }
+                }, false, Global.Element.PopupReceiption, true, true, function () {
+
+                    var msg = GlobalCommon.GetErrorMessage(data);
+                    GlobalCommon.ShowMessageDialog(msg, function () { }, "Đã có lỗi xảy ra.");
+                });
+            }
+        });
     }
-
-
 
     addEmptyChild = () => {
         Global.Data.Childs.push({

@@ -62,22 +62,21 @@
         border: 1px solid #ccc;
         border-bottom: none;
         text-align: right;
+        width: 100%;
+        display: inline-flex;
+        justify-content: flex-end
     }
 
-        .checklist-filter-box .col-md-4 {
-            margin-bottom: 5px !important;
-            float: right;
-            padding-right: 5px !important;
+        .checklist-filter-box input {
+            margin-right: 5px;
+            max-width: 250px;
         }
 </style>
 
 <div class="form-group">
     <div class="checklist-filter-box">
-        <div class=" col-md-4">
-            <input class="form-control" type="text" placeholder="Nhập từ khóa." id="checklist-search" />
-        </div>  <button class="btn btn-primary" data-toggle="modal" data-target="#popup-checklist"><i class="fa fa-plus"></i> Tạo mới checklist</button>
-
-        <div class="clearfix"></div>
+        <input class="form-control" type="text" placeholder="Nhập từ khóa." id="checklist-search" />
+        <button class="btn btn-primary" data-toggle="modal" data-target="#popup-checklist"><i class="fa fa-plus"></i> Tạo mới checklist</button>
     </div>
     <div style="overflow-y:scroll">
         <table class="table-checklist table table-center">
@@ -290,7 +289,7 @@
     </div>
 </div>
 
- 
+
 <script src="~/Scripts/IED/Checklist/checklist-index.js"></script>
 <script>
     var obj = new GPRO.Checklist();
@@ -314,6 +313,6 @@
     function Export(Id) {
         obj.Export(Id);
     }
-     
+
 
 </script>

@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Định mức sản xuất đơn hàng";
+}
+
+ <div class="form-group  ">
+    <label class="control-label">Phân hàng sản xuất <span class="required-class">*</span></label>
+    <div class="select-box">
+        <select class="form-control" id="pro-plan-csp">   </select>
+        <i re-csp class="fa fa-refresh clickable red"></i>
+        @*<a href="/cong-doan" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>*@
+    </div>
+</div>
+<div id="jtable-pro-plan" class="table-center"></div>
+
+<div class="modal   fade  " id="popup-pro-plan" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modalsmall">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button cancel aria-hidden="true" data-dismiss="modal" class="close" type="button">   ×  </button>
+                <h4 class="modal-title">Thông tin định mức</h4>
+            </div>
+            <div class="modal-body  ">
+                <div class="container-fluid">
+                    <input class="form-control" id="pro-plan-id" type="hidden" />
+                    <div class="form-group  ">
+                        <label class="control-label">Công đoạn sản xuất<span class="required-class">*</span></label>
+                        <div class="select-box">
+                            <select class="form-control" id="pro-plan-phase">   </select>
+                            <i re-phase class="fa fa-refresh clickable red"></i>
+                            <a href="/cong-doan" target="_blank"><i class="fa fa-plus-circle clickable blue"></i></a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Năng xuất dự kiến/tháng <span class="required-class">*</span></label>
+                        <input class="form-control" id="pro-plan-pro" required="required" type="text" onkeypress="return isNumberKey(event)" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" pro-plan-cancel class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" pro-plan-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/IED/production-plan/pro-plan-index.js"></script>

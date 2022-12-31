@@ -27,12 +27,12 @@ E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklis
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\GPROSanXuat_Checklist.Data.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\Hugate.Framework.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\PagedList.dll
-E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\SystemGPRO.Serial.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\GPROSanXuat_Checklist.Data.pdb
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\GPROSanXuat_Checklist.Data.dll.config
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\EntityFramework.xml
-E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\obj\Release\GPROSanXuat_Checklist.Business.csprojAssemblyReference.cache
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\obj\Release\GPROSanXuat_Checklist.Business.csproj.CoreCompileInputs.cache
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\obj\Release\GPROSanXuat_Checklist.Business.csproj.CopyComplete
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\obj\Release\GPROSanXuat_Checklist.Business.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\obj\Release\GPROSanXuat_Checklist.Business.pdb
+E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\obj\Release\GPROSanXuat_Checklist.Business.csproj.AssemblyReference.cache
+E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Business\bin\Release\SystemGPRO.Serial.dll

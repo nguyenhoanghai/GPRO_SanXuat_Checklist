@@ -13,7 +13,6 @@
 
     UserInfo userInfo = ViewData["userInfo"] as UserInfo;
 }
-
 <div class="col-md-3 left_col">
     <div class="left_col scroll-view">
         <div class="navbar nav_title" style="border: 0;">
@@ -88,6 +87,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                         <li><a data-toggle="modal" data-target="#popup_userInfo"><i class="fa fa-info-circle clickable pull-right"></i> Thông tin tài khoản</a></li>
+                        <li><a data-toggle="modal" data-target="#popup-user-change-pass"><i class="fa fa-edit clickable pull-right"></i> Đổi mật khẩu</a></li>
                         <li><a id="Logout"><i class="fa fa-sign-out clickable pull-right"></i> Đăng xuất</a></li>
                     </ul>
                 </li>
@@ -135,71 +135,101 @@
             <div class="modal-body form-inline">
                 <div class="container-fluid">
                     <div>
-                        <div class="col-md-5" style="padding-left:35px; padding-top:25px">
+                        <div class="col-md-5" style="padding-left:15px; text-align:center">
                             <div class="box-avatar col-md-12" style="background: url() center center no-repeat;">
-                                <img src="@(userInfo.ImagePath == null ? "/Images/no_image.png" : userInfo.ImagePath)" alt="">
+                                <img id="img-avatar" src="@(string.IsNullOrEmpty( userInfo.ImagePath) ? "/Images/no_image.png" : userInfo.ImagePath)" alt="">
                             </div>
                             <input type="file" id="UserAvartar" style="display:none" />
-                            <button type="button" openuseravatar class="btn btn-danger"><i class="fa fa-image"></i>  Thay đổi ảnh đại diện</button>
+                            <form id="p-form-upload" name="p-form-upload" enctype="multipart/form-data" method="post">
+                                <input type="file" id="p-file-upload" name="p-file-upload" filelist newurl="" style="display:none" accept="image/*" />
+                            </form>
+                            <button class="btn btn-default" id="p-btn-file-upload" style=" margin:0"><i class="fa fa-image"></i> Chọn ảnh đại diện</button>
                         </div>
-                        <div class="col-md-7" style="padding-left:50px">
-                            <div class="form-group">
-                                <label class="control-label">Họ <span class="required-class">*</span></label>
-                                <input class="form-control" id="HeadfirstName" type="text" />
+                        <div class="col-md-7">
+                            <div class="form-group col-md-12">
+                                <label class="control-label ">Họ tên <span class="required-class">*</span></label>
+                                <input class="form-control" id="ui-name" type="text" value="@userInfo.Name" />
                             </div>
-                            <div class="form-group">
-                                <label class="control-label">Tên <span class="required-class">*</span></label><br />
-                                <input class="form-control" id="HeadLastName" type="text" />
-                            </div>
-                            <div class="form-group">
+                            <div class="form-group col-md-12">
                                 <label class="control-label">Email</label><br />
-                                <input class="form-control" id="HeadEmail" type="text" />
-                            </div>
-                            <div class="form-group">
-                                <button type="button" style="margin-top:10px" save-type class="btn btn-primary"><i class="fa fa-edit"></i> Cập nhật thông tin </button>
+                                <input class="form-control" id="ui-email" type="text" value="@userInfo.Email" />
                             </div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
 
-
-
-
-                    @*<input class="form-control" data-bind="value: Id" type="hidden" />
-                        <div class="form-group">
-                            <label class="control-label">Tên Loại Thời Gian<span class="required-class">*</span></label>
-                            <input class="form-control" id="name-timetype" data-bind="value: Name" type="text" placeholder="Nhập Tên Loại Thời Gian..." />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Mã Loại Thời Gian</label><br />
-                            <input class="form-control" id="timetypecode" data-bind="value: Code" type="text" placeholder="Nhập Mã Loại Thời Gian..." />
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Hình thức sử dụng</label><br />
-                            <div>
-                                <input type="checkbox" id="timetypeisPublic" data-width="130" data-toggle="toggle" data-on="Khác" data-off="Nội bộ">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Mô Tả</label><br />
-                            <textarea id="timetypedes" data-bind="value: Description"></textarea>
-                        </div>*@
                 </div>
             </div>
-            @*<div class="modal-footer">
-                    <button type="button" cancel-type class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
-                    <button type="button" save-type class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại </button>
-                </div>*@
+            <div class="modal-footer">
+                <button type="button" ui-save class="btn btn-primary"><i class="fa fa-floppy-o"></i> Cập nhật thông tin</button>
+                <button type="button" ui-close class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade " id="popup-user-change-pass" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-small">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-hidden="true" data-dismiss="modal" close-change-pass class="close" type="button">×</button>
+                <h4 class="modal-title">Đổi mật khẩu</h4>
+            </div>
+            <div class="modal-body form-inline">
+                <div class="container-fluid">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Mật khẩu cũ <span class="required-class">*</span></label>
+                        <div class="password-box form-control">
+                            <input class="form-control" id="user-old-pass" type="password" required /> <i class="fa fa-eye" onmousedown="showPassword('user-old-pass')" onmouseup="hidePassword('user-old-pass')"></i>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Mật khẩu mới <span class="required-class">*</span></label>
+                        <div class="password-box form-control">
+                            <input class="form-control" id="user-new-pass" type="password" required /> <i class="fa fa-eye" onmousedown="showPassword('user-new-pass')" onmouseup="hidePassword('user-new-pass')"></i>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Xác nhận mật khẩu mới <span class="required-class">*</span></label>
+                        <div class="password-box form-control">
+                            <input class=" " id="user-cf-old-pass" type="password" required /> <i class="fa fa-eye" onmousedown="showPassword('user-cf-old-pass')" onmouseup="hidePassword('user-cf-old-pass')"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" close-change-pass class="btn btn-default" data-dismiss="modal"><i class="fa fa-times red"></i> Đóng </button>
+                <button type="button" save-change-pass class="btn btn-primary"><i class="fa fa-floppy-o"></i> Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <style>
     .box-avatar {
         padding: 0;
-        margin: 0;
+        margin: 0 auto;
+        height: 150px;
+        width: 150px;
         border: 1px solid #ccc;
         border-radius: 50%;
-        height: 150px;
-        background-size: 100%;
+        margin-bottom: 10px !important
     }
+
+        .box-avatar img {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 </style>
+<script src="~/Scripts/IED/Master-page/head.js"></script>
+<script>
+    function showPassword(controlId) {
+        $('#' + controlId).attr('type', 'text');
+    }
+    function hidePassword(controlId) {
+        $('#' + controlId).attr('type', 'password');
+    }
+</script>

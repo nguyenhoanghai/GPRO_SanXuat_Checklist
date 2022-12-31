@@ -179,8 +179,8 @@ E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklis
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\bin\Microsoft.AI.WindowsServer.xml
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\bin\Microsoft.AI.Web.xml
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\obj\Debug\GPROSanXuat_Checklist.csproj.AssemblyReference.cache
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\obj\Debug\GPROSanXuat_Checklist.csproj.CoreCompileInputs.cache
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\obj\Debug\GPROSanXuat_Checklist.csproj.CopyComplete
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\obj\Debug\GPROSanXuat_Checklist.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\obj\Debug\GPROSanXuat_Checklist.pdb
-E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist\obj\Debug\GPROSanXuat_Checklist.csproj.AssemblyReference.cache

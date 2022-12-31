@@ -68,13 +68,14 @@ namespace GPROSanXuat_Checklist
         {
             public InnerUserService(UserService userService)
             {
+                this.Name = userService.Name;
                 this.CompanyId = userService.CompanyId;
                 this.intWorkshopIds = userService.intWorkshopIds;
                 this.WorkshopIds = userService.intWorkshopIds;
                 this.CompanyName = userService.CompanyName;
                 this.DepartmentName = userService.DepartmentName;
                 this.Description = userService.Description;
-                this.Email = userService.Email;
+                this.Email = userService.Email; 
                 this.EmployeeName = userService.EmployeeName;
                 this.Features = userService.Features;
                 this.ImagePath = userService.ImagePath;

@@ -13,8 +13,8 @@ E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklis
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Release\GPROSanXuat_Checklist.Data.pdb
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Release\EntityFramework.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\bin\Release\EntityFramework.xml
-E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Release\GPROSanXuat_Checklist.Data.csprojAssemblyReference.cache
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Release\GPROSanXuat_Checklist.Data.csproj.CoreCompileInputs.cache
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Release\GPROSanXuat_Checklist.Data.csproj.CopyComplete
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Release\GPROSanXuat_Checklist.Data.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Release\GPROSanXuat_Checklist.Data.pdb
+E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Release\GPROSanXuat_Checklist.Data.csproj.AssemblyReference.cache

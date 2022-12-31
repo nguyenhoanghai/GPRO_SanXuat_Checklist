@@ -116,6 +116,143 @@ namespace GPROSanXuat_Checklist.Business
             }
         }
 
+        public ChecklistModel GetWithJobs(string strConnection, int Id, int userId, List<ModelSelectItem> statuss, List<ModelSelectItem> users)
+        {
+            try
+            {
+                using (db = new SanXuatCheckListEntities(strConnection))
+                {
+                    ChecklistModel model = null;
+                    Checklist checklist = db.Checklists.FirstOrDefault(x => !x.IsDeleted && x.Id == Id);
+                    if (checklist != null)
+                    {
+                        model = new ChecklistModel()
+                        {
+                            Id = checklist.Id,
+                            Name = checklist.Name,
+                            Note = checklist.Note,
+                            CreatedDate = checklist.CreatedDate,
+                            // LineId = checklist.LineId,
+                            // LineName = (checklist.LineId.HasValue ? checklist.Line.Name : ""),
+                            PODetailId = checklist.PODetailId,
+                            ProductId = checklist.ProductId,
+                            //ProductName = (checklist.ProductId.HasValue ? checklist.Product.Name : ""),
+                            CustomerId = checklist.CustomerId,
+                            //CustomerName = (checklist.CustomerId.HasValue ? checklist.Customer.Name : ""),
+                            Productivity = checklist.Productivity,
+                            Quantities = checklist.Quantities,
+                            ProductionDays = checklist.ProductionDays,
+                            DeliveryDate = checklist.DeliveryDate,
+                            InputDate = checklist.InputDate,
+                            EndDate = checklist.EndDate,
+                            RealEndDate = checklist.RealEndDate,
+                            StatusId = checklist.StatusId,
+                            //StatusName = checklist.Status.Name,
+                            RelatedEmployees = checklist.RelatedEmployees,
+                            //ProductUnit = (checklist.ProductId.HasValue ? checklist.Product.Unit.Name : "")
+                        };
+                        var jobSteps = checklist.Checklist_JobStep.Where(x => !x.IsDeleted).OrderBy(x => x.StepIndex).ToList();
+                        if (userId != 0)
+                            jobSteps = jobSteps.Where(x => x.EmployeeId.HasValue && x.EmployeeId.Value == userId).ToList();
+
+                        if (jobSteps.Count > 0)
+                        {
+                            var jobs = new List<Checklist_JobModel>();
+                            var stepIds = checklist.Checklist_JobStep.Select(x => x.Id).ToList();
+                            var allJobs = db.Checklist_Job.Where(x => !x.IsDeleted && stepIds.Contains(x.ChecklistJobStepId))
+                        .Select(x => new Checklist_JobModel()
+                        {
+                            Id = x.Id,
+                            ParentId = x.ParentId,
+                            FakeId = x.FakeId,
+                            ChecklistJobStepId = x.ChecklistJobStepId,
+                            JobIndex = x.JobIndex,
+                            Name = x.Name,
+                            JobContent = x.JobContent,
+                            EmployeeId = x.EmployeeId,
+                            //Employee = x.Employee,
+                            EmployeeName = "",// (x.EmployeeId.HasValue ? string.Format("{0} {1}", x.Employee.FirstName, x.Employee.LastName) : ""),
+                            RelatedEmployees = x.RelatedEmployees,
+                            StartDate = x.StartDate,
+                            EndDate = x.EndDate,
+                            RealEndDate = x.RealEndDate,
+                            ReminderDate = x.ReminderDate,
+                            Quantities = x.Quantities,
+                            RealQuantities = x.RealQuantities,
+                            StatusId = x.StatusId,
+                            StatusName = "",//x.Status.Name,
+                            Note = x.Note,
+                            UpdatedDate = x.UpdatedDate,
+                            HasViewProductivity = x.HasViewProductivity
+                        }).ToList();
+                            if (allJobs.Count > 0)
+                            {
+                                ModelSelectItem found = null;
+                                for (int i = 0; i < allJobs.Count; i++)
+                                {
+                                    allJobs[i].RelatedEmployeeName = BLLChecklistJob.Instance.getRelatedEmployeeName(allJobs[i].RelatedEmployees, users);
+                                    if (allJobs[i].EmployeeId.HasValue)
+                                    {
+                                        found = users.FirstOrDefault(x => x.Value == allJobs[i].EmployeeId);
+                                        if (found != null)
+                                            allJobs[i].EmployeeName = found.Name;
+                                    }
+
+                                    found = statuss.FirstOrDefault(x => x.Value == allJobs[i].StatusId);
+                                    if (found != null)
+                                        allJobs[i].StatusName = found.Name;
+                                }
+
+                               var  _jobs = allJobs.Where(x => !x.ParentId.HasValue).OrderBy(x => x.JobIndex).ToList();
+
+                                foreach (var item in _jobs)
+                                {
+                                    jobs.Add(item);
+                                    getSubItem(item, allJobs, jobs);
+                                }
+                            }
+
+
+                            Checklist_JobStepModel jStepObj = null;
+                            //var employees = db.SUser.Where(x => !x.IsDeleted).Select(x => new ModelSelectItem() { Value = x.Id, Name = x.UserName }).ToList();
+                            foreach (var jsteps in jobSteps)
+                            {
+                                jStepObj = new Checklist_JobStepModel()
+                                {
+                                    Id = jsteps.Id,
+                                    StepIndex = jsteps.StepIndex,
+                                    Name = jsteps.Name,
+                                    JobStepContent = jsteps.JobStepContent,
+                                    EmployeeId = jsteps.EmployeeId,
+                                    //EmployeeName = (jsteps.EmployeeId.HasValue ? jsteps.SUser.UserName : ""),
+                                    RelatedEmployees = jsteps.RelatedEmployees,
+                                    StartDate = jsteps.StartDate,
+                                    EndDate = jsteps.EndDate,
+                                    RealEndDate = jsteps.RealEndDate,
+                                    ReminderDate = jsteps.ReminderDate,
+                                    Quantities = jsteps.Quantities,
+                                    RealQuantities = jsteps.RealQuantities,
+                                    StatusId = jsteps.StatusId,
+                                    //StatusName = jsteps.Status.Name,
+                                    Note = jsteps.Note,
+                                    UpdatedDate = jsteps.UpdatedDate
+                                };
+                                //jStepObj.RelatedEmployeeName = getRelatedEmployeeName(jsteps.RelatedEmployees, employees);
+                                jStepObj.Jobs = jobs.Where(x => x.ChecklistJobStepId == jsteps.Id).ToList();
+
+                                model.JobSteps.Add(jStepObj);
+                            }
+                        }
+                    }
+                    return model;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         //public string getRelatedEmployeeName(string relatedIds, List<ModelSelectItem> employees)
         //{
         //    if (!string.IsNullOrEmpty(relatedIds))
@@ -610,6 +747,19 @@ namespace GPROSanXuat_Checklist.Business
                 foreach (var _item in item.SubItems)
                 {
                     _item.SubItems = getSubItem(_item, allJobs);
+                }
+            }
+            return item.SubItems;
+        }
+
+        private List<Checklist_JobModel> getSubItem(Checklist_JobModel item, List<Checklist_JobModel> allJobs, List<Checklist_JobModel> Jobs)
+        {
+            Jobs.AddRange(allJobs.Where(x => x.ParentId.HasValue && x.ParentId.Value == item.FakeId).ToList());
+            if (item.SubItems.Count > 0)
+            {
+                foreach (var _item in item.SubItems)
+                {
+                    getSubItem(_item, allJobs, Jobs);
                 }
             }
             return item.SubItems;

@@ -17,4 +17,3 @@ E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklis
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.csproj.CopyComplete
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.dll
 E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.pdb
-E:\Hai_GPRO\Source App GPRO\Webs\GRPO_SanXuat_Checklist\src\GPROSanXuat_Checklist\GPROSanXuat_Checklist.Data\obj\Debug\GPROSanXuat_Checklist.Data.csproj.AssemblyReference.cache

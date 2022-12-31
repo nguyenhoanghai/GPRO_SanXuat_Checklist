@@ -1,0 +1,90 @@
+﻿ 
+#table-details th,
+#table-details td {
+    border: 1px solid black;
+    text-align: center
+}
+
+#table-details th:first-child,
+#table-details th:last-child,
+#table-details tr td:first-child,
+#table-details tr td:last-child {
+    width: 50px !important;
+    text-align: center !important
+}
+
+.table-detail td {
+    line-height: 34px !important
+}
+
+.w-50px {
+    width: 50px !important
+}
+
+.w-100px {
+    width: 100px !important
+}
+
+.w-150px {
+    width: 150px !important
+}
+
+.number-input {
+    text-align: right
+}
+
+#jtable-detail-order .jtable-column-header:first-child,
+#jtable-detail-order .jtable-column-header:last-child,
+#jtable-detail-order .jtable-data-row td:first-child,
+#jtable-detail-order .jtable-data-row td:last-child {
+    width: 50px !important;
+    text-align: center
+}
+
+#jtable-detail-order .jtable-column-header:nth-child(3),
+#jtable-detail-order .jtable-column-header:nth-child(4),
+#jtable-detail-order .jtable-column-header:nth-child(5),
+#jtable-detail-order .jtable-data-row td:nth-child(3) input,
+#jtable-detail-order .jtable-data-row td:nth-child(3),
+#jtable-detail-order .jtable-data-row td:nth-child(4) input,
+#jtable-detail-order .jtable-data-row td:nth-child(4),
+#jtable-detail-order .jtable-data-row td:nth-child(5) {
+    width: 100px !important;
+    text-align: right
+}
+
+.total-box {
+    padding: 10px 0px;
+    display: flex;
+    line-height: 34px;
+    float: right;
+}
+
+    .total-box select {
+        width: 100px;
+        margin-left: 10px;
+    }
+
+    .total-box input {
+        margin-left: 5px;
+        text-align: right;
+        width: 50px
+    }
+
+.box-info,
+.box-info .form-group {
+    padding: 0
+}
+.order-box-po-select{
+    display:flex;
+    margin:  5px 0
+}
+
+.order-box-po-select select,
+.order-box-po-select button{
+    margin-right:5px
+}
+
+    .order-box-po-select select { 
+        width:400px
+    }

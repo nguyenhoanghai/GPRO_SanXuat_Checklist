@@ -172,19 +172,37 @@ namespace GPROSanXuat_Checklist.Controllers
             return Json(JsonDataResult);
         }
 
-        public JsonResult ChangeInfo(string mail, string first, string last)
+        public JsonResult ChangeInfo(string name, string email, string avatar)
         {
             ResponseBase responseResult = null;
             try
             {
-                responseResult = UserRepository.Instance.ChangeInfo(AppGlobal.ConnectionstringGPROCommon, UserContext.UserID, mail, first, last);
+                responseResult = UserRepository.Instance.ChangeInfo(AppGlobal.ConnectionstringGPROCommon, UserContext.UserID, email, name, avatar );
                 if (!responseResult.IsSuccess)
                 {
                     JsonDataResult.Result = "ERROR";
                     JsonDataResult.ErrorMessages.Add(new Error() { MemberName = responseResult.Errors.First().MemberName, Message = "Lỗi: " + responseResult.Errors.First().Message });
                 }
                 else
+                {
                     JsonDataResult.Result = "OK";
+                    UserContext.Email = email;
+                    UserContext.Name = name;
+                    if (!string.IsNullOrEmpty(avatar))
+                    {
+                        UserContext.ImagePath = avatar;
+                    }
+
+                    if (!string.IsNullOrEmpty(responseResult.Data))
+                    {
+                        string a = responseResult.Data;
+                        a = a.Replace('/', '\\');
+
+                        var filePath = Server.MapPath(a);
+                        if (System.IO.File.Exists(filePath))
+                            System.IO.File.Delete(filePath);
+                    }
+                }
             }
             catch (Exception ex)
             {
